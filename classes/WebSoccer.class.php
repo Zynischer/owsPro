@@ -20,6 +20,83 @@
 
 ******************************************************/
 /**
+ * Core functions and application context state of the current request,
+ * as native PHP functions, without to use a class of websoccer instance.
+ *
+ * @author Rolf Joseph
+ */
+class val{
+	static $user,$skin,$pageId,$templateEngine,$_frontMessages,$_isAjaxRequest,$_contextParameters;}
+function getUser(){
+	if(val::$user==null)val::$user=new User();
+	return val::$user;}
+function getConfig($name){
+	global $conf;
+	if(!isset($conf[$name]))throw new Exception('Konfigurationseintrag wurde nicht gefunden: '.$name);
+	return (string)$conf[$name];}
+function getAction($id){
+	global $action;
+	if(!isset($action[$id]))throw new Exception('Action not found: '.$id);
+	return $action[$id];}
+function getSkin(){
+	if(val::$skin==NULL){
+		$skinName=Config('skin');
+		if(class_exists($skinName))val::$skin=new $skinName(val::$skin);
+		else throw new Exception('Configured skin \''.$skinName.'\' does not exist. Check the system settings.');}
+	return val::$skin;}
+function getPageId(){return val::$pageId;}
+function setPageId($pageId){val::$pageId=$pageId;}
+function getTemplateEngine($i18n,ViewHandler $viewHandler=null){
+	if(val::$templateEngine==NULL)val::$templateEngine=new TemplateEngine(val::$instance,$i18n,$viewHandler);
+	return val::$templateEngine;}
+function getRequestParameter($name){
+	if(isset($_REQUEST[$name])){
+		$value=trim($_REQUEST[$name]);
+		if(strlen((string)$value)){return $value;}}
+	return NULL;}
+function getInternalUrl($pageId=NULL,$queryString='',$fullUrl=FALSE){
+	if($pageId==NULL)$pageId=PageId();
+	if(strlen((string)$queryString))$queryString='&'.$queryString;
+	if($fullUrl){
+		$url=Config('homepage').Config('context_root');
+		if($pageId!='home'||strlen((string)$queryString))$url.='/?page='.$pageId.$queryString;}
+	else $url=Config('context_root').'/?page='.$pageId.$queryString;
+	return $url;}
+function getInternalActionUrl($actionId,$queryString='',$pageId=NULL,$fullUrl=FALSE){
+	if($pageId==NULL)$pageId=Request('page');
+	if(strlen((string)$queryString)){$queryString='&'.$queryString;}
+	$url=Config('context_root').'/?page='.$pageId.$queryString.'&action='.$actionId;
+	if($fullUrl)$url=Config('homepage').$url;
+	return $url;}
+function getFormattedDate($timestamp=NULL){
+	if($timestamp==NULL)$timestamp=getNowAsTimestamp();
+	return date(Config('date_format'),$timestamp);}
+function getFormattedDatetime($timestamp,I18n $i18n=NULL){
+	if($timestamp==NULL)$timestamp=getNowAsTimestamp();
+	if($i18n!=NULL){
+		$dateWord=StringUtil::convertTimestampToWord($timestamp,getNowAsTimestamp(),$i18n);
+		if(strlen((string)$dateWord))return $dateWord.','.date(Config('time_format'),$timestamp);}
+	return date(Config('datetime_format'),$timestamp);}
+function getNowAsTimestamp(){return time()+ Config('time_offset');}
+function resetConfigCache(){
+	$i18n=I18n::getInstance(Config('supported_languages'));
+	$cacheBuilder=new ConfigCacheFileWriter($i18n->getSupportedLanguages());
+	$cacheBuilder->buildConfigCache();}
+function addFrontMessage(FrontMessage$message){
+		val::$_frontMessages[]=$message;}
+function getFrontMessages(){
+	if(val::$_frontMessages==NULL)$this->_frontMessages=[];
+	return val::$_frontMessages;}
+function setAjaxRequest($isAjaxRequest){
+	val::$_isAjaxRequest=$isAjaxRequest;}
+function isAjaxRequest(){return val::$_isAjaxRequest;}
+function getContextParameters(){
+	if(val::$_contextParameters==null)$_contextParameters=[];
+	return val::$_contextParameters;}
+function addContextParameter($name,$value){
+	if(val::$_contextParameters==null)val::$_contextParameters=[];
+	val::$_contextParameters[$name]=$value;}
+/**
  * Core functions and application context state of the current request.
  *
  * @author Ingo Hofman

@@ -3,19 +3,19 @@
 
   This file is part of OpenWebSoccer-Sim.
 
-  OpenWebSoccer-Sim is free software: you can redistribute it 
-  and/or modify it under the terms of the 
-  GNU Lesser General Public License 
+  OpenWebSoccer-Sim is free software: you can redistribute it
+  and/or modify it under the terms of the
+  GNU Lesser General Public License
   as published by the Free Software Foundation, either version 3 of
   the License, or any later version.
 
   OpenWebSoccer-Sim is distributed in the hope that it will be
   useful, but WITHOUT ANY WARRANTY; without even the implied
-  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public 
-  License along with OpenWebSoccer-Sim.  
+  You should have received a copy of the GNU Lesser General Public
+  License along with OpenWebSoccer-Sim.
   If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************/
@@ -27,12 +27,13 @@ if (DEBUG) {
 } else {
 	error_reporting(E_ERROR);
 }
-
+// load the nessasary class websoccer with native PHP functions
+include(BASE_FOLDER.'/classes/websoccer.class.php');
 // loads required classes on demand
 function classes_autoloader($class) {
-	
+
 	$subforder = '';
-	
+
 	if (substr($class, -9) === 'Converter') {
 		$subforder = 'converters/';
 	} else if (substr($class, -4) === 'Skin') {
@@ -54,7 +55,7 @@ function classes_autoloader($class) {
 	} else if (substr($class, -6) === 'Plugin') {
 		$subforder = 'plugins/';
 	}
-	
+
 	@include(BASE_FOLDER . '/classes/' . $subforder . $class . '.class.php');
 }
 spl_autoload_register('classes_autoloader');
