@@ -26,60 +26,60 @@
  * @author Rolf Joseph
  */
 class val{
-	static $user,$skin,$pageId,$templateEngine,$_frontMessages,$_isAjaxRequest,$_contextParameters;}
+	static $ws,$db,$i18n,$user,$skin,$pageId,$templateEngine,$_frontMessages,$_isAjaxRequest,$_contextParameters,$_absence,$_leagueId,$_type,$_currentLanguage,$lang,$_supportedLanguages,$connection,$_queryCache;}
 function getUser(){
-	if(val::$user==null)val::$user=new User();
+	if(val::$user==NULL)val::$user=new User();
 	return val::$user;}
 function getConfig($name){
-	global $conf;
+	global$conf;
 	if(!isset($conf[$name]))throw new Exception('Konfigurationseintrag wurde nicht gefunden: '.$name);
-	return (string)$conf[$name];}
+	return(string)$conf[$name];}
 function getAction($id){
-	global $action;
+	global$action;
 	if(!isset($action[$id]))throw new Exception('Action not found: '.$id);
 	return $action[$id];}
 function getSkin(){
 	if(val::$skin==NULL){
-		$skinName=Config('skin');
+		$skinName=getConfig('skin');
 		if(class_exists($skinName))val::$skin=new $skinName(val::$skin);
 		else throw new Exception('Configured skin \''.$skinName.'\' does not exist. Check the system settings.');}
 	return val::$skin;}
 function getPageId(){return val::$pageId;}
 function setPageId($pageId){val::$pageId=$pageId;}
-function getTemplateEngine($i18n,ViewHandler $viewHandler=null){
+function getTemplateEngine($i18n,ViewHandler $viewHandler=NULL){
 	if(val::$templateEngine==NULL)val::$templateEngine=new TemplateEngine(val::$instance,$i18n,$viewHandler);
 	return val::$templateEngine;}
 function getRequestParameter($name){
 	if(isset($_REQUEST[$name])){
 		$value=trim($_REQUEST[$name]);
-		if(strlen((string)$value)){return $value;}}
+		if(strlen((string)$value)){return$value;}}
 	return NULL;}
 function getInternalUrl($pageId=NULL,$queryString='',$fullUrl=FALSE){
 	if($pageId==NULL)$pageId=PageId();
 	if(strlen((string)$queryString))$queryString='&'.$queryString;
 	if($fullUrl){
-		$url=Config('homepage').Config('context_root');
+		$url=getConfig('homepage').getConfig('context_root');
 		if($pageId!='home'||strlen((string)$queryString))$url.='/?page='.$pageId.$queryString;}
-	else $url=Config('context_root').'/?page='.$pageId.$queryString;
-	return $url;}
+	else$url=getConfig('context_root').'/?page='.$pageId.$queryString;
+	return$url;}
 function getInternalActionUrl($actionId,$queryString='',$pageId=NULL,$fullUrl=FALSE){
 	if($pageId==NULL)$pageId=Request('page');
 	if(strlen((string)$queryString)){$queryString='&'.$queryString;}
-	$url=Config('context_root').'/?page='.$pageId.$queryString.'&action='.$actionId;
-	if($fullUrl)$url=Config('homepage').$url;
-	return $url;}
+	$url=getConfig('context_root').'/?page='.$pageId.$queryString.'&action='.$actionId;
+	if($fullUrl)$url=getConfig('homepage').$url;
+	return$url;}
 function getFormattedDate($timestamp=NULL){
 	if($timestamp==NULL)$timestamp=getNowAsTimestamp();
-	return date(Config('date_format'),$timestamp);}
+	return date(getConfig('date_format'),$timestamp);}
 function getFormattedDatetime($timestamp,I18n $i18n=NULL){
 	if($timestamp==NULL)$timestamp=getNowAsTimestamp();
 	if($i18n!=NULL){
 		$dateWord=StringUtil::convertTimestampToWord($timestamp,getNowAsTimestamp(),$i18n);
-		if(strlen((string)$dateWord))return $dateWord.','.date(Config('time_format'),$timestamp);}
-	return date(Config('datetime_format'),$timestamp);}
-function getNowAsTimestamp(){return time()+ Config('time_offset');}
+		if(strlen((string)$dateWord))return$dateWord.','.date(getConfig('time_format'),$timestamp);}
+	return date(getConfig('datetime_format'),$timestamp);}
+function getNowAsTimestamp(){return time()+getConfig('time_offset');}
 function resetConfigCache(){
-	$i18n=I18n::getInstance(Config('supported_languages'));
+	$i18n=I18n::getInstance(getConfig('supported_languages'));
 	$cacheBuilder=new ConfigCacheFileWriter($i18n->getSupportedLanguages());
 	$cacheBuilder->buildConfigCache();}
 function addFrontMessage(FrontMessage$message){
@@ -91,10 +91,10 @@ function setAjaxRequest($isAjaxRequest){
 	val::$_isAjaxRequest=$isAjaxRequest;}
 function isAjaxRequest(){return val::$_isAjaxRequest;}
 function getContextParameters(){
-	if(val::$_contextParameters==null)$_contextParameters=[];
+	if(val::$_contextParameters==NULL)$_contextParameters=[];
 	return val::$_contextParameters;}
 function addContextParameter($name,$value){
-	if(val::$_contextParameters==null)val::$_contextParameters=[];
+	if(val::$_contextParameters==NULL)val::$_contextParameters=[];
 	val::$_contextParameters[$name]=$value;}
 /**
  * Core functions and application context state of the current request.
@@ -116,7 +116,7 @@ class WebSoccer{
     function __construct(){
 		$this->_isAjaxRequest=FALSE;}
     function getUser(){
-    	if($this->_user==null)$this->_user=new User();
+    	if($this->_user==NULL)$this->_user=new User();
     	return$this->_user;}
 	function getConfig($name){
 		global$conf;
@@ -136,7 +136,7 @@ class WebSoccer{
 		return$this->_pageId;}
 	function setPageId($pageId){
 		$this->_pageId=$pageId;}
-	function getTemplateEngine($i18n,ViewHandler$viewHandler=null){
+	function getTemplateEngine($i18n,ViewHandler$viewHandler=NULL){
 		if($this->_templateEngine==NULL)$this->_templateEngine=new TemplateEngine($this,$i18n,$viewHandler);
 		return$this->_templateEngine;}
 	function getRequestParameter($name){
@@ -144,26 +144,26 @@ class WebSoccer{
 			$value=trim($_REQUEST[$name]);
 			if(strlen($value))return$value;}
 		return NULL;}
-	function getInternalUrl($pageId=null,$queryString='',$fullUrl=FALSE){
-		if($pageId==null)$pageId=$this->getPageId();
+	function getInternalUrl($pageId=NULL,$queryString='',$fullUrl=FALSE){
+		if($pageId==NULL)$pageId=$this->getPageId();
 		if(strlen($queryString))$queryString='&'.$queryString;
 		if($fullUrl){
 			$url=$this->getConfig('homepage').$this->getConfig('context_root');
 			if($pageId!='home'||strlen($queryString))$url .='/?page='.$pageId.$queryString;}
 		else$url=$this->getConfig('context_root').'/?page='.$pageId.$queryString;
 		return$url;}
-	function getInternalActionUrl($actionId,$queryString='',$pageId=null,$fullUrl=FALSE){
-		if($pageId==null)$pageId=$this->getRequestParameter('page');
+	function getInternalActionUrl($actionId,$queryString='',$pageId=NULL,$fullUrl=FALSE){
+		if($pageId==NULL)$pageId=$this->getRequestParameter('page');
 		if(strlen($queryString))$queryString='&'.$queryString;
 		$url=$this->getConfig('context_root').'/?page='.$pageId.$queryString.'&action='.$actionId;
 		if($fullUrl)$url=$this->getConfig('homepage').$url;
 		return$url;}
-	function getFormattedDate($timestamp=null){
-		if($timestamp==null)$timestamp=$this->getNowAsTimestamp();
+	function getFormattedDate($timestamp=NULL){
+		if($timestamp==NULL)$timestamp=$this->getNowAsTimestamp();
 		return date($this->getConfig('date_format'),$timestamp);}
-	function getFormattedDatetime($timestamp,I18n$i18n=null){
-		if($timestamp==null)$timestamp=$this->getNowAsTimestamp();
-		if($i18n!=null){
+	function getFormattedDatetime($timestamp,I18n$i18n=NULL){
+		if($timestamp==NULL)$timestamp=$this->getNowAsTimestamp();
+		if($i18n!=NULL){
 			$dateWord=StringUtil::convertTimestampToWord($timestamp,$this->getNowAsTimestamp(),$i18n);
 			if(strlen($dateWord))return$dateWord.', '.date($this->getConfig('time_format'),$timestamp);}
 		return date($this->getConfig('datetime_format'),$timestamp);}
@@ -176,15 +176,15 @@ class WebSoccer{
 	function addFrontMessage(FrontMessage $message){
 		$this->_frontMessages[]=$message;}
 	function getFrontMessages(){
-		if($this->_frontMessages==null)$this->_frontMessages=[];
+		if($this->_frontMessages==NULL)$this->_frontMessages=[];
 		return$this->_frontMessages;}
 	function setAjaxRequest($isAjaxRequest){
 		$this->_isAjaxRequest=$isAjaxRequest;}
 	function isAjaxRequest(){
 		return$this->_isAjaxRequest;}
 	function getContextParameters(){
-		if($this->_contextParameters==null)$this->_contextParameters=[];
+		if($this->_contextParameters==NULL)$this->_contextParameters=[];
 		return$this->_contextParameters;}
 	function addContextParameter($name,$value){
-		if($this->_contextParameters==null)$this->_contextParameters=[];
+		if($this->_contextParameters==NULL)$this->_contextParameters=[];
 		$this->_contextParameters[$name]=$value;}}
