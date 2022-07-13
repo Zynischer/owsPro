@@ -127,7 +127,7 @@ class DbConnection{
 		if(isset($this->_queryCache[$queryStr]))return$this->_queryCache[$queryStr];
 		$result=$this->executeQuery($queryStr);
 		$rows=[];
-		while($row=$result->fetch_array())$rows[]=
+		while($row=$result->fetch_array())$rows[]=$row;
 		$result->free();
 		$this->_queryCache[$queryStr]=$rows;
 		return$rows;}
