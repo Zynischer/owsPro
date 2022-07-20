@@ -27,19 +27,21 @@ define('LANG_SESSION_PARAM','lang');
  *
  * @author Rolf Joseph
  */
+function getSupportedLanguages(){
+		return $supportedLanguages=array_map('trim',explode(',',getConfig("supported_languages")));}
 function getCurrentLanguage(){
-	if(val::$_currentLanguage==NULL){
-		if(isset($_SESSION[LANG_SESSION_PARAM]))val::$lang=$_SESSION[LANG_SESSION_PARAM];
-		elseif(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))val::$lang=strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'],0,2));
-		else val::$lang=val::$_supportedLanguages[0];
-		if(!in_array(val::$lang,val::$_supportedLanguages))val::$lang=val::$_supportedLanguages[0];
-		val::$_currentLanguage=$lang;}}
+	if($currentLanguage==0){
+		if(isset($_SESSION[LANG_SESSION_PARAM]))$lang=$_SESSION[LANG_SESSION_PARAM];
+		elseif(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))$lang=strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'],0,2));
+		else$lang=$supportedLanguages[0];
+		if(!in_array($lang,$supportedLanguages))$lang=$supportedLanguages[0];
+		$currentLanguage=$lang;}}
 function setCurrentLanguage($language){
-	if($language==val::$currentLanguage)return;
-	val::$lang=strtolower($language);
-	if(!in_array(val::$lang,val::$_supportedLanguages))val::$lang=CurrentLanguage();
-	$_SESSION['lang']=val::$lang;
-	val::$currentLanguage=val::$lang;}
+	if($language==$currentLanguage)return;
+	$lang=strtolower($language);
+	if(!in_array($lang,$supportedLanguages))$lang=CurrentLanguage();
+	$_SESSION['lang']=$lang;
+	$currentLanguage=$lang;}
 function getMessage($messageKey,$paramaters=null){
 	global $msg;
 	if(!hasMessage($messageKey)){return '???'.$messageKey.'???';}

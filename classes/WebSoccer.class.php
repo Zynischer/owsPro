@@ -26,7 +26,7 @@
  * @author Rolf Joseph
  */
 class val{
-	static $ws,$db,$i18n,$user,$skin,$pageId,$templateEngine,$_frontMessages,$_isAjaxRequest,$_contextParameters,$_absence,$_leagueId,$_type,$_currentLanguage,$lang,$_supportedLanguages,$connection,$_queryCache;}
+	static $ws,$db,$i18n,$user,$skin,$pageId,$templateEngine,$_frontMessages,$_isAjaxRequest,$_contextParameters,$_absence,$_leagueId,$_type,$connection,$_queryCache;}
 function getUser(){
 	if(val::$user==NULL)val::$user=new User();
 	return val::$user;}
