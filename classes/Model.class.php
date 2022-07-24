@@ -34,7 +34,7 @@
  *
  * @author Rolf Joseph / ErdemCan
  */
-class Model{
+class Model extends Instances{
 	// renderView to set allways on true, to show the template.
 	function renderView(){return TRUE;}
 	// getTemplateParameters as basic data for rendering the templae. Normaly we have to code to collect the nessara data.
