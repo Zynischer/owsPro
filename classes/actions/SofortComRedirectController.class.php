@@ -74,7 +74,7 @@ class SofortComRedirectController implements IActionController {
 		// create transaction model
 		$Sofortueberweisung = new Sofortueberweisung($configKey);
 
-		$abortOrSuccessUrl = $this->_websoccer->getInternalUrl('premiumaccount', null, TRUE);
+		$abortOrSuccessUrl = getInternalUrl('premiumaccount', null, TRUE);
 
 		// use actual notify url
 		$notifyUrl = getInternalActionUrl('sofortcom-notify', 'u=' . $this->_websoccer->getUser()->id,'home', TRUE);

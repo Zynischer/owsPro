@@ -133,8 +133,8 @@ if (!$show) {
 					while ($row = $result->fetch_array()) {
 						echo '<tr>';
 						echo '<td><input type=\'checkbox\' name=\'selectedteams[]\' value=\''. $row['team_id'] . '\'/></td>';
-						echo '<td class=\'tableRowSelectionCell\'><a href=\''. $website->getInternalUrl('team', 'id=' . $row['team_id']) . '\' target=\'_blank\'>'. escapeOutput($row['team_name']) . '</a></td>';
-						echo '<td class=\'tableRowSelectionCell\'><a href=\''. $website->getInternalUrl('user', 'id=' . $row['user_id']) . '\' target=\'_blank\'>'. escapeOutput($row['user_nick']) . '</a></td>';
+						echo '<td class=\'tableRowSelectionCell\'><a href=\''. getInternalUrl('team', 'id=' . $row['team_id']) . '\' target=\'_blank\'>'. escapeOutput($row['team_name']) . '</a></td>';
+						echo '<td class=\'tableRowSelectionCell\'><a href=\''. getInternalUrl('user', 'id=' . $row['user_id']) . '\' target=\'_blank\'>'. escapeOutput($row['user_nick']) . '</a></td>';
 						echo '<td class=\'tableRowSelectionCell\'>'. getFormattedDate($row['user_lastonline']) . '</td>';
 						echo '<td class=\'tableRowSelectionCell\'>'. number_format($row['team_budget'], 0, ',', ' ') . '</td>';
 						echo '<td class=\'tableRowSelectionCell\'>'. $row['team_players'] . '</td>';

@@ -143,9 +143,9 @@ class NotificationsDataService {
 			$link = '';
 			if ($row['target_pageid']) {
 				if ($row['target_querystr']) {
-					$link = $websoccer->getInternalUrl($row['target_pageid'], $row['target_querystr']);
+					$link = getInternalUrl($row['target_pageid'], $row['target_querystr']);
 				} else {
-					$link = $websoccer->getInternalUrl($row['target_pageid']);
+					$link = getInternalUrl($row['target_pageid']);
 				}
 			}
 

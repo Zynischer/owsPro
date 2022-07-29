@@ -238,7 +238,7 @@ echo "<input type=\"hidden\" name=\"action\" value=\"update\"/>";
 echo "<input type=\"hidden\" name=\"match\" value=\"$matchId\"/>";
 
 foreach ($teamPrefixes as $teamPrefix) {
-	echo "<h2><a href=\"". $website->getInternalUrl("team", "id=" . $match["match_". $teamPrefix . "_id"]) . "\" target=\"_blank\">". escapeOutput($match["match_". $teamPrefix . "_name"]) . "</a></h2>";
+	echo "<h2><a href=\"".getInternalUrl("team", "id=" . $match["match_". $teamPrefix . "_id"]) . "\" target=\"_blank\">". escapeOutput($match["match_". $teamPrefix . "_name"]) . "</a></h2>";
 
 	// tactic
 	echo "<div class=\"form-horizontal\">";
