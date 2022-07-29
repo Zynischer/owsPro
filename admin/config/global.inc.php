@@ -56,7 +56,7 @@ $page=null;
 $action=null;
 $block=null;
 try{$website=WebSoccer::getInstance();
-	if(!file_exists(CONFIGCACHE_FILE_FRONTEND))$website->resetConfigCache();}
+	if(!file_exists(CONFIGCACHE_FILE_FRONTEND))resetConfigCache();}
 catch(Exception $e){
 	try{$log=new FileWriter('errorlog.txt');
 		$log->writeLine('Website Configuration Error: '.$e->getMessage());

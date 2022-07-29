@@ -22,7 +22,7 @@
 
 echo '<h1>'. getMessage('clearcache_title') .'</h1>';
 
-$website->resetConfigCache();
+resetConfigCache();
 
 // clear templates cache
 $website->getTemplateEngine($i18n)->clearCache();
