@@ -77,7 +77,7 @@ class NewsDetailsModel implements IModel {
 
 		$article = array("id" => $item["id"],
 				"title" => $item["titel"],
-				"date" => $this->_websoccer->getFormattedDate($item["datum"]),
+				"date" => getFormattedDate($item["datum"]),
 				"message" => $message,
 				"author_name" => $item["author_name"]);
 
