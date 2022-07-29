@@ -34,7 +34,7 @@ define('BASE_FOLDER', __DIR__);
 
 require(BASE_FOLDER . '/frontbase.inc.php');
 
-$website->setAjaxRequest(TRUE);
+setAjaxRequest(TRUE);
 
 $output['messages'] = '';
 $output['content'] = '';
