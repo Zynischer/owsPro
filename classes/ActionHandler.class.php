@@ -196,7 +196,7 @@ class ActionHandler {
 
 				// render info page
 			} else {
-				$website->addContextParameter('premium_balance_required', $creditsRequired);
+				addContextParameter('premium_balance_required', $creditsRequired);
 				return $targetPage;
 			}
 		}
@@ -209,10 +209,10 @@ class ActionHandler {
 		}
 
 		// redirect to confirmation page
-		$website->addContextParameter('premium_balance_required', $creditsRequired);
-		$website->addContextParameter('actionparameters', $validatedParams);
-		$website->addContextParameter('actionid', $actionId);
-		$website->addContextParameter('srcpage', $website->getPageId());
+		addContextParameter('premium_balance_required', $creditsRequired);
+		addContextParameter('actionparameters', $validatedParams);
+		addContextParameter('actionid', $actionId);
+		addContextParameter('srcpage', $website->getPageId());
 		return 'premium-confirm-action';
 	}
 }

@@ -92,7 +92,7 @@ class ViewHandler {
 
 					// render info page
 				} else {
-					$this->_website->addContextParameter('premium_balance_required', $minPremiumBalanceRequired);
+					addContextParameter('premium_balance_required', $minPremiumBalanceRequired);
 					return $this->handlePage($targetPage, $parameters);
 				}
 			}

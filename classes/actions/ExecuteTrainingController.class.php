@@ -204,7 +204,7 @@ class ExecuteTrainingController implements IActionController {
 					);
 		}
 
-		$this->_websoccer->addContextParameter("trainingEffects", $trainingEffects);
+		addContextParameter("trainingEffects", $trainingEffects);
 	}
 
 }
