@@ -77,7 +77,7 @@ if ($website->getConfig('offline') !== 'offline') {
 			// get and render page
 			$pageId = $website->getRequestParameter(PARAM_PAGE);
 			if ($pageId != null) {
-				$website->setPageId($pageId);
+				setPageId($pageId);
 				$output['content'] = $viewHandler->handlePage($pageId, $parameters);
 			}
 		}

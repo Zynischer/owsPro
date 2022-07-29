@@ -80,7 +80,7 @@ if ($isOffline) {
 	// get page ID and parse it by router
 	$pageId = $website->getRequestParameter(PARAM_PAGE);
 	$pageId = PageIdRouter::getTargetPageId($website, $i18n, $pageId);
-	$website->setPageId($pageId);
+	setPageId($pageId);
 
 	$validationMessages = null;
 
@@ -105,7 +105,7 @@ if ($isOffline) {
 		}
 	}
 
-	$website->setPageId($pageId);
+	setPageId($pageId);
 
 	// get and set navigation items
 	$navItems = NavigationBuilder::getNavigationItems($website, $i18n, $page, $pageId);
