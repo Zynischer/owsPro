@@ -98,7 +98,7 @@ class ViewHandler {
 			}
 		}
 
-		$template = $this->_website->getTemplateEngine($this->_i18n, $this)->loadTemplate('views/' . $pageConfig['template']);
+		$template = getTemplateEngine($this->_i18n, $this)->loadTemplate('views/' . $pageConfig['template']);
 
 		if (isset($pageConfig['model'])) {
 			$class = $pageConfig['model'];
@@ -208,7 +208,7 @@ class ViewHandler {
 		$parameters['validationMsg'] = $this->_validationMessages;
 
 		$parameters['frontMessages'] = $this->_website->getFrontMessages();
-		$template = $this->_website->getTemplateEngine($this->_i18n, $this)->loadTemplate('blocks/' . $viewConfig['template']);
+		$template = getTemplateEngine($this->_i18n, $this)->loadTemplate('blocks/' . $viewConfig['template']);
 
 		$parameters['blockId'] = $blockId;
 		$output =$template->render($parameters);

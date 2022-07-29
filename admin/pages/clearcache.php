@@ -25,7 +25,7 @@ echo '<h1>'. getMessage('clearcache_title') .'</h1>';
 resetConfigCache();
 
 // clear templates cache
-$website->getTemplateEngine($i18n)->clearCache();
+getTemplateEngine($i18n)->clearCache();
 
 echo createSuccessMessage(getMessage('clearcache_success_title'),getMessage('clearcache_success_message'));
 

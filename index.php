@@ -55,7 +55,7 @@ if ($website->getConfig('offline') == 'offline') {
 
 if ($isOffline) {
 	$parameters['offline_message'] = nl2br($website->getConfig('offline_text'));
-	echo $website->getTemplateEngine($i18n)->loadTemplate('views/offline')->render($parameters);
+	echo getTemplateEngine($i18n)->loadTemplate('views/offline')->render($parameters);
 
 	// show page
 } else {
@@ -138,7 +138,7 @@ if ($isOffline) {
 function renderErrorPage($website, $i18n, $viewHandler, $message, $parameters) {
 	$parameters['title'] = $message;
 	$parameters['message'] = '';
-	echo $website->getTemplateEngine($i18n, $viewHandler)->loadTemplate('error')->render($parameters);
+	echo getTemplateEngine($i18n, $viewHandler)->loadTemplate('error')->render($parameters);
 }
 
 ?>
