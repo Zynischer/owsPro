@@ -22,6 +22,12 @@
 define('PAGE_NAV_LABEL_SUFFIX','_navlabel');
 define('LANG_SESSION_PARAM','lang');
 /**
+ * Use the native PHP function instead the instance I18n.
+ *
+ * @author Rolf Joseph
+ */
+
+/**
  * Handles internationalization tasks,
  * as native PHP functions.
  *

@@ -22,10 +22,10 @@
 
 function prepareFielfValueForSaving($fieldValue){
 	return stripslashes(trim($fieldValue));}
-$mainTitle=$i18n->getMessage('all_settings_title');
+$mainTitle=getMessage('all_settings_title');
 include(CONFIGCACHE_SETTINGS);
 if(!$admin['r_admin']&&!$admin['r_demo']){
-  echo'<p>'.$i18n->getMessage('error_access_denied').'</p>';
+  echo'<p>'.getMessage('error_access_denied').'</p>';
   exit;}
 if(!$show){
 	$tabs=[];
@@ -41,7 +41,7 @@ if(!$show){
 			foreach($tabs as$tabId=>$settings){
 				echo'<li';
 				if($firstTab)echo' class=\'active\'';
-				echo'><a href=\'#'.$tabId.'\' data-toggle=\'tab\'>'.$i18n->getMessage('settings_tab_'.$tabId).'</a></li>';
+				echo'><a href=\'#'.$tabId.'\' data-toggle=\'tab\'>'.getMessage('settings_tab_'.$tabId).'</a></li>';
 				$firstTab=FALSE;}?></ul>
 		<div class='tab-content'><?php
 			$firstTab=TRUE;
@@ -53,10 +53,10 @@ if(!$show){
 				echo'</div>';
 				$firstTab=FALSE;}?></div>
 		<div class='form-actions'>
-			<input type='submit'class='btn btn-primary'accesskey='s'title='Alt + s'value='<?php echo$i18n->getMessage('button_save');?>'>
-			<input type='reset'class='btn'value='<?php echo$i18n->getMessage('button_reset');?>'></div></form><?php }
+			<input type='submit'class='btn btn-primary'accesskey='s'title='Alt + s'value='<?php echo getMessage('button_save');?>'>
+			<input type='reset'class='btn'value='<?php echo getMessage('button_reset');?>'></div></form><?php }
 elseif($show=='speichern'){
-	if($admin['r_demo'])$err[]=$i18n->getMessage('validationerror_no_changes_as_demo');
+	if($admin['r_demo'])$err[]=getMessage('validationerror_no_changes_as_demo');
 	if(isset($err))include('validationerror.inc.php');
 	else{
 		$newSettings=[];
@@ -64,5 +64,5 @@ elseif($show=='speichern'){
 		$cf=ConfigFileWriter::getInstance($conf);
 		$cf->saveSettings($newSettings);
 		include('success.inc.php');
-		echo createWarningMessage($i18n->getMessage('settings_saved_note_restartjobs'),
-		$i18n->getMessage('settings_saved_note_restartjobs_details'));}}
+		echo createWarningMessage(getMessage('settings_saved_note_restartjobs'),
+		getMessage('settings_saved_note_restartjobs_details'));}}

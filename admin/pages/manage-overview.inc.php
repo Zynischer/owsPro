@@ -3,19 +3,19 @@
 
   This file is part of OpenWebSoccer-Sim.
 
-  OpenWebSoccer-Sim is free software: you can redistribute it 
-  and/or modify it under the terms of the 
-  GNU Lesser General Public License 
+  OpenWebSoccer-Sim is free software: you can redistribute it
+  and/or modify it under the terms of the
+  GNU Lesser General Public License
   as published by the Free Software Foundation, either version 3 of
   the License, or any later version.
 
   OpenWebSoccer-Sim is distributed in the hope that it will be
   useful, but WITHOUT ANY WARRANTY; without even the implied
-  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public 
-  License along with OpenWebSoccer-Sim.  
+  You should have received a copy of the GNU Lesser General Public
+  License along with OpenWebSoccer-Sim.
   If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************/
@@ -44,7 +44,7 @@ if (isset($_REQUEST[PARAM_RESETSORT]) && $_REQUEST[PARAM_RESETSORT] == 1) {
 	} elseif (isset($_SESSION[$entity . PARAM_SORTCOLUMN])) {
 		$sortColumn = $_SESSION[$entity . PARAM_SORTCOLUMN];
 	}
-	
+
 	if (isset($_REQUEST[PARAM_SORTDIRECTION])) {
 		$sortAscending = $_REQUEST[PARAM_SORTDIRECTION];
 		$_SESSION[$entity . PARAM_SORTDIRECTION] = $sortAscending;
@@ -62,7 +62,7 @@ $editEnabled = ($overviewConfig[0]->attributes()->edit == "true") ? TRUE : FALSE
 
 // add button
 if ($addEnabled) {
-	echo "<p><a class=\"btn btn-small\" href=\"?site=". $site ."&entity=". $entity . "&show=add\"><i class=\"icon-file\"></i> ". $i18n->getMessage("manage_add") . "</a></p>";
+	echo "<p><a class=\"btn btn-small\" href=\"?site=". $site ."&entity=". $entity . "&show=add\"><i class=\"icon-file\"></i> ". getMessage("manage_add") . "</a></p>";
 }
 
 // build meta data
@@ -73,9 +73,9 @@ $openSearchForm = FALSE;
 foreach ($entitycolumns as $column) {
 	$attrs = $column->attributes();
 	$fieldId = (string) $attrs["id"];
-	
+
 	$attrs["field"] = str_replace("{tablePrefix}", $conf["db_prefix"], $attrs["field"]);
-	
+
 	$fields .= ", " . $attrs["field"]." AS ". $fieldId;
 
 	$columnInfo = array();
@@ -87,31 +87,31 @@ foreach ($entitycolumns as $column) {
 		$columnInfo["sort"] = ($attrs["sort"] == "true") ? TRUE : FALSE;
 		$outputColumns[$fieldId] = $columnInfo;
 	}
-	
+
 	if ($attrs["filter"]) {
 		$filterFieldInfo["type"] = (string)$attrs["type"];
 		$filterFieldInfo["field"] = (string)$attrs["field"];
 		$filterFieldInfo["selection"] = (string)$attrs["selection"];
-		
+
 		// reset session values
 		if (isset($_REQUEST["filterreset"]) && $_REQUEST["filterreset"] == "1") {
 			unset($_SESSION[$entity . $fieldId]);
 		}
-		
+
 		// set value: from request
 		if (isset($_REQUEST[$fieldId])) {
 			$filterFieldInfo["value"] = trim($_REQUEST[$fieldId]);
 			$_SESSION[$entity . $fieldId] = $filterFieldInfo["value"];
-			
+
 		// set value: from session
 		} elseif (isset($_SESSION[$entity . $fieldId])) {
 			$filterFieldInfo["value"] = $_SESSION[$entity . $fieldId];
 		} else {
 			$filterFieldInfo["value"] = NULL;
 		}
-		
+
 		$filterFields[$fieldId] = $filterFieldInfo;
-		
+
 		if ($filterFieldInfo["value"] !== NULL) {
 			$openSearchForm = TRUE;
 		}
@@ -130,7 +130,7 @@ if ($deleteEnabled && $action == "delete") {
 }
 
 // custom action
-if (strlen($action) && !in_array($action, array("save", "delete")) 
+if (strlen($action) && !in_array($action, array("save", "delete"))
 		&& file_exists(__DIR__ . "/../actions/" . $action . ".inc.php")) {
 	include(__DIR__ . "/../actions/" . $action . ".inc.php");
 }
@@ -162,7 +162,7 @@ $rows = $result->fetch_array();
 $result->free();
 
 if (!$rows['hits']) {
-	echo createInfoMessage($i18n->getMessage("manage_no_records_found"), "");
+	echo createInfoMessage(getMessage("manage_no_records_found"), "");
 } else {
 
 	// enable pagination
@@ -171,11 +171,11 @@ if (!$rows['hits']) {
 	if ($rows['hits'] % $eps) $seiten = floor($rows['hits'] / $eps) + 1;
 	else $seiten = $rows['hits'] / $eps;
 	$start = ($seite - 1) * $eps;
-	
+
 	$firstNo = $start + 1;
 	$lastNo = min($start + $eps, $rows['hits']);
-	echo "<p>". sprintf($i18n->getMessage("manage_number_of_records"), $rows['hits'], $firstNo, $lastNo) ."</p>";
-	
+	echo "<p>". sprintf(getMessage("manage_number_of_records"), $rows['hits'], $firstNo, $lastNo) ."</p>";
+
 	// ordering
 	if ($sortColumn) {
 		$wherePart .= " ORDER BY ". $db->connection->real_escape_string($sortColumn);
@@ -185,33 +185,33 @@ if (!$rows['hits']) {
 	// query
 	$limit = $start .",". $eps;
 	$result = $db->querySelect($fields, $fromTable, $wherePart, $parameters, $limit);
-	
+
 	//output
 	echo "<form name=\"frmMain\" action=\"". $_SERVER['PHP_SELF'] ."\" method=\"post\">";
 	echo "<input type=\"hidden\" name=\"site\" value=\"". $site ."\">";
 	echo "<input type=\"hidden\" name=\"entity\" value=\"". $entity ."\">";
 	echo "<input type=\"hidden\" name=\"action\" value=\"delete\">";
 	echo "<table class=\"table table-bordered table-striped\">";
-	
+
 	// headers
 	echo "<thead><tr>";
-	
+
 	// checkbox
 	if ($deleteEnabled) {
 		echo "<th style=\"width: 20px;\">&nbsp;</th>";
 	}
-	
+
 	// columns
 	foreach($outputColumns as $fieldId => $columnInfo) {
 		echo "<th";
 		if ($fieldId == "entity_". $entity ."_status") {
 			echo " style=\"width: 20px;\">&nbsp;";
 		} else {
-			$header = $i18n->getMessage($fieldId);
+			$header = getMessage($fieldId);
 			if ($columnInfo["sort"]) {
 				$sortDir = ($sortAscending) ? 0 : 1;
-				$parameters = array("site" => $site, "entity"=>$entity, 
-						PARAM_SORTCOLUMN => $fieldId, 
+				$parameters = array("site" => $site, "entity"=>$entity,
+						PARAM_SORTCOLUMN => $fieldId,
 						PARAM_SORTDIRECTION => $sortDir,
 						PARAM_RESETSORT => 0);
 				$icon = "";
@@ -219,27 +219,27 @@ if (!$rows['hits']) {
 					$iconSuffix = ($sortAscending) ? "up" : "down";
 					$icon = " <i class=\"icon-circle-arrow-". $iconSuffix ."\"></i>";
 				}
-				
+
 				$tooltipKey = ($sortAscending) ? "manage_sort_column_desc" : "manage_sort_column_asc";
-				$tooltip = sprintf($i18n->getMessage($tooltipKey), $i18n->getMessage($fieldId));
-				
+				$tooltip = sprintf(getMessage($tooltipKey), getMessage($fieldId));
+
 				$header = "<a href=\"". UrlUtil::buildCurrentUrlWithParameters($parameters) . "\" title=\"". $tooltip ."\">". $header . $icon . "</a>";
-				
+
 				if ($sortColumn == $fieldId) {
 					$header .= " <a href=\"". UrlUtil::buildCurrentUrlWithParameters(array(
-							"site" => $site, 
-							"entity"=>$entity, 
-							PARAM_RESETSORT => 1)) . "\" title=\"". $i18n->getMessage("manage_sort_column_reset") ."\"><i class=\"icon-remove-sign\"></i></a>";
+							"site" => $site,
+							"entity"=>$entity,
+							PARAM_RESETSORT => 1)) . "\" title=\"". getMessage("manage_sort_column_reset") ."\"><i class=\"icon-remove-sign\"></i></a>";
 				}
 			}
-			
+
 			echo ">". $header;
 		}
-		
-		
+
+
 		echo "</th>";
 	}
-	
+
 	// action columns
 	if ($editEnabled) {
 		echo "<th style=\"width: 20px;\">&nbsp;</th>";
@@ -247,45 +247,45 @@ if (!$rows['hits']) {
 	if ($deleteEnabled) {
 		echo "<th style=\"width: 20px;\">&nbsp;</th>";
 	}
-	
+
 	echo "</tr></thead>";
-	
+
 	// rows
 	echo "<tbody>";
-	
+
 	$dateFormat = $website->getConfig("date_format");
 	$datetimeFormat = $website->getConfig("datetime_format");
-	
-	$editTooltip = $i18n->getMessage("manage_edit");
-	$deleteTooltip = $i18n->getMessage("manage_delete");
-	
+
+	$editTooltip = getMessage("manage_edit");
+	$deleteTooltip = getMessage("manage_delete");
+
 	while ($row = $result->fetch_array()) {
 		echo "<tr>";
-		
+
 		// checkbox
 		if ($deleteEnabled) {
 			echo "<td><input type=\"checkbox\" name=\"del_id[]\" value=\"". $row["id"] ."\"></td>";
 		}
-		
+
 		// columns
 		$first = TRUE;
 		foreach($outputColumns as $fieldId => $columnInfo) {
 			echo "<td id=\"item". $row["id"] . "\">";
-			
+
 			$columnValue = $row["". $fieldId];
 			$type = $columnInfo["type"];
 			$editUrl = "?site=" . $site ."&entity=" . $entity . "&show=edit&id=" . $row["id"];
 			if (isset($_REQUEST["page"])) {
 				$editUrl .= "&page=" . escapeOutput($_REQUEST["page"]);
 			}
-			
+
 			if (isset($columnInfo["converter"])) {
 				$converter = ConverterFactory::getConverter($website, $i18n, $columnInfo["converter"]);
-			
+
 				echo $converter->toHtml($row);
 			} elseif ($fieldId == "entity_". $entity ."_status") {
-				if ($columnValue == 1) echo "<i class=\"icon-ok-sign\" title=\"". $i18n->getMessage("manage_status_active") . "\"></i>";
-				else echo "<i class=\"icon-ban-circle\" title=\"". $i18n->getMessage("manage_status_blocked") . "\"></i>";
+				if ($columnValue == 1) echo "<i class=\"icon-ok-sign\" title=\"". getMessage("manage_status_active") . "\"></i>";
+				else echo "<i class=\"icon-ban-circle\" title=\"". getMessage("manage_status_blocked") . "\"></i>";
 			} elseif ($type == "date") {
 				echo date($dateFormat, $columnValue);
 			} elseif ($type == "timestamp") {
@@ -294,25 +294,25 @@ if (!$rows['hits']) {
 				} else {
 					echo "-";
 				}
-				
+
 			} elseif ($type == "email") {
 				echo "<a href=\"mailto:". escapeOutput($columnValue ) ."\" title=\"". escapeOutput($columnValue) . "\"><i class=\"icon-envelope\"></i></a>";
 			} elseif ($type == "select" && $i18n->hasMessage("option_" . $columnValue)) {
-				echo $i18n->getMessage("option_" . $columnValue);
+				echo getMessage("option_" . $columnValue);
 			} elseif ($type == "boolean") {
-				$iconName = ($columnValue) ? "icon-ok" : "icon-minus-sign"; 
-				$iconTooltip = ($columnValue) ? $i18n->getMessage("option_yes") : $i18n->getMessage("option_no");
+				$iconName = ($columnValue) ? "icon-ok" : "icon-minus-sign";
+				$iconTooltip = ($columnValue) ? getMessage("option_yes") : getMessage("option_no");
 				echo "<i class=\"". $iconName ."\" title=\"". $iconTooltip . "\"></i>";
 			} elseif ($type == "number") {
 				echo number_format($columnValue, 0, ",", " ");
 			} elseif ($type == "percent") {
 				echo $columnValue . "%";
 			} else {
-				
+
 				if ($i18n->hasMessage("option_" . $columnValue)) {
-					$columnValue = $i18n->getMessage("option_" . $columnValue);
+					$columnValue = getMessage("option_" . $columnValue);
 				}
-				
+
 				if ($first && $editEnabled) {
 					echo "<a href=\"". $editUrl . "\">";
 				}
@@ -321,11 +321,11 @@ if (!$rows['hits']) {
 					echo "</a>";
 				}
 			}
-		
+
 			echo "</td>";
 			$first = FALSE;
-		}		
-		
+		}
+
 		// action columns
 		if ($editEnabled) {
 			$url = "?site=" . $site ."&entity=" . $entity . "&show=edit&id=" . $row["id"];
@@ -335,48 +335,48 @@ if (!$rows['hits']) {
 			$url = "?site=" . $site ."&entity=" . $entity . "&action=delete&id=" . $row["id"];
 			echo "<td><a href=\"". $url ."\" title=\"". $deleteTooltip . "\" class=\"deleteLink\"><i class=\"icon-trash\"></i></a></td>";
 		}
-		
+
 		echo "</tr>";
 	}
-	
+
 	echo "</tbody>";
 	$result->free();
-	
+
 	echo "</table>";
-	
+
 	?>
-		<p><label class="checkbox"><input type="checkbox" name="selAll" value="1" onClick="selectAll()"><?php echo $i18n->getMessage("manage_select_all_label"); ?></label></p>
-		
-		<p><?php echo $i18n->getMessage("manage_selected_items_label"); ?> <input type="button" class="btn deleteBtn" accesskey="l" title="Alt + l" value="<?php echo $i18n->getMessage("button_delete"); ?>"></p>
-	
+		<p><label class="checkbox"><input type="checkbox" name="selAll" value="1" onClick="selectAll()"><?php echo getMessage("manage_select_all_label"); ?></label></p>
+
+		<p><?php echo getMessage("manage_selected_items_label"); ?> <input type="button" class="btn deleteBtn" accesskey="l" title="Alt + l" value="<?php echo getMessage("button_delete"); ?>"></p>
+
 	</form>
-	
+
 	<?php
 	//paginator
 	if ($rows['hits'] > $eps) {
-	
+
 		echo "<div class=\"pagination\"><ul>";
-	
-	
+
+
 		//prev
 		if ($seite > 1) {
-	
+
 			$back = $seite - 1;
 			$url = UrlUtil::buildCurrentUrlWithParameters(array("site" => $site, "entity" => $entity, PARAM_PAGE => $back));
 			echo "<li><a href=\"". $url ."\">&laquo;</a></li>";
-	
+
 		}
-		
+
 		$startIndex = max(1, $seite - 10);
 		$endIndex = min($seiten, $seite + 10);
-		
+
 		// ...
 		if ($startIndex > 1) {
 			$url = UrlUtil::buildCurrentUrlWithParameters(array("site" => $site, "entity" => $entity, PARAM_PAGE => 1));
 			echo "<li><a href=\"". $url ."\">1</a></li>";
 			echo "<li class=\"disabled\"><span>...</span></li>";
 		}
-	
+
 		// pages
 		for ($i = $startIndex; $i <= $endIndex; $i++) {
 			$url = UrlUtil::buildCurrentUrlWithParameters(array("site" => $site, "entity" => $entity, PARAM_PAGE => $i));
@@ -384,24 +384,24 @@ if (!$rows['hits']) {
 			if ($i == $seite) echo " class=\"active\"";
 			echo "><a href=\"". $url ."\">". $i ."</a></li>";
 		}
-		
+
 		// ...
 		if ($endIndex < $seiten) {
 			echo "<li class=\"disabled\"><span>...</span></li>";
 			$url = UrlUtil::buildCurrentUrlWithParameters(array("site" => $site, "entity" => $entity, PARAM_PAGE => $seiten));
 			echo "<li><a href=\"". $url ."\">$seiten</a></li>";
 		}
-	
+
 		// next
 		if ($seite < $seiten) {
 			$next = $seite + 1;
 			$url = UrlUtil::buildCurrentUrlWithParameters(array("site" => $site, "entity" => $entity, PARAM_PAGE => $next));
 			echo "<li><a href=\"". $url ."\">&raquo;</a></li>";
 		}
-	
+
 		echo "</ul></div>";
-	
+
 	}
-	
+
 }
 ?>

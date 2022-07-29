@@ -543,7 +543,7 @@ class MatchesDataService {
 		$reportmessages = array();
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $parameters);
 		$match = null; // required only for team name replacements
-		
+
 		while ($reportmessage = $result->fetch_array()) {
 
 			// replace placeholders
@@ -555,7 +555,7 @@ class MatchesDataService {
 
 			$msgKey = strip_tags($rmsg);
 			if ($i18n->hasMessage($msgKey)) {
-				$rmsg = $i18n->getMessage($msgKey);
+				$rmsg = getMessage($msgKey);
 			}
 
 			for($playerIndex = 1; $playerIndex <= count($players); $playerIndex++) {

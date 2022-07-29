@@ -83,7 +83,7 @@ class TemplateEngine {
 	 */
 	public function clearCache() {
 		delDir($_SERVER['DOCUMENT_ROOT'].'/cache/templates');
-		
+
 	}
 
 	/**
@@ -124,7 +124,7 @@ class TemplateEngine {
 	private function _addSettingsSupport() {
 		$function = new Twig_SimpleFunction(CONFIG_FUNCTION_NAME, function ($key) {
 			global $i18n;
-			return $i18n->getMessage($key);
+			return getMessage($key);
 		});
 		$this->_environment->addFunction($function);
 	}

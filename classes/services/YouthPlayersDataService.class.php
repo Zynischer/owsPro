@@ -42,7 +42,7 @@ class YouthPlayersDataService {
 		$players = $db->queryCachedSelect("*", $fromTable, "id = %d", $playerId);
 
 		if (!count($players)) {
-			throw new Exception($i18n->getMessage("error_page_not_found"));
+			throw new Exception(getMessage("error_page_not_found"));
 		}
 
 		return $players[0];
@@ -180,7 +180,7 @@ class YouthPlayersDataService {
 	 * @param int $entries_per_page Number of items to fetch.
 	 * @return array Array of players or empty array if no youth players found.
 	 */
-	public static function getTransferableYouthPlayers(WebSoccer $websoccer, DbConnection $db, 
+	public static function getTransferableYouthPlayers(WebSoccer $websoccer, DbConnection $db,
 			$startIndex, $entries_per_page, $positionFilter = NULL) {
 
 		$columns = array(
@@ -271,7 +271,7 @@ class YouthPlayersDataService {
 		$result->free();
 
 		if (!$scout) {
-			throw new Exception($i18n->getMessage("youthteam_scouting_err_invalidscout"));
+			throw new Exception(getMessage("youthteam_scouting_err_invalidscout"));
 		}
 
 		return $scout;
