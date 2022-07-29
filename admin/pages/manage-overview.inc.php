@@ -297,7 +297,7 @@ if (!$rows['hits']) {
 
 			} elseif ($type == "email") {
 				echo "<a href=\"mailto:". escapeOutput($columnValue ) ."\" title=\"". escapeOutput($columnValue) . "\"><i class=\"icon-envelope\"></i></a>";
-			} elseif ($type == "select" && $i18n->hasMessage("option_" . $columnValue)) {
+			} elseif ($type == "select" && hasMessage("option_" . $columnValue)) {
 				echo getMessage("option_" . $columnValue);
 			} elseif ($type == "boolean") {
 				$iconName = ($columnValue) ? "icon-ok" : "icon-minus-sign";
@@ -309,7 +309,7 @@ if (!$rows['hits']) {
 				echo $columnValue . "%";
 			} else {
 
-				if ($i18n->hasMessage("option_" . $columnValue)) {
+				if (hasMessage("option_" . $columnValue)) {
 					$columnValue = getMessage("option_" . $columnValue);
 				}
 

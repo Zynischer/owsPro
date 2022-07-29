@@ -554,7 +554,7 @@ class MatchesDataService {
 			$rmsg = stripslashes($rmsg);
 
 			$msgKey = strip_tags($rmsg);
-			if ($i18n->hasMessage($msgKey)) {
+			if (hasMessage($msgKey)) {
 				$rmsg = getMessage($msgKey);
 			}
 

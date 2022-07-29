@@ -75,10 +75,10 @@ class StadiumEnvironmentModel implements IModel {
 		while ($building = $result->fetch_array()) {
 
 			// i18n of name and description
-			if ($this->_i18n->hasMessage($building['name'])) {
+			if (hasMessage($building['name'])) {
 				$building['name'] = getMessage($building['name']);
 			}
-			if ($this->_i18n->hasMessage($building['description'])) {
+			if (hasMessage($building['description'])) {
 				$building['description'] = getMessage($building['description']);
 			}
 			$availableBuildings[] = $building;

@@ -119,7 +119,7 @@ class NotificationsDataService {
 					);
 
 			// prepare message
-			if ($i18n->hasMessage($row['message_key'])) {
+			if (hasMessage($row['message_key'])) {
 				$message = getMessage($row['message_key']);
 			} else {
 				$message = $row['message_key'];

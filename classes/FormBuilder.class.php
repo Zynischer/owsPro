@@ -69,7 +69,7 @@ class FormBuilder {
 
 		$helpText = '';
 		$inlineHelpKey = $labelKeyPrefix . $fieldId .'_help';
-		if ($i18n->hasMessage($inlineHelpKey)) {
+		if (hasMessage($inlineHelpKey)) {
 			$helpText = '<span class=\'help-inline\'>'. getMessage($inlineHelpKey) . '</span>';
 		}
 
@@ -140,7 +140,7 @@ class FormBuilder {
 						}
 						echo '>';
 						$label = $selectItem;
-						if ($i18n->hasMessage('option_' . $selectItem)) {
+						if (hasMessage('option_' . $selectItem)) {
 							$label = getMessage('option_' . $selectItem);
 						}
 						echo $label . '</option>';
