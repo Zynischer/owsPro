@@ -58,7 +58,7 @@ class DirectTransferRejectController implements IActionController {
 		}
 
 		$this->_db->queryUpdate(array(
-					"rejected_date" => $this->_websoccer->getNowAsTimestamp(),
+					"rejected_date" => getNowAsTimestamp(),
 					"rejected_message" => $parameters["comment"],
 					"rejected_allow_alternative" => ($parameters["allow_alternative"]) ? 1 : 0
 				), $this->_websoccer->getConfig("db_prefix") . "_transfer_offer", "id = %d", $offer["id"]);

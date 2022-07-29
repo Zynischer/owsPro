@@ -43,7 +43,7 @@ class NotificationsDataService {
 
 		$columns = array(
 				'user_id' => $userId,
-				'eventdate' => $websoccer->getNowAsTimestamp(),
+				'eventdate' => getNowAsTimestamp(),
 				'message_key' => $messageKey
 				);
 

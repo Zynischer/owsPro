@@ -50,7 +50,7 @@ class CreateYouthMatchRequestController implements IActionController {
 		}
 
 		// check if date is valid (might be manipulated)
-		$tooLateBoundary = $this->_websoccer->getNowAsTimestamp() + 3600 * 24 * (1 + $this->_websoccer->getConfig("youth_matchrequest_max_futuredays"));
+		$tooLateBoundary = getNowAsTimestamp() + 3600 * 24 * (1 + $this->_websoccer->getConfig("youth_matchrequest_max_futuredays"));
 		$validTimes = explode(",", $this->_websoccer->getConfig("youth_matchrequest_allowedtimes"));
 
 		// check valid times (remove white spaces)

@@ -35,7 +35,7 @@ if ($website->getConfig('offline') == 'offline') {
 	if (strlen($offlineTimeSpansConfig)) {
 
 		$timeSpans = explode(',', $offlineTimeSpansConfig);
-		$now = $website->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 		foreach ($timeSpans as $timeSpan) {
 			$timeSpanElements = explode('-', trim($timeSpan));
 			if (count($timeSpanElements) != 2) {
@@ -70,7 +70,7 @@ if ($isOffline) {
 
 		// consider only users who have a registration date (in particular manually created users might not have).
 		if ($userinfo['datum_anmeldung']) {
-			$numberOfRegisteredDays = round(($website->getNowAsTimestamp() - $userinfo['datum_anmeldung']) / (3600 * 24));
+			$numberOfRegisteredDays = round((getNowAsTimestamp() - $userinfo['datum_anmeldung']) / (3600 * 24));
 			BadgesDataService::awardBadgeIfApplicable($website, $db, $userId, 'membership_since_x_days', $numberOfRegisteredDays);
 		}
 

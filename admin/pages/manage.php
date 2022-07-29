@@ -162,10 +162,10 @@ if ($show == "add" || $show == "edit") {
 					$dateObj = DateTime::createFromFormat($website->getConfig("date_format"), $fieldValue);
 					$fieldValue = $dateObj->format("Y-m-d");
 				} else if ($fieldInfo["type"] == "timestamp" && $fieldInfo["readonly"] && $show == "add") {
-					$fieldValue = $website->getNowAsTimestamp();
+					$fieldValue = getNowAsTimestamp();
 				} else if ($fieldInfo["type"] == "file") {
 					if (isset($_FILES[$fieldId]) && isset($_FILES[$fieldId]["tmp_name"]) && strlen($_FILES[$fieldId]["tmp_name"])) {
-						$fieldValue = md5($entity . "-". $website->getNowAsTimestamp());
+						$fieldValue = md5($entity . "-". getNowAsTimestamp());
 						$fieldValue .= "." . FileUploadHelper::uploadImageFile($i18n, $fieldId, $fieldValue, $entity);
 					} else {
 						continue;

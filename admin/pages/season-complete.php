@@ -257,7 +257,7 @@ elseif ($show == 'select') {
 					'team_id' => $team['id'],
 					'season_id' => $season['id'],
 					'rank' => $rank,
-					'date_recorded' => $website->getNowAsTimestamp()
+					'date_recorded' => getNowAsTimestamp()
 				), $conf['db_prefix'] .'_achievement');
 
 				// check season target

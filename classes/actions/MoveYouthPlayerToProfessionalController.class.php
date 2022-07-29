@@ -92,7 +92,7 @@ class MoveYouthPlayerToProfessionalController implements IActionController {
 	private function createPlayer($player, $mainPosition) {
 
 		// birthday
-		$time = strtotime("-". $player["age"] . " years", $this->_websoccer->getNowAsTimestamp());
+		$time = strtotime("-". $player["age"] . " years", getNowAsTimestamp());
 		$birthday = date("Y-m-d", $time);
 
 		$columns = array(

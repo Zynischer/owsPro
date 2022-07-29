@@ -58,7 +58,7 @@ class SendMessageController implements IActionController {
 			throw new Exception(getMessage("messages_send_err_sendtoyourself"));
 		}
 
-		$now = $this->_websoccer->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 
 		// check when sent last message (needs x minutes break in order to prevent spam)
 		$lastMessage = MessagesDataService::getLastMessageOfUserId($this->_websoccer, $this->_db, $senderId);

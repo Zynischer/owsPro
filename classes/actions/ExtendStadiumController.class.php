@@ -119,7 +119,7 @@ class ExtendStadiumController implements IActionController {
 		$this->_db->queryInsert(array(
 				"team_id" => $teamId,
 				"builder_id" => $builderId,
-				"started" => $this->_websoccer->getNowAsTimestamp(),
+				"started" => getNowAsTimestamp(),
 				"deadline" => $offer["deadline"],
 				"p_steh" => ($parameters["side_standing"]) ? $parameters["side_standing"] : 0,
 				"p_sitz" => ($parameters["side_seats"]) ? $parameters["side_seats"] : 0,

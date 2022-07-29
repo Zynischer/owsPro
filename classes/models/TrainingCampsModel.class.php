@@ -54,7 +54,7 @@ class TrainingCampsModel implements IModel {
 		if (count($bookedCamps)) {
 
 			$bookedCamp = $bookedCamps[0];
-			if ($bookedCamp["date_end"] < $this->_websoccer->getNowAsTimestamp()) {
+			if ($bookedCamp["date_end"] < getNowAsTimestamp()) {
 				TrainingcampsDataService::executeCamp($this->_websoccer, $this->_db, $teamId, $bookedCamp);
 				$bookedCamp = array();
 			} else {

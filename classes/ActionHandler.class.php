@@ -52,7 +52,7 @@ class ActionHandler {
 		if (isset($_SESSION[DOUBLE_SUBMIT_CHECK_SESSIONKEY_ACTIONID])
 				&& $_SESSION[DOUBLE_SUBMIT_CHECK_SESSIONKEY_ACTIONID] == $actionId
 				&& isset($_SESSION[DOUBLE_SUBMIT_CHECK_SESSIONKEY_TIME])
-				&& ($_SESSION[DOUBLE_SUBMIT_CHECK_SESSIONKEY_TIME] + DOUBLE_SUBMIT_CHECK_SECONDS) > $website->getNowAsTimestamp()) {
+				&& ($_SESSION[DOUBLE_SUBMIT_CHECK_SESSIONKEY_TIME] + DOUBLE_SUBMIT_CHECK_SECONDS) > getNowAsTimestamp()) {
 			throw new Exception(getMessage('error_double_submit'));
 		}
 
@@ -175,7 +175,7 @@ class ActionHandler {
 
 		// prevent double-submit
 		$_SESSION[DOUBLE_SUBMIT_CHECK_SESSIONKEY_ACTIONID] = $actionId;
-		$_SESSION[DOUBLE_SUBMIT_CHECK_SESSIONKEY_TIME] = $website->getNowAsTimestamp();
+		$_SESSION[DOUBLE_SUBMIT_CHECK_SESSIONKEY_TIME] = getNowAsTimestamp();
 
 		$controller = new $controllerName($i18n, $website, $db);
 		return $controller->executeAction($validatedParams);

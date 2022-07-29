@@ -79,7 +79,7 @@ class SellPlayerController implements IActionController {
 
 	public function updatePlayer($playerId, $minBid) {
 
-		$now = $this->_websoccer->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 
 		$columns["transfermarkt"] = 1;
 		$columns["transfer_start"] = $now;

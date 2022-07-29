@@ -40,7 +40,7 @@ $inputEmail = (isset($_POST['inputEmail'])) ? trim($_POST['inputEmail']) : FALSE
 // process form
 if ($inputEmail) {
 
-	$now = $website->getNowAsTimestamp();
+	$now = getNowAsTimestamp();
 
 	if (count($errors) == 0) {
 

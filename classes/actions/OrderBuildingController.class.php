@@ -92,7 +92,7 @@ class OrderBuildingController implements IActionController {
 			'building_construction_fee_subject', $building['name']);
 
 		// place order
-		$constructionDeadline = $this->_websoccer->getNowAsTimestamp() + $building['construction_time_days'] * 24 * 3600;
+		$constructionDeadline = getNowAsTimestamp() + $building['construction_time_days'] * 24 * 3600;
 		$this->_db->queryInsert(array(
 				'building_id' => $buildingId,
 				'team_id' => $teamId,

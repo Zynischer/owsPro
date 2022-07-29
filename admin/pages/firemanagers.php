@@ -94,7 +94,7 @@ if (!$show) {
 
 		if (!empty($_POST['lastlogindays'])) {
 			$whereCondition .= ' OR U.lastonline < %d';
-			$parameters[] = $website->getNowAsTimestamp() - $_POST['lastlogindays'] * 24 * 3600;
+			$parameters[] = getNowAsTimestamp() - $_POST['lastlogindays'] * 24 * 3600;
 		}
 
 		if (!empty($_POST['maxplayers'])) {
@@ -298,7 +298,7 @@ elseif ($show == 'dismiss') {
 					'empfaenger_id' => $team['user_id'],
 					'absender_name' => $website->getConfig('projectname'),
 					'absender_id' => '',
-					'datum' => $website->getNowAsTimestamp(),
+					'datum' => getNowAsTimestamp(),
 					'betreff' => trim($_POST['message_subject']),
 					'nachricht' => trim($_POST['message_content'])
 				), $website->getConfig('db_prefix') . '_briefe');

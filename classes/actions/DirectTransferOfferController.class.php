@@ -165,7 +165,7 @@ class DirectTransferOfferController implements IActionController {
 			return;
 		}
 
-		$transferBoundary = $this->_websoccer->getNowAsTimestamp() - 24 * 3600 * $this->_websoccer->getConfig("transferoffers_transfer_stop_days");
+		$transferBoundary = getNowAsTimestamp() - 24 * 3600 * $this->_websoccer->getConfig("transferoffers_transfer_stop_days");
 
 		$result = $this->_db->querySelect("COUNT(*) AS hits",
 				$this->_websoccer->getConfig("db_prefix") . "_transfer",

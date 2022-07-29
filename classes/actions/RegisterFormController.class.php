@@ -117,7 +117,7 @@ class RegisterFormController implements IActionController {
 		$dbcolumns["email"] = strtolower($parameters["email"]);
 		$dbcolumns["passwort_salt"] = SecurityUtil::generatePasswordSalt();
 		$dbcolumns["passwort"] = SecurityUtil::hashPassword($parameters["pswd"], $dbcolumns["passwort_salt"]);
-		$dbcolumns["datum_anmeldung"] = $this->_websoccer->getNowAsTimestamp();
+		$dbcolumns["datum_anmeldung"] = getNowAsTimestamp();
 		$dbcolumns["schluessel"] = str_replace("&", "_", SecurityUtil::generatePassword());
 		$dbcolumns["status"] = 2;
 		$dbcolumns["lang"] = $this->_i18n->getCurrentLanguage();

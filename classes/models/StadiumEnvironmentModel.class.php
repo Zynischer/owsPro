@@ -59,7 +59,7 @@ class StadiumEnvironmentModel implements IModel {
 		$existingBuildings = array();
 		$result = $this->_db->querySelect('*', $dbPrefix . '_buildings_of_team INNER JOIN '. $dbPrefix . '_stadiumbuilding ON id = building_id',
 				'team_id = %d ORDER BY construction_deadline DESC', $teamId);
-		$now = $this->_websoccer->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 		while ($building = $result->fetch_array()) {
 			$building['under_construction'] = $now < $building['construction_deadline'];
 			$existingBuildings[] = $building;

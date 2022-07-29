@@ -81,7 +81,7 @@ if (!$show) {
 
 		$items = $doc->getElementsByTagName("job");
 
-		$now = $website->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 
 		foreach ($items as $item) {
 			echo "<tr>";

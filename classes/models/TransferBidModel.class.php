@@ -43,7 +43,7 @@ class TransferBidModel implements IModel {
 
 		$this->_player = PlayersDataService::getPlayerById($this->_websoccer, $this->_db, $playerId);
 
-		return ($this->_player["transfer_end"] > $this->_websoccer->getNowAsTimestamp());
+		return ($this->_player["transfer_end"] > getNowAsTimestamp());
 	}
 
 	public function getTemplateParameters() {

@@ -155,7 +155,7 @@ class SaveFormationController implements IActionController {
 		$fromTable = $this->_websoccer->getConfig('db_prefix') .'_aufstellung';
 
 		$columns['verein_id'] = $teamId;
-		$columns['datum'] = $this->_websoccer->getNowAsTimestamp();
+		$columns['datum'] = getNowAsTimestamp();
 		$columns['offensive'] = $parameters['offensive'];
 		$columns['setup'] = $parameters['setup'];
 		$columns['longpasses'] = $parameters['longpasses'];

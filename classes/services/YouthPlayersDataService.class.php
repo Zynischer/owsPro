@@ -390,7 +390,7 @@ class YouthPlayersDataService {
 	 * @param DbConnection $db DB connection.
 	 */
 	public static function deleteInvalidOpenMatchRequests(WebSoccer $websoccer, DbConnection $db) {
-		$timeBoundary = $websoccer->getNowAsTimestamp() + $websoccer->getConfig("youth_matchrequest_accept_hours_in_advance");
+		$timeBoundary = getNowAsTimestamp() + $websoccer->getConfig("youth_matchrequest_accept_hours_in_advance");
 		$db->queryDelete($websoccer->getConfig("db_prefix") . "_youthmatch_request", "matchdate <= %d", $timeBoundary);
 	}
 }

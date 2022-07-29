@@ -45,7 +45,7 @@ class TrainingCampsDetailsModel implements IModel {
 			throw new Exception(getMessage(MSG_KEY_ERROR_PAGENOTFOUND));
 		}
 
-		$defaultDate = $this->_websoccer->getNowAsTimestamp() + 24 * 3600;
+		$defaultDate = getNowAsTimestamp() + 24 * 3600;
 
 		return array("camp" => $camp, "defaultDate" => $defaultDate);
 	}

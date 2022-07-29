@@ -68,7 +68,7 @@ class SendPasswordController implements IActionController {
 			throw new Exception(getMessage("forgot-password_email-not-found"));
 		}
 
-		$now = $this->_websoccer->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 
 		$timeBoundary = $now - 24 * 3600;
 		if ($userdata["passwort_neu_angefordert"] > $timeBoundary) {

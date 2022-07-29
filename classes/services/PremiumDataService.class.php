@@ -154,7 +154,7 @@ class PremiumDataService {
 				'user_id' => $userId,
 				'action_id' => $subject,
 				'amount' => $amount,
-				'created_date' => $websoccer->getNowAsTimestamp(),
+				'created_date' => getNowAsTimestamp(),
 				'subject_data' => json_encode($data)
 				);
 		$db->queryInsert($columns, $fromTable);
@@ -195,7 +195,7 @@ class PremiumDataService {
 		$db->queryInsert(array(
 				'user_id' => $userId,
 				'amount' => $realAmount,
-				'created_date' => $websoccer->getNowAsTimestamp()
+				'created_date' => getNowAsTimestamp()
 				), $websoccer->getConfig('db_prefix') . '_premiumpayment');
 
 		// get premium amount to credit

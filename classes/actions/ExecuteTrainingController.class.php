@@ -59,7 +59,7 @@ class ExecuteTrainingController implements IActionController {
 		// check if minimum time break between two units is matched
 		$previousExecution = TrainingDataService::getLatestTrainingExecutionTime($this->_websoccer, $this->_db, $teamId);
 		$earliestValidExecution = $previousExecution + 3600 * $this->_websoccer->getConfig("training_min_hours_between_execution");
-		$now = $this->_websoccer->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 
 		if ($now < $earliestValidExecution) {
 			throw new Exception(getMessage("training_execute_err_too_early", $this->_websoccer->getFormattedDatetime($earliestValidExecution)));

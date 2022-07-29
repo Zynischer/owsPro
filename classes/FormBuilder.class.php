@@ -112,7 +112,7 @@ class FormBuilder {
 					$website = WebSoccer::getInstance();
 					$dateFormat = $website->getConfig('date_format');
 					if (!$fieldValue) {
-						$fieldValue = $website->getNowAsTimestamp();
+						$fieldValue = getNowAsTimestamp();
 					}
 
 					// time picker

@@ -66,7 +66,7 @@ class TransferBidController implements IActionController {
 		}
 
 		// check that auction is not over
-		$now = $this->_websoccer->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 		if ($now > $player['transfer_end']) {
 			throw new Exception(getMessage('transfer_bid_auction_ended'));
 		}
@@ -165,7 +165,7 @@ class TransferBidController implements IActionController {
 
 		$columns['spieler_id'] = $playerId;
 		$columns['user_id'] = $userId;
-		$columns['datum'] = $this->_websoccer->getNowAsTimestamp();
+		$columns['datum'] = getNowAsTimestamp();
 		$columns['abloese'] = $parameters['amount'];
 		$columns['handgeld'] = $parameters['handmoney'];
 		$columns['vertrag_spiele'] = $parameters['contract_matches'];

@@ -46,7 +46,7 @@ class AcceptStadiumConstructionWorkController implements IActionController {
 
 		// verify that it is due
 		$construction = StadiumsDataService::getCurrentConstructionOrderOfTeam($this->_websoccer, $this->_db, $clubId);
-		if ($construction == NULL || $construction["deadline"] > $this->_websoccer->getNowAsTimestamp()) {
+		if ($construction == NULL || $construction["deadline"] > getNowAsTimestamp()) {
 			throw new Exception(getMessage("stadium_acceptconstruction_err_nonedue"));
 		}
 
@@ -58,7 +58,7 @@ class AcceptStadiumConstructionWorkController implements IActionController {
 		// not completed: postpone deadline
 		if ($constructionResult == "notcompleted") {
 
-			$newDeadline = $this->_websoccer->getNowAsTimestamp() + $this->_websoccer->getConfig("stadium_construction_delay") * 24 * 3600;
+			$newDeadline = getNowAsTimestamp() + $this->_websoccer->getConfig("stadium_construction_delay") * 24 * 3600;
 			$this->_db->queryUpdate(array("deadline" => $newDeadline), $this->_websoccer->getConfig("db_prefix") . "_stadium_construction",
 					"id = %d", $construction["id"]);
 

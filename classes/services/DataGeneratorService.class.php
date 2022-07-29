@@ -137,7 +137,7 @@ class DataGeneratorService {
 			for ($playerNo = 1; $playerNo <= $numberOfPlayers; $playerNo++) {
 
 				$playerAge = $age + self::_getRandomDeviationValue($ageDeviation);
-				$time = strtotime('-' . $playerAge . ' years', $websoccer->getNowAsTimestamp());
+				$time = strtotime('-' . $playerAge . ' years',getNowAsTimestamp());
 				$birthday = date('Y-m-d', $time);
 
 				$firstName = self::_getItemFromArray($firstNames);
@@ -255,7 +255,7 @@ class DataGeneratorService {
 			$columns['verein_id'] = $teamId;
 		} else {
 			$columns['transfermarkt'] = '1';
-			$columns['transfer_start'] = $websoccer->getNowAsTimestamp();
+			$columns['transfer_start'] = getNowAsTimestamp();
 			$columns['transfer_ende'] = $columns['transfer_start'] + $websoccer->getConfig('transfermarket_duration_days') * 24 * 3600;
 		}
 

@@ -54,7 +54,7 @@ class ScoutYouthPlayerController implements IActionController {
 		$lastExecutionTimestamp = YouthPlayersDataService::getLastScoutingExecutionTime($this->_websoccer, $this->_db,
 				$this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db));
 		$nextPossibleExecutionTimestamp = $lastExecutionTimestamp + $this->_websoccer->getConfig("youth_scouting_break_hours") * 3600;
-		$now = $this->_websoccer->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 
 		if ($now < $nextPossibleExecutionTimestamp) {
 			throw new Exception(getMessage("youthteam_scouting_err_breakviolation",

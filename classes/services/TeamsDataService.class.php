@@ -193,7 +193,7 @@ class TeamsDataService {
 		$teams = array();
 
 		// shall update league history? DO this only every 10 minutes
-		$now = $websoccer->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 		$updateHistory = FALSE;
 		if ($season && (!isset($_SESSION['leaguehist']) || $_SESSION['leaguehist'] < ($now - 600))) {
 			$_SESSION['leaguehist'] = $now;

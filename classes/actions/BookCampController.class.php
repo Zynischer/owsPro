@@ -33,7 +33,7 @@ class BookCampController implements IActionController {
 
 	public function executeAction($parameters) {
 
-		$now = $this->_websoccer->getNowAsTimestamp();
+		$now = getNowAsTimestamp();
 
 		$user = $this->_websoccer->getUser();
 		$teamId = $user->getClubId($this->_websoccer, $this->_db);

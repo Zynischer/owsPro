@@ -30,7 +30,7 @@ class MatchesDataService {
 
 		// where
 		$whereCondition = 'M.berechnet != \'1\' AND (HOME.id = %d OR GUEST.id = %d) AND M.datum > %d ORDER BY M.datum ASC';
-		$parameters = array($clubId, $clubId, $websoccer->getNowAsTimestamp());
+		$parameters = array($clubId, $clubId,getNowAsTimestamp());
 
 		// select
 		$columns['M.id'] = 'match_id';
@@ -60,7 +60,7 @@ class MatchesDataService {
 
 		// where
 		$whereCondition = 'M.berechnet != \'1\' AND (HOME.id = %d OR GUEST.id = %d) AND M.datum > %d ORDER BY M.datum ASC';
-		$parameters = array($clubId, $clubId, $websoccer->getNowAsTimestamp());
+		$parameters = array($clubId, $clubId,getNowAsTimestamp());
 
 		// select
 		$columns['M.id'] = 'match_id';
@@ -90,7 +90,7 @@ class MatchesDataService {
 
 		// where
 		$whereCondition = 'M.berechnet != \'1\' AND M.minutes > 0 AND (HOME.user_id = %d OR GUEST.user_id = %d) AND M.datum < %d ORDER BY M.datum DESC';
-		$parameters = array($websoccer->getUser()->id, $websoccer->getUser()->id, $websoccer->getNowAsTimestamp());
+		$parameters = array($websoccer->getUser()->id, $websoccer->getUser()->id,getNowAsTimestamp());
 
 		// select
 		$columns['M.id'] = 'match_id';
@@ -236,7 +236,7 @@ class MatchesDataService {
 	public static function getLastMatch(WebSoccer $websoccer, DbConnection $db) {
 		// where
 		$whereCondition = 'M.berechnet = 1 AND (HOME.user_id = %d OR GUEST.user_id = %d) AND M.datum < %d ORDER BY M.datum DESC';
-		$parameters = array($websoccer->getUser()->id, $websoccer->getUser()->id, $websoccer->getNowAsTimestamp());
+		$parameters = array($websoccer->getUser()->id, $websoccer->getUser()->id,getNowAsTimestamp());
 
 		return self::_getMatchSummaryByCondition($websoccer, $db, $whereCondition, $parameters);
 	}

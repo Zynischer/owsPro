@@ -58,7 +58,7 @@ class SaveYouthFormationController implements IActionController {
 		}
 
 		// check if expired
-		if ($matchinfo["matchdate"] < $this->_websoccer->getNowAsTimestamp() || $matchinfo["simulated"]) {
+		if ($matchinfo["matchdate"] < getNowAsTimestamp() || $matchinfo["simulated"]) {
 			throw new Exception(getMessage("youthformation_err_matchexpired"));
 		}
 
