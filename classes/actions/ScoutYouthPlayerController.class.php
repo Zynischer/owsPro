@@ -57,8 +57,7 @@ class ScoutYouthPlayerController implements IActionController {
 		$now = getNowAsTimestamp();
 
 		if ($now < $nextPossibleExecutionTimestamp) {
-			throw new Exception(getMessage("youthteam_scouting_err_breakviolation",
-					$this->_websoccer->getFormattedDatetime($nextPossibleExecutionTimestamp)));
+			throw new Exception(getMessage("youthteam_scouting_err_breakviolation",getFormattedDatetime($nextPossibleExecutionTimestamp)));
 		}
 
 		// check if valid country (if name files exists)

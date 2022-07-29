@@ -62,7 +62,7 @@ class ExecuteTrainingController implements IActionController {
 		$now = getNowAsTimestamp();
 
 		if ($now < $earliestValidExecution) {
-			throw new Exception(getMessage("training_execute_err_too_early", $this->_websoccer->getFormattedDatetime($earliestValidExecution)));
+			throw new Exception(getMessage("training_execute_err_too_early",getFormattedDatetime($earliestValidExecution)));
 		}
 
 		// check if team is in training camp.

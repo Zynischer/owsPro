@@ -266,10 +266,10 @@ function renderRound($roundNode) {
 
 		echo "</p>";
 		echo "<ul>";
-		echo "<li><em>" . getMessage("managecuprounds_label_firstround_date")  . ":</em> ". date($website->getFormattedDatetime($roundNode["round"]["firstround_date"])) . "</li>";
+		echo "<li><em>" . getMessage("managecuprounds_label_firstround_date")  . ":</em> ". date(getFormattedDatetime($roundNode["round"]["firstround_date"])) . "</li>";
 
 		if ($roundNode["round"]["secondround_date"]) {
-			echo "<li><em>" . getMessage("managecuprounds_label_secondround_date")  . ":</em> ". date($website->getFormattedDatetime($roundNode["round"]["secondround_date"])) . "</li>";
+			echo "<li><em>" . getMessage("managecuprounds_label_secondround_date")  . ":</em> ". date(getFormattedDatetime($roundNode["round"]["secondround_date"])) . "</li>";
 		}
 
 		// show matches link

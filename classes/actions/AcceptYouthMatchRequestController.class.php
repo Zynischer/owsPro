@@ -96,7 +96,7 @@ class AcceptYouthMatchRequestController implements IActionController {
 		NotificationsDataService::createNotification($this->_websoccer, $this->_db, $homeTeam["user_id"],
 			"youthteam_matchrequest_accept_notification",
 			array("team" => $guestTeam["team_name"],
-				"date" => $this->_websoccer->getFormattedDatetime($request["matchdate"])), "youthmatch_accept",
+				"date" => getFormattedDatetime($request["matchdate"])), "youthmatch_accept",
 				"youth-matches",
 				null,
 				$request["team_id"]);

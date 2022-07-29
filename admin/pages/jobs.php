@@ -117,7 +117,7 @@ if (!$show) {
 			echo "</td>";
 			echo "<td>";
 			if ($lastPing > 0) {
-				echo $website->getFormattedDatetime($lastPing);
+				echo getFormattedDatetime($lastPing);
 			} else {
 				echo "-";
 			}
