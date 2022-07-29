@@ -120,7 +120,7 @@ class ViewHandler {
 
 		$parameters['frontMessages'] = $this->_website->getFrontMessages();
 
-		$parameters['ajaxRequest'] = $this->_website->isAjaxRequest();
+		$parameters['ajaxRequest'] = isAjaxRequest();
 
 		// get blocks
 		$parameters['blocks'] = $this->_getBlocksForPage($pageId);
