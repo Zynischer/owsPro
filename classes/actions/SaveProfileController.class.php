@@ -67,7 +67,7 @@ class SaveProfileController implements IActionController {
 
 			// send e-mail
 			$querystr = "key=" . $columns["schluessel"] ."&userid=" . $user->id;
-			$tplparameters["activationlink"] = $this->_websoccer->getInternalActionUrl("activate", $querystr, "activate-user", TRUE);
+			$tplparameters["activationlink"] = getInternalActionUrl("activate", $querystr, "activate-user", TRUE);
 
 			// send e-mail
 			EmailHelper::sendSystemEmailFromTemplate($this->_websoccer, $this->_i18n,

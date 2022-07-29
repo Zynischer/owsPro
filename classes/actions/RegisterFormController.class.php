@@ -136,7 +136,7 @@ class RegisterFormController implements IActionController {
 		$result->free();
 
 		$querystr = "key=" . $dbcolumns["schluessel"] ."&userid=" . $newuser["id"];
-		$tplparameters["activationlink"] = $this->_websoccer->getInternalActionUrl("activate", $querystr, "activate-user", TRUE);
+		$tplparameters["activationlink"] = getInternalActionUrl("activate", $querystr, "activate-user", TRUE);
 
 		// send e-mail
 		EmailHelper::sendSystemEmailFromTemplate($this->_websoccer, $this->_i18n,
