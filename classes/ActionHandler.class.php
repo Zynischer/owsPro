@@ -212,7 +212,7 @@ class ActionHandler {
 		addContextParameter('premium_balance_required', $creditsRequired);
 		addContextParameter('actionparameters', $validatedParams);
 		addContextParameter('actionid', $actionId);
-		addContextParameter('srcpage', $website->getPageId());
+		addContextParameter('srcpage', getPageId());
 		return 'premium-confirm-action';
 	}
 }

@@ -168,7 +168,7 @@
 		<a href="#disabledSave" id="disabledSave" class="btn btn-primary disabled">{{ i18n.getMessage('button_save') }}</a>
 		{% endif %}
 
-		<a href="{{ env.getInternalUrl(env.getPageId()) }}" class="btn">{{ i18n.getMessage('button_reset') }}</a>
+		<a href="{{ env.getInternalUrl(getPageId()) }}" class="btn">{{ i18n.getMessage('button_reset') }}</a>
 	</div>
 	<input type="hidden" name="setup" value="{{ setup.defense }}-{{ setup.dm }}-{{ setup.midfield }}-{{ setup.om }}-{{ setup.striker }}-{{ setup.outsideforward }}"/>
 	<input type="hidden" name="page" value="formation"/>
