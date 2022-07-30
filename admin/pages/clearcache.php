@@ -19,14 +19,7 @@
   If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************/
-
-echo '<h1>'. getMessage('clearcache_title') .'</h1>';
-
+echo'<h1>'.getMessage('clearcache_title').'</h1>';
 resetConfigCache();
-
-// clear templates cache
-getTemplateEngine($i18n)->clearCache();
-
+$website->getTemplateEngine($i18n)->clearCache();
 echo createSuccessMessage(getMessage('clearcache_success_title'),getMessage('clearcache_success_message'));
-
-?>
