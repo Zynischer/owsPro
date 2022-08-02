@@ -109,7 +109,7 @@ class ExtendContractController implements IActionController {
 
 	private function getAverageSalary($playerStrength) {
 		$columns = "AVG(vertrag_gehalt) AS average_salary";
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "w_staerke >= %d AND w_staerke <= %d AND status = 1";
 
 		$parameters = array($playerStrength - 10, $playerStrength + 10);
@@ -132,7 +132,7 @@ class ExtendContractController implements IActionController {
 
 		$newValue = $oldValue - SATISFACTION_DECREASE;
 		$columns["w_zufriedenheit"] = $newValue;
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "id = %d";
 		$parameters = $playerId;
 
@@ -147,7 +147,7 @@ class ExtendContractController implements IActionController {
 		$columns["vertrag_torpraemie"] = $newGoalBonus;
 		$columns["vertrag_spiele"] = $newMatches;
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "id = %d";
 		$parameters = $playerId;
 

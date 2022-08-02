@@ -61,7 +61,7 @@ if (isset($_REQUEST['id'])) $id = (int) $_REQUEST['id'];
 echo "<h1>". getMessage("entity_". $entity)  ."</h1>";
 
 // remove alias
-$tablePrefix = $website->getConfig("db_prefix") ."_";
+$tablePrefix = "_";
 $mainTable = $tablePrefix . $entityConfig[0]->attributes()->dbtable;
 $spaceTablePos = strrpos($mainTable, " ");
 $mainTableAlias = ($spaceTablePos) ? substr($mainTable, $spaceTablePos) . "." : "";
@@ -140,7 +140,7 @@ if ($show == "add" || $show == "edit") {
 				}
 
 				if ($fieldInfo["type"] == "timestamp") {
-					$dateObj = DateTime::createFromFormat($website->getConfig("date_format") .", H:i",
+					$dateObj = DateTime::createFromFormat(getConfig("date_format") .", H:i",
 							$_POST[$fieldId ."_date"] .", ". $_POST[$fieldId ."_time"]);
 					$fieldValue = ($dateObj) ? $dateObj->getTimestamp() : 0;
 				} elseif ($fieldInfo["type"] == "boolean") {
@@ -159,7 +159,7 @@ if ($show == "add" || $show == "edit") {
 
 				// convert date
 				if (strlen($fieldValue) && $fieldInfo["type"] == "date") {
-					$dateObj = DateTime::createFromFormat($website->getConfig("date_format"), $fieldValue);
+					$dateObj = DateTime::createFromFormat(getConfig("date_format"), $fieldValue);
 					$fieldValue = $dateObj->format("Y-m-d");
 				} else if ($fieldInfo["type"] == "timestamp" && $fieldInfo["readonly"] && $show == "add") {
 					$fieldValue = getNowAsTimestamp();

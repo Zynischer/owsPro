@@ -42,7 +42,7 @@ class FirePlayerController implements IActionController {
 	 */
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("enable_player_resignation")) {
+		if (!getConfig("enable_player_resignation")) {
 			return;
 		}
 
@@ -58,13 +58,13 @@ class FirePlayerController implements IActionController {
 
 		// check violation of minimum team size
 		$teamSize = $this->getTeamSize($clubId);
-		if ($teamSize <= $this->_websoccer->getConfig("transfermarket_min_teamsize")) {
+		if ($teamSize <= getConfig("transfermarket_min_teamsize")) {
 			throw new Exception(getMessage("sell_player_teamsize_too_small", $teamSize));
 		}
 
 		// check and withdraw compensation
-		if ($this->_websoccer->getConfig("player_resignation_compensation_matches") > 0) {
-			$compensation = $this->_websoccer->getConfig("player_resignation_compensation_matches") * $player["player_contract_salary"];
+		if (getConfig("player_resignation_compensation_matches") > 0) {
+			$compensation = getConfig("player_resignation_compensation_matches") * $player["player_contract_salary"];
 
 			$team = TeamsDataService::getTeamSummaryById($this->_websoccer, $this->_db, $clubId);
 			if ($team["team_budget"] <= $compensation) {
@@ -90,7 +90,7 @@ class FirePlayerController implements IActionController {
 		$columns["verein_id"] = "";
 		$columns["vertrag_spiele"] = 0;
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "id = %d";
 		$parameters = $playerId;
 
@@ -100,7 +100,7 @@ class FirePlayerController implements IActionController {
 	private function getTeamSize($clubId) {
 		$columns = "COUNT(*) AS number";
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "verein_id = %d AND status = 1 AND transfermarkt != 1";
 		$parameters = $clubId;
 

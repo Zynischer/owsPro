@@ -29,7 +29,7 @@ define('PARAM_PAGE', 'page');
 include(CONFIGCACHE_FILE_FRONTEND);
 
 // include messages
-$i18n = I18n::getInstance($website->getConfig('supported_languages'));
+$i18n = I18n::getInstance(getConfig('supported_languages'));
 $lang = $website->getRequestParameter('lang');
 if ($lang) {
 	try {

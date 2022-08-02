@@ -47,8 +47,8 @@ class ChooseSponsorController implements IActionController {
 
 		// check min matchday
 		$teamMatchday = MatchesDataService::getMatchdayNumberOfTeam($this->_websoccer, $this->_db, $teamId);
-		if ($teamMatchday < $this->_websoccer->getConfig("sponsor_earliest_matchday")) {
-			throw new Exception(getMessage("sponsor_choose_tooearly", $this->_websoccer->getConfig("sponsor_earliest_matchday")));
+		if ($teamMatchday < getConfig("sponsor_earliest_matchday")) {
+			throw new Exception(getMessage("sponsor_choose_tooearly",getConfig("sponsor_earliest_matchday")));
 		}
 
 		// check if selected sponsor is in list of available sponsors
@@ -68,8 +68,8 @@ class ChooseSponsorController implements IActionController {
 
 		// update team
 		$columns["sponsor_id"] = $parameters["id"];
-		$columns["sponsor_spiele"] = $this->_websoccer->getConfig("sponsor_matches");
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_verein";
+		$columns["sponsor_spiele"] = getConfig("sponsor_matches");
+		$fromTable = "_verein";
 		$whereCondition = "id = %d";
 		$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $teamId);
 

@@ -59,7 +59,7 @@ class DirectTransfersDataService {
 				"offer_player2" => $offerPlayerId2
 				);
 
-		$db->queryInsert($columns, $websoccer->getConfig("db_prefix") . "_transfer_offer");
+		$db->queryInsert($columns,"_transfer_offer");
 
 		$sender = UsersDataService::getUserById($websoccer, $db, $senderUserId);
 
@@ -79,7 +79,7 @@ class DirectTransfersDataService {
 	public static function executeTransferFromOffer(WebSoccer $websoccer, DbConnection $db, $offerId) {
 
 		// offer data
-		$result = $db->querySelect("*", $websoccer->getConfig("db_prefix") . "_transfer_offer", "id = %d", $offerId);
+		$result = $db->querySelect("*","_transfer_offer", "id = %d", $offerId);
 		$offer = $result->fetch_array();
 		$result->free();
 
@@ -113,7 +113,7 @@ class DirectTransfersDataService {
 		}
 
 		// delete offer and other offers for this player
-		$db->queryDelete($websoccer->getConfig("db_prefix") . "_transfer_offer", "player_id = %d", $offer["player_id"]);
+		$db->queryDelete("_transfer_offer", "player_id = %d", $offer["player_id"]);
 
 		// get player name for notification
 		$player = PlayersDataService::getPlayerById($websoccer, $db, $offer["player_id"]);
@@ -137,8 +137,8 @@ class DirectTransfersDataService {
 			$targetClubId, $targetUserId, $currentUserId, $currentClubId, $amount,
 			$exchangePlayer1 = 0, $exchangePlayer2 = 0) {
 		$db->queryUpdate(array("verein_id" => $targetClubId,
-				"vertrag_spiele" => $websoccer->getConfig("transferoffers_contract_matches")),
-				$websoccer->getConfig("db_prefix") . "_spieler", "id = %d", $playerId);
+				"vertrag_spiele" => getConfig("transferoffers_contract_matches")),
+				"_spieler", "id = %d", $playerId);
 
 		// create log
 		$db->queryInsert(array(
@@ -152,7 +152,7 @@ class DirectTransfersDataService {
 				"directtransfer_amount" => $amount,
 				"directtransfer_player1" => $exchangePlayer1,
 				"directtransfer_player2" => $exchangePlayer2
-				), $websoccer->getConfig("db_prefix") . "_transfer");
+				),"_transfer");
 	}
 
 	/**
@@ -166,7 +166,7 @@ class DirectTransfersDataService {
 
 		$columns = "COUNT(*) AS hits";
 
-		$fromTable = $websoccer->getConfig("db_prefix") . "_transfer_offer";
+		$fromTable = "_transfer_offer";
 
 		$whereCondition = "receiver_club_id = %d AND (rejected_date = 0 OR admin_approval_pending = '1')";
 
@@ -209,7 +209,7 @@ class DirectTransfersDataService {
 
 		$columns = "COUNT(*) AS hits";
 
-		$fromTable = $websoccer->getConfig("db_prefix") . "_transfer_offer";
+		$fromTable = "_transfer_offer";
 
 		$whereCondition = "sender_club_id = %d AND sender_user_id = %d";
 
@@ -281,14 +281,14 @@ class DirectTransfersDataService {
 				"EP2.kunstname" => "explayer2_pseudonym"
 		);
 
-		$fromTable = $websoccer->getConfig("db_prefix") . "_transfer_offer AS O";
-		$fromTable .= " INNER JOIN " . $websoccer->getConfig("db_prefix") . "_spieler AS P ON P.id = O.player_id";
-		$fromTable .= " INNER JOIN " . $websoccer->getConfig("db_prefix") . "_user AS SU ON SU.id = O.sender_user_id";
-		$fromTable .= " INNER JOIN " . $websoccer->getConfig("db_prefix") . "_verein AS SC ON SC.id = O.sender_club_id";
-		$fromTable .= " INNER JOIN " . $websoccer->getConfig("db_prefix") . "_verein AS RC ON RC.id = O.receiver_club_id";
-		$fromTable .= " INNER JOIN " . $websoccer->getConfig("db_prefix") . "_user AS RU ON RU.id = RC.user_id";
-		$fromTable .= " LEFT JOIN " . $websoccer->getConfig("db_prefix") . "_spieler AS EP1 ON EP1.id = O.offer_player1";
-		$fromTable .= " LEFT JOIN " . $websoccer->getConfig("db_prefix") . "_spieler AS EP2 ON EP2.id = O.offer_player2";
+		$fromTable = "_transfer_offer AS O";
+		$fromTable .= " INNER JOIN _spieler AS P ON P.id = O.player_id";
+		$fromTable .= " INNER JOIN _user AS SU ON SU.id = O.sender_user_id";
+		$fromTable .= " INNER JOIN _verein AS SC ON SC.id = O.sender_club_id";
+		$fromTable .= " INNER JOIN _verein AS RC ON RC.id = O.receiver_club_id";
+		$fromTable .= " INNER JOIN _user AS RU ON RU.id = RC.user_id";
+		$fromTable .= " LEFT JOIN _spieler AS EP1 ON EP1.id = O.offer_player1";
+		$fromTable .= " LEFT JOIN _spieler AS EP2 ON EP2.id = O.offer_player2";
 
 		$whereCondition .= " ORDER BY O.submitted_date DESC";
 

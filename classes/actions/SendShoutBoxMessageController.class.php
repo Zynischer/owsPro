@@ -46,7 +46,7 @@ class SendShoutBoxMessageController implements IActionController {
 		$matchId = $parameters['id'];
 		$date = getNowAsTimestamp();
 
-		$fromTable = $this->_websoccer->getConfig('db_prefix') . '_shoutmessage';
+		$fromTable = '_shoutmessage';
 		$this->_db->queryInsert(array(
 				'user_id' => $userId,
 				'message' => $message,

@@ -60,7 +60,7 @@ class UserDetailsModel implements IModel {
 		}
 
 		// get teams of user
-		$fromTable = $this->_websoccer->getConfig('db_prefix') . '_verein';
+		$fromTable = '_verein';
 		$whereCondition = 'user_id = %d AND status = \'1\' AND nationalteam != \'1\' ORDER BY name ASC';
 		$result = $this->_db->querySelect('id,name', $fromTable, $whereCondition, $userId);
 
@@ -71,9 +71,9 @@ class UserDetailsModel implements IModel {
 		$result->free();
 
 		// get national team of user
-		if ($this->_websoccer->getConfig('nationalteams_enabled')) {
+		if (getConfig('nationalteams_enabled')) {
 			$columns = 'id,name';
-			$fromTable = $this->_websoccer->getConfig('db_prefix') . '_verein';
+			$fromTable = '_verein';
 			$whereCondition = 'user_id = %d AND nationalteam = \'1\'';
 			$result = $this->_db->querySelect($columns, $fromTable, $whereCondition, $userId, 1);
 			$nationalteam = $result->fetch_array();
@@ -85,7 +85,7 @@ class UserDetailsModel implements IModel {
 
 		// badges
 		$result = $this->_db->querySelect('name, description, level, date_rewarded, event',
-				$this->_websoccer->getConfig('db_prefix') . '_badge INNER JOIN ' . $this->_websoccer->getConfig('db_prefix') . '_badge_user ON id = badge_id',
+				'_badge INNER JOIN _badge_user ON id = badge_id',
 				'user_id = %d ORDER BY level DESC, date_rewarded ASC', $userId);
 		$badges = array();
 		while ($badge = $result->fetch_array()) {

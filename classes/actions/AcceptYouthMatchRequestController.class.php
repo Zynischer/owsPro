@@ -36,7 +36,7 @@ class AcceptYouthMatchRequestController implements IActionController {
 
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("youth_enabled") || !$this->_websoccer->getConfig("youth_matchrequests_enabled")) {
+		if (!getConfig("youth_enabled") || !getConfig("youth_matchrequests_enabled")) {
 			return NULL;
 		}
 
@@ -45,7 +45,7 @@ class AcceptYouthMatchRequestController implements IActionController {
 		$clubId = $user->getClubId($this->_websoccer, $this->_db);
 
 		// get request info
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_youthmatch_request";
+		$fromTable = "_youthmatch_request";
 		$result = $this->_db->querySelect("*", $fromTable, "id = %d", $parameters["id"]);
 		$request = $result->fetch_array();
 		$result->free();
@@ -65,7 +65,7 @@ class AcceptYouthMatchRequestController implements IActionController {
 		}
 
 		// check maximum number of matches on same day
-		$maxMatchesPerDay = $this->_websoccer->getConfig("youth_match_maxperday");
+		$maxMatchesPerDay = getConfig("youth_match_maxperday");
 		if (YouthMatchesDataService::countMatchesOfTeamOnSameDay($this->_websoccer, $this->_db, $clubId, $request["matchdate"]) >= $maxMatchesPerDay) {
 			throw new Exception(getMessage("youthteam_matchrequest_err_maxperday_violated", $maxMatchesPerDay));
 		}
@@ -87,7 +87,7 @@ class AcceptYouthMatchRequestController implements IActionController {
 				"matchdate" => $request["matchdate"],
 				"home_team_id" => $request["team_id"],
 				"guest_team_id" => $clubId
-				), $this->_websoccer->getConfig("db_prefix") . "_youthmatch");
+				),"_youthmatch");
 
 		// delete match request
 		$this->_db->queryDelete($fromTable, "id = %d", $parameters["id"]);

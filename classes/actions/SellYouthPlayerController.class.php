@@ -33,7 +33,7 @@ class SellYouthPlayerController implements IActionController {
 
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("youth_enabled")) {
+		if (!getConfig("youth_enabled")) {
 			return NULL;
 		}
 
@@ -65,7 +65,7 @@ class SellYouthPlayerController implements IActionController {
 
 		$columns = array("transfer_fee" => $transferFee);
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_youthplayer";
+		$fromTable = "_youthplayer";
 		$whereCondition = "id = %d";
 
 		$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $playerId);

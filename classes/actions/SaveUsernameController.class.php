@@ -47,12 +47,12 @@ class SaveUsernameController implements IActionController {
 		}
 
 		// illegal user name?
-		$illegalUsernames = explode(",", strtolower(str_replace(", ", ",", $this->_websoccer->getConfig("illegal_usernames"))));
+		$illegalUsernames = explode(",", strtolower(str_replace(", ", ",",getConfig("illegal_usernames"))));
 		if (array_search(strtolower($parameters["nick"]), $illegalUsernames)) {
 			throw new Exception(getMessage("registration_illegal_username"));
 		}
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_user";
+		$fromTable = "_user";
 
 		// check if user name exists
 		$wherePart = "UPPER(nick) = '%s'";

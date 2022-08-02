@@ -33,7 +33,7 @@ class SellPlayerController implements IActionController {
 
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("transfermarket_enabled")) {
+		if (!getConfig("transfermarket_enabled")) {
 			return NULL;
 		}
 
@@ -59,7 +59,7 @@ class SellPlayerController implements IActionController {
 
 		// check violation of minimum team size
 		$teamSize = TeamsDataService::getTeamSize($this->_websoccer, $this->_db, $clubId);
-		if ($teamSize <= $this->_websoccer->getConfig("transfermarket_min_teamsize")) {
+		if ($teamSize <= getConfig("transfermarket_min_teamsize")) {
 			throw new Exception(getMessage("sell_player_teamsize_too_small", $teamSize));
 		}
 
@@ -83,10 +83,10 @@ class SellPlayerController implements IActionController {
 
 		$columns["transfermarkt"] = 1;
 		$columns["transfer_start"] = $now;
-		$columns["transfer_ende"] = $now + 24 * 3600 * $this->_websoccer->getConfig("transfermarket_duration_days");
+		$columns["transfer_ende"] = $now + 24 * 3600 * getConfig("transfermarket_duration_days");
 		$columns["transfer_mindestgebot"] = $minBid;
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "id = %d";
 		$parameters = $playerId;
 

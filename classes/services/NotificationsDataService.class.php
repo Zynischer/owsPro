@@ -67,7 +67,7 @@ class NotificationsDataService {
 			$columns['team_id'] = $teamId;
 		}
 
-		$db->queryInsert($columns, $websoccer->getConfig('db_prefix') . '_notification');
+		$db->queryInsert($columns,'_notification');
 	}
 
 	/**
@@ -81,7 +81,7 @@ class NotificationsDataService {
 	 */
 	public static function countUnseenNotifications(WebSoccer $websoccer, DbConnection $db, $userId, $teamId) {
 
-		$result = $db->querySelect('COUNT(*) AS hits', $websoccer->getConfig('db_prefix') . '_notification',
+		$result = $db->querySelect('COUNT(*) AS hits','_notification',
 				'user_id = %d AND seen = \'0\' AND (team_id = %d OR team_id IS NULL)', array($userId, $teamId));
 		$rows = $result->fetch_array();
 		$result->free();
@@ -106,7 +106,7 @@ class NotificationsDataService {
 	 */
 	public static function getLatestNotifications(WebSoccer $websoccer, DbConnection $db, I18n $i18n, $userId, $teamId, $limit) {
 
-		$result = $db->querySelect('*', $websoccer->getConfig('db_prefix') . '_notification',
+		$result = $db->querySelect('*','_notification',
 				'user_id = %d AND (team_id = %d OR team_id IS NULL) ORDER BY eventdate DESC', array($userId, $teamId), $limit);
 
 		$notifications = array();

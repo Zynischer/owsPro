@@ -39,8 +39,8 @@ class BadgesDataService {
 	public static function awardBadgeIfApplicable(WebSoccer $websoccer, DbConnection $db, $userId, $badgeEvent, $benchmark = NULL) {
 
 		// get possible badge
-		$badgeTable = $websoccer->getConfig('db_prefix') . '_badge';
-		$badgeUserTable = $websoccer->getConfig('db_prefix') . '_badge_user';
+		$badgeTable = '_badge';
+		$badgeUserTable = '_badge_user';
 
 		$parameters = array($badgeEvent);
 		$whereCondition = 'event = \'%s\'';
@@ -81,7 +81,7 @@ class BadgesDataService {
 	 * @param int $badgeId ID od badge.
 	 */
 	public static function awardBadge(WebSoccer $websoccer, DbConnection $db, $userId, $badgeId) {
-		$badgeUserTable = $websoccer->getConfig('db_prefix') . '_badge_user';
+		$badgeUserTable = '_badge_user';
 
 		// create assignment
 		$db->queryInsert(array(

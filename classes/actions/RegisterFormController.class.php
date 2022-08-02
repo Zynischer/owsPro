@@ -41,12 +41,12 @@ class RegisterFormController implements IActionController {
 	public function executeAction($parameters) {
 
 		// registration enabled?
-		if (!$this->_websoccer->getConfig("allow_userregistration")) {
+		if (!getConfig("allow_userregistration")) {
 			throw new Exception(getMessage("registration_disabled"));
 		}
 
 		// illegal user name?
-		$illegalUsernames = explode(",", strtolower(str_replace(", ", ",", $this->_websoccer->getConfig("illegal_usernames"))));
+		$illegalUsernames = explode(",", strtolower(str_replace(", ", ",",getConfig("illegal_usernames"))));
 		if (array_search(strtolower($parameters["nick"]), $illegalUsernames)) {
 			throw new Exception(getMessage("registration_illegal_username"));
 		}
@@ -62,13 +62,13 @@ class RegisterFormController implements IActionController {
 		}
 
 		// check captcha
-		if ($this->_websoccer->getConfig("register_use_captcha")
-				&& strlen($this->_websoccer->getConfig("register_captcha_publickey"))
-				&& strlen($this->_websoccer->getConfig("register_captcha_privatekey"))) {
+		if (getConfig("register_use_captcha")
+				&& strlen(getConfig("register_captcha_publickey"))
+				&& strlen(getConfig("register_captcha_privatekey"))) {
 
 			include_once(BASE_FOLDER . "/lib/recaptcha/recaptchalib.php");
 
-			$captchaResponse = recaptcha_check_answer($this->_websoccer->getConfig("register_captcha_privatekey"),
+			$captchaResponse = recaptcha_check_answer(getConfig("register_captcha_privatekey"),
                                 $_SERVER["REMOTE_ADDR"],
                                 $_POST["recaptcha_challenge_field"],
                                 $_POST["recaptcha_response_field"]);
@@ -78,10 +78,10 @@ class RegisterFormController implements IActionController {
 		}
 
 		$columns = "COUNT(*) AS hits";
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_user";
+		$fromTable = "_user";
 
 		// check maximum number of users
-		$maxNumUsers = (int) $this->_websoccer->getConfig("max_number_of_users");
+		$maxNumUsers = (int)getConfig("max_number_of_users");
 		if ($maxNumUsers > 0) {
 			$wherePart = "status = 1";
 			$result = $this->_db->querySelect($columns, $fromTable, $wherePart);
@@ -122,8 +122,8 @@ class RegisterFormController implements IActionController {
 		$dbcolumns["status"] = 2;
 		$dbcolumns["lang"] = $this->_i18n->getCurrentLanguage();
 
-		if ($this->_websoccer->getConfig("premium_initial_credit")) {
-			$dbcolumns["premium_balance"] = $this->_websoccer->getConfig("premium_initial_credit");
+		if (getConfig("premium_initial_credit")) {
+			$dbcolumns["premium_balance"] = getConfig("premium_initial_credit");
 		}
 
 		$this->_db->queryInsert($dbcolumns, $fromTable);

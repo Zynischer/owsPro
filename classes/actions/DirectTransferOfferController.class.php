@@ -39,7 +39,7 @@ class DirectTransferOfferController implements IActionController {
 	public function executeAction($parameters) {
 
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("transferoffers_enabled")) {
+		if (!getConfig("transferoffers_enabled")) {
 			return;
 		}
 
@@ -90,7 +90,7 @@ class DirectTransferOfferController implements IActionController {
 			$teamSize = TeamsDataService::getTeamSize($this->_websoccer, $this->_db, $clubId);
 
 			$numberOfSizeReduction = ($parameters["exchangeplayer2"]) ? 1 : 0;
-			if ($teamSize < ($this->_websoccer->getConfig("transfermarket_min_teamsize") - $numberOfSizeReduction)) {
+			if ($teamSize < (getConfig("transfermarket_min_teamsize") - $numberOfSizeReduction)) {
 				throw new Exception(getMessage("sell_player_teamsize_too_small", $teamSize));
 			}
 		}
@@ -98,7 +98,7 @@ class DirectTransferOfferController implements IActionController {
 		// check maximum number of transactions between same user within last 30 days
 		$noOfTransactions = TransfermarketDataService::getTransactionsBetweenUsers($this->_websoccer, $this->_db,
 				$player["team_user_id"], $this->_websoccer->getUser()->id);
-		$maxTransactions = $this->_websoccer->getConfig("transfermarket_max_transactions_between_users");
+		$maxTransactions = getConfig("transfermarket_max_transactions_between_users");
 		if ($noOfTransactions >= $maxTransactions) {
 			throw new Exception(getMessage("transfer_bid_too_many_transactions_with_user", $noOfTransactions));
 		}
@@ -129,12 +129,11 @@ class DirectTransferOfferController implements IActionController {
 	private function checkIfThereAreAlreadyOpenOffersFromUser($teamId) {
 
 		// do not check if admins approve transfers manually anyway
-		if ($this->_websoccer->getConfig("transferoffers_adminapproval_required")) {
+		if (getConfig("transferoffers_adminapproval_required")) {
 			return;
 		}
 
-		$result = $this->_db->querySelect("COUNT(*) AS hits",
-				$this->_websoccer->getConfig("db_prefix") . "_transfer_offer",
+		$result = $this->_db->querySelect("COUNT(*) AS hits","_transfer_offer",
 				"rejected_date = 0 AND sender_user_id = %d AND receiver_club_id = %d",
 				array($this->_websoccer->getUser()->id, $teamId));
 		$count = $result->fetch_array();
@@ -146,8 +145,7 @@ class DirectTransferOfferController implements IActionController {
 	}
 
 	private function checkIfUserIsAllowedToSendAlternativeOffers($playerId) {
-		$result = $this->_db->querySelect("COUNT(*) AS hits",
-				$this->_websoccer->getConfig("db_prefix") . "_transfer_offer",
+		$result = $this->_db->querySelect("COUNT(*) AS hits","_transfer_offer",
 				"rejected_date > 0 AND rejected_allow_alternative = '0' AND player_id = %d AND sender_user_id = %d",
 				array($playerId, $this->_websoccer->getUser()->id));
 		$count = $result->fetch_array();
@@ -161,21 +159,20 @@ class DirectTransferOfferController implements IActionController {
 	private function checkPlayersTransferStop($playerId) {
 
 		// transfer stop configured?
-		if ($this->_websoccer->getConfig("transferoffers_transfer_stop_days") < 1) {
+		if (getConfig("transferoffers_transfer_stop_days") < 1) {
 			return;
 		}
 
-		$transferBoundary = getNowAsTimestamp() - 24 * 3600 * $this->_websoccer->getConfig("transferoffers_transfer_stop_days");
+		$transferBoundary = getNowAsTimestamp() - 24 * 3600 * getConfig("transferoffers_transfer_stop_days");
 
-		$result = $this->_db->querySelect("COUNT(*) AS hits",
-				$this->_websoccer->getConfig("db_prefix") . "_transfer",
+		$result = $this->_db->querySelect("COUNT(*) AS hits","_transfer",
 				"spieler_id = %d AND datum > %d",
 				array($playerId, $transferBoundary));
 		$count = $result->fetch_array();
 		$result->free();
 
 		if ($count["hits"]) {
-			throw new Exception(getMessage("transferoffer_err_transferstop", $this->_websoccer->getConfig("transferoffers_transfer_stop_days")));
+			throw new Exception(getMessage("transferoffer_err_transferstop",getConfig("transferoffers_transfer_stop_days")));
 		}
 	}
 
@@ -189,8 +186,7 @@ class DirectTransferOfferController implements IActionController {
 		}
 
 		// Players must not be included in any other open transfer offer
-		$result = $this->_db->querySelect("COUNT(*) AS hits",
-				$this->_websoccer->getConfig("db_prefix") . "_transfer_offer",
+		$result = $this->_db->querySelect("COUNT(*) AS hits","_transfer_offer",
 				"rejected_date = 0 AND (offer_player1 = %d OR offer_player2 = %d)",
 				array($playerId, $playerId, $playerId));
 		$count = $result->fetch_array();
@@ -210,8 +206,7 @@ class DirectTransferOfferController implements IActionController {
 	}
 
 	private function getSumOfAllOpenOffers() {
-		$result = $this->_db->querySelect("SUM(offer_amount) AS amount",
-				$this->_websoccer->getConfig("db_prefix") . "_transfer_offer",
+		$result = $this->_db->querySelect("SUM(offer_amount) AS amount","_transfer_offer",
 				"rejected_date = 0 AND sender_user_id = %d",
 				$this->_websoccer->getUser()->id);
 		$sum = $result->fetch_array();

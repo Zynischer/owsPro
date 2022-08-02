@@ -43,15 +43,15 @@ class ChooseAdditionalTeamController implements IActionController {
 		$user = $this->_websoccer->getUser();
 
 		// check whether feature is enabled
-		$maxTeams = (int) $this->_websoccer->getConfig('max_number_teams_per_user');
-		if (!$this->_websoccer->getConfig('assign_team_automatically') && $maxTeams > 1) {
+		$maxTeams = (int)getConfig('max_number_teams_per_user');
+		if (!getConfig('assign_team_automatically') && $maxTeams > 1) {
 			throw new Exception(getMessage('freeclubs_msg_error'));
 		}
 
 		// check minimum highscore
-		$minHighscore = (int) $this->_websoccer->getConfig('additional_team_min_highscore');
+		$minHighscore = (int)getConfig('additional_team_min_highscore');
 		if ($minHighscore) {
-			$result = $this->_db->querySelect('highscore', $this->_websoccer->getConfig('db_prefix') . '_user',
+			$result = $this->_db->querySelect('highscore','_user',
 					'id = %d', $user->id);
 			$userinfo = $result->fetch_array();
 			$result->free();
@@ -62,7 +62,7 @@ class ChooseAdditionalTeamController implements IActionController {
 		}
 
 		// check maximum number of teams per user
-		$fromTable = $this->_websoccer->getConfig('db_prefix') .'_verein';
+		$fromTable = '_verein';
 		$result = $this->_db->querySelect('id,liga_id', $fromTable, 'user_id = %d', $user->id);
 		$teamsOfUser = array();
 		while ($teamOfUser = $result->fetch_array()) {
@@ -70,7 +70,7 @@ class ChooseAdditionalTeamController implements IActionController {
 		}
 		$result->free_result();
 
-		if (count($teamsOfUser) >= $this->_websoccer->getConfig('max_number_teams_per_user')) {
+		if (count($teamsOfUser) >= getConfig('max_number_teams_per_user')) {
 			throw new Exception(getMessage('freeclubs_msg_error_max_number_of_teams', $maxTeams));
 		}
 

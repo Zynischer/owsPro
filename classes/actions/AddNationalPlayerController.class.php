@@ -40,7 +40,7 @@ class AddNationalPlayerController implements IActionController {
 	 */
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("nationalteams_enabled")) {
+		if (!getConfig("nationalteams_enabled")) {
 			return NULL;
 		}
 
@@ -49,12 +49,12 @@ class AddNationalPlayerController implements IActionController {
 		if (!$teamId) {
 			throw new Exception(getMessage("nationalteams_user_requires_team"));
 		}
-		$result = $this->_db->querySelect("name", $this->_websoccer->getConfig("db_prefix") . "_verein", "id = %d", $teamId);
+		$result = $this->_db->querySelect("name","_verein", "id = %d", $teamId);
 		$team = $result->fetch_array();
 		$result->free();
 
 		// get player info
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_spieler";
+		$fromTable = "_spieler";
 		$result = $this->_db->querySelect("nation", $fromTable, "id = %d", $parameters["id"]);
 		$player = $result->fetch_array();
 		$result->free();
@@ -69,7 +69,7 @@ class AddNationalPlayerController implements IActionController {
 		}
 
 		// check if already in team
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_nationalplayer";
+		$fromTable =  "_nationalplayer";
 		$result = $this->_db->querySelect("COUNT(*) AS hits", $fromTable, "player_id = %d", $parameters["id"]);
 		$players = $result->fetch_array();
 		$result->free();

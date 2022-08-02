@@ -72,10 +72,10 @@ class PlayerStatisticsModel implements IModel {
 			'SUM(S.passes_failed)' => 'passes_failed'
 		);
 
-		$fromTable = $this->_websoccer->getConfig('db_prefix') . '_spiel_berechnung AS S';
-		$fromTable .= ' INNER JOIN ' . $this->_websoccer->getConfig('db_prefix') . '_spiel AS M ON M.id = S.spiel_id';
-		$fromTable .= ' LEFT JOIN ' . $this->_websoccer->getConfig('db_prefix') . '_saison AS SEAS ON SEAS.id = M.saison_id';
-		$fromTable .= ' LEFT JOIN ' . $this->_websoccer->getConfig('db_prefix') . '_liga AS L ON SEAS.liga_id = L.id';
+		$fromTable = '_spiel_berechnung AS S';
+		$fromTable .= ' INNER JOIN _spiel AS M ON M.id = S.spiel_id';
+		$fromTable .= ' LEFT JOIN _saison AS SEAS ON SEAS.id = M.saison_id';
+		$fromTable .= ' LEFT JOIN _liga AS L ON SEAS.liga_id = L.id';
 
 		$whereCondition = 'S.spieler_id = %d AND S.minuten_gespielt > 0 AND ((M.spieltyp = \'Pokalspiel\' AND M.pokalname IS NOT NULL AND M.pokalname != \'\') OR (M.spieltyp = \'Ligaspiel\' AND SEAS.id IS NOT NULL)) GROUP BY IFNULL(M.pokalname,\'\'), SEAS.id ORDER BY L.name ASC, SEAS.id ASC, M.pokalname ASC';
 

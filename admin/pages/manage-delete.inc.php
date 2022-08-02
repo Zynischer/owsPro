@@ -46,7 +46,7 @@ if (count($del_id)) {
 		$db->queryDelete($dbTable, "id = %d", $deleteId);
 
 		foreach ($dependencies as $dependency) {
-			$fromTable = $website->getConfig("db_prefix") . "_" . $dependency["dbtable"];
+			$fromTable = "_" . $dependency["dbtable"];
 			$whereCondition = $dependency["columnid"] . " = %d";
 
 			if (strtolower($dependency["cascade"]) == "delete") {
@@ -61,4 +61,3 @@ if (count($del_id)) {
 }
 
 ?>
-

@@ -35,13 +35,13 @@ class RandomEventsDataService {
 	public static function createEventIfRequired(WebSoccer $websoccer, DbConnection $db, $userId) {
 
 		// is feature enabled?
-		$eventsInterval = (int) $websoccer->getConfig('randomevents_interval_days');
+		$eventsInterval = (int)getConfig('randomevents_interval_days');
 		if ($eventsInterval < 1) {
 			return;
 		}
 
 		// user must manage at least one team
-		$result = $db->querySelect('id', $websoccer->getConfig('db_prefix') . '_verein', 'user_id = %d AND status = \'1\'', $userId);
+		$result = $db->querySelect('id','_verein', 'user_id = %d AND status = \'1\'', $userId);
 		$clubIds = array();
 		while ($club = $result->fetch_array()) {
 			$clubIds[] = $club['id'];
@@ -57,7 +57,7 @@ class RandomEventsDataService {
 		// do not create an event within first 24 hours of registration
 		$now = getNowAsTimestamp();
 
-		$result = $db->querySelect('datum_anmeldung', $websoccer->getConfig('db_prefix') . '_user',
+		$result = $db->querySelect('datum_anmeldung','_user',
 				'id = %d', $userId, 1);
 		$user = $result->fetch_array();
 		$result->free();
@@ -66,7 +66,7 @@ class RandomEventsDataService {
 		}
 
 		// is a new event due? check occurance of latest event for user
-		$result = $db->querySelect('occurrence_date', $websoccer->getConfig('db_prefix') . '_randomevent_occurrence',
+		$result = $db->querySelect('occurrence_date','_randomevent_occurrence',
 				'user_id = %d ORDER BY occurrence_date DESC', $userId, 1);
 		$latestEvent = $result->fetch_array();
 		$result->free();
@@ -81,7 +81,7 @@ class RandomEventsDataService {
 		// In general, only the latest 10 occurences should remain.
 		if ($latestEvent) {
 			$deleteBoundary = $now - 24 * 3600 * 10 * $eventsInterval;
-			$db->queryDelete($websoccer->getConfig('db_prefix') . '_randomevent_occurrence',
+			$db->queryDelete('_randomevent_occurrence',
 					'user_id = %d AND occurrence_date < %d', array($userId, $deleteBoundary));
 		}
 	}
@@ -90,8 +90,8 @@ class RandomEventsDataService {
 
 		// get events which have not occured lately for the same user.
 		// Since admin might have created a lot of events, we pick any 100 random events (ignoring weights here).
-		$result = $db->querySelect('*', $websoccer->getConfig('db_prefix') . '_randomevent',
-				'weight > 0 AND id NOT IN (SELECT event_id FROM ' . $websoccer->getConfig('db_prefix') . '_randomevent_occurrence WHERE user_id = %d) ORDER BY RAND()', $userId,
+		$result = $db->querySelect('*','_randomevent',
+				'weight > 0 AND id NOT IN (SELECT event_id FROM _randomevent_occurrence WHERE user_id = %d) ORDER BY RAND()', $userId,
 				100);
 		$events = array();
 		while ($event = $result->fetch_array()) {
@@ -117,7 +117,7 @@ class RandomEventsDataService {
 				'event_id' => $randomEvent['id'],
 				'occurrence_date' => getNowAsTimestamp()
 				),
-				$websoccer->getConfig('db_prefix') . '_randomevent_occurrence');
+				'_randomevent_occurrence');
 
 	}
 
@@ -129,7 +129,7 @@ class RandomEventsDataService {
 		// debit or credit money
 		if ($event['effect'] == 'money') {
 			$amount = $event['effect_money_amount'];
-			$sender = $websoccer->getConfig('projectname');
+			$sender = getConfig('projectname');
 
 			if ($amount > 0) {
 				BankAccountDataService::creditAmount($websoccer, $db, $clubId, $amount, $subject, $sender);
@@ -145,8 +145,7 @@ class RandomEventsDataService {
 		} else {
 
 			// select random player from team
-			$result = $db->querySelect('id, vorname, nachname, kunstname, w_frische, w_kondition, w_zufriedenheit',
-					$websoccer->getConfig('db_prefix') . '_spieler',
+			$result = $db->querySelect('id, vorname, nachname, kunstname, w_frische, w_kondition, w_zufriedenheit','_spieler',
 					'verein_id = %d AND gesperrt = 0 AND verletzt = 0 AND status = \'1\' ORDER BY RAND()', $clubId, 1);
 			$player = $result->fetch_array();
 			$result->free();
@@ -181,7 +180,7 @@ class RandomEventsDataService {
 			if (!isset($columns)) {
 				return;
 			}
-			$db->queryUpdate($columns, $websoccer->getConfig('db_prefix') . '_spieler', 'id = %d', $player['id']);
+			$db->queryUpdate($columns,'_spieler', 'id = %d', $player['id']);
 
 			// create notification
 			$playerName = (strlen($player['kunstname'])) ? $player['kunstname'] : $player['vorname'] . ' ' . $player['nachname'];

@@ -35,14 +35,14 @@ class YouthScoutingModel implements IModel {
 	}
 
 	public function renderView() {
-		return $this->_websoccer->getConfig("youth_enabled") && $this->_websoccer->getConfig("youth_scouting_enabled");
+		return getConfig("youth_enabled") && getConfig("youth_scouting_enabled");
 	}
 
 	public function getTemplateParameters() {
 
 		$lastExecutionTimestamp = YouthPlayersDataService::getLastScoutingExecutionTime($this->_websoccer, $this->_db,
 				$this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db));
-		$nextPossibleExecutionTimestamp = $lastExecutionTimestamp + $this->_websoccer->getConfig("youth_scouting_break_hours") * 3600;
+		$nextPossibleExecutionTimestamp = $lastExecutionTimestamp + getConfig("youth_scouting_break_hours") * 3600;
 		$now = getNowAsTimestamp();
 
 		$scouts = array();

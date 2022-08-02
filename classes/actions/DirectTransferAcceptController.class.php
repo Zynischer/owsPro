@@ -39,14 +39,14 @@ class DirectTransferAcceptController implements IActionController {
 	public function executeAction($parameters) {
 
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("transferoffers_enabled")) {
+		if (!getConfig("transferoffers_enabled")) {
 			return;
 		}
 
 		$clubId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 
 		// get offer information
-		$result = $this->_db->querySelect("*", $this->_websoccer->getConfig("db_prefix") . "_transfer_offer", "id = %d AND rejected_date = 0 AND admin_approval_pending = '0'",
+		$result = $this->_db->querySelect("*","_transfer_offer", "id = %d AND rejected_date = 0 AND admin_approval_pending = '0'",
 				$parameters["id"]);
 		$offer = $result->fetch_array();
 		$result->free();
@@ -72,13 +72,13 @@ class DirectTransferAcceptController implements IActionController {
 
 		// check if team is above minimum number of players.
 		$teamSize = TeamsDataService::getTeamSize($this->_websoccer, $this->_db, $clubId);
-		if ($teamSize < $this->_websoccer->getConfig("transfermarket_min_teamsize")) {
+		if ($teamSize < getConfig("transfermarket_min_teamsize")) {
 			throw new Exception(getMessage("sell_player_teamsize_too_small", $teamSize));
 		}
 
 		// mark offer as pending
-		if ($this->_websoccer->getConfig("transferoffers_adminapproval_required")) {
-			$this->_db->queryUpdate(array("admin_approval_pending" => "1"), $this->_websoccer->getConfig("db_prefix") . "_transfer_offer",
+		if (getConfig("transferoffers_adminapproval_required")) {
+			$this->_db->queryUpdate(array("admin_approval_pending" => "1"),"_transfer_offer",
 					"id = %d", $parameters["id"]);
 
 			$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,

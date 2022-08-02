@@ -37,7 +37,7 @@ class ScoutYouthPlayerController implements IActionController {
 
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("youth_enabled") && $this->_websoccer->getConfig("youth_scouting_enabled")) {
+		if (!getConfig("youth_enabled") && getConfig("youth_scouting_enabled")) {
 			return NULL;
 		}
 
@@ -53,7 +53,7 @@ class ScoutYouthPlayerController implements IActionController {
 		// check if break is violated
 		$lastExecutionTimestamp = YouthPlayersDataService::getLastScoutingExecutionTime($this->_websoccer, $this->_db,
 				$this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db));
-		$nextPossibleExecutionTimestamp = $lastExecutionTimestamp + $this->_websoccer->getConfig("youth_scouting_break_hours") * 3600;
+		$nextPossibleExecutionTimestamp = $lastExecutionTimestamp + getConfig("youth_scouting_break_hours") * 3600;
 		$now = getNowAsTimestamp();
 
 		if ($now < $nextPossibleExecutionTimestamp) {
@@ -81,8 +81,8 @@ class ScoutYouthPlayerController implements IActionController {
 
 		// has scout found someone?
 		$found = TRUE;
-		$succesProbability = (int) $this->_websoccer->getConfig("youth_scouting_success_probability");
-		if ($this->_websoccer->getConfig("youth_scouting_success_probability") < 100) {
+		$succesProbability = (int)getConfig("youth_scouting_success_probability");
+		if (getConfig("youth_scouting_success_probability") < 100) {
 			$found = SimulationHelper::selectItemFromProbabilities(array(
 						TRUE => $succesProbability,
 						FALSE => 100 - $succesProbability
@@ -101,7 +101,7 @@ class ScoutYouthPlayerController implements IActionController {
 
 		// update last execution time
 		$this->_db->queryUpdate(array("scouting_last_execution" => $now),
-				$this->_websoccer->getConfig("db_prefix") . "_verein", "id = %d", $clubId);
+				"_verein", "id = %d", $clubId);
 
 
 		return ($found) ? "youth-team" : "youth-scouting";
@@ -113,13 +113,13 @@ class ScoutYouthPlayerController implements IActionController {
 		$lastName = $this->getItemFromFile(NAMES_DIRECTORY . "/" . $country . "/lastnames.txt");
 
 		// strength computation (always compute since plug-ins might override scouting-success-flag)
-		$minStrength = (int) $this->_websoccer->getConfig("youth_scouting_min_strength");
-		$maxStrength = (int) $this->_websoccer->getConfig("youth_scouting_max_strength");
+		$minStrength = (int)getConfig("youth_scouting_min_strength");
+		$maxStrength = (int)getConfig("youth_scouting_max_strength");
 		$scoutFactor = $scout["expertise"] / 100;
 		$strength = $minStrength + round(($maxStrength - $minStrength) * $scoutFactor);
 
 		// consider random deviation
-		$deviation = (int) $this->_websoccer->getConfig("youth_scouting_standard_deviation");
+		$deviation = (int)getConfig("youth_scouting_standard_deviation");
 		$strength = $strength + SimulationHelper::getMagicNumber(0 - $deviation, $deviation);
 		$strength = max($minStrength, min($maxStrength, $strength)); // make sure that condigured boundaries are not violated
 
@@ -158,8 +158,8 @@ class ScoutYouthPlayerController implements IActionController {
 
 		$position = SimulationHelper::selectItemFromProbabilities($positionProbabilities);
 
-		$minAge = $this->_websoccer->getConfig("youth_scouting_min_age");
-		$maxAge = $this->_websoccer->getConfig("youth_min_age_professional");
+		$minAge = getConfig("youth_scouting_min_age");
+		$maxAge = getConfig("youth_min_age_professional");
 		$age = $minAge + SimulationHelper::getMagicNumber(0, abs($maxAge - $minAge));
 
 		// create player
@@ -171,7 +171,7 @@ class ScoutYouthPlayerController implements IActionController {
 				"position" => $position,
 				"nation" => $country,
 				"strength" => $strength
-				), $this->_websoccer->getConfig("db_prefix") . "_youthplayer");
+				), "_youthplayer");
 
 		// trigger event for plug-ins
 		$event = new YouthPlayerScoutedEvent($this->_websoccer, $this->_db, $this->_i18n,

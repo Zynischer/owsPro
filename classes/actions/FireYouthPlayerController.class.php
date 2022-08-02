@@ -36,7 +36,7 @@ class FireYouthPlayerController implements IActionController {
 
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("youth_enabled")) {
+		if (!getConfig("youth_enabled")) {
 			return NULL;
 		}
 
@@ -50,7 +50,7 @@ class FireYouthPlayerController implements IActionController {
 			throw new Exception(getMessage("youthteam_err_notownplayer"));
 		}
 
-		$this->_db->queryDelete($this->_websoccer->getConfig("db_prefix") . "_youthplayer", "id = %d", $parameters["id"]);
+		$this->_db->queryDelete("_youthplayer", "id = %d", $parameters["id"]);
 
 		// success message
 		$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,

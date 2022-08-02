@@ -59,7 +59,7 @@ class TeamDetailsModel implements IModel {
 
 		// compute strength level of national team
 		if ($team['is_nationalteam']) {
-			$dbPrefix = $this->_websoccer->getConfig('db_prefix') ;
+			$dbPrefix = getConfig('db_prefix') ;
 			$result = $this->_db->querySelect('AVG(P.w_staerke) AS avgstrength',
 					$dbPrefix . '_spieler AS P INNER JOIN ' . $dbPrefix . '_nationalplayer AS NP ON P.id = NP.player_id',
 					'NP.team_id = %d', $team['team_id']);
@@ -83,7 +83,7 @@ class TeamDetailsModel implements IModel {
 
 	private function getVictories($teamId, $leagueId) {
 
-		$fromTable = $this->_websoccer->getConfig('db_prefix') .'_saison AS S INNER JOIN ' . $this->_websoccer->getConfig('db_prefix') . '_liga AS L ON L.id = S.liga_id';
+		$fromTable = '_saison AS S INNER JOIN _liga AS L ON L.id = S.liga_id';
 
 		$columns['S.name'] = 'season_name';
 		$columns['L.name'] = 'league_name';
@@ -118,7 +118,7 @@ class TeamDetailsModel implements IModel {
 	}
 
 	private function getCupVictories($teamId) {
-		$fromTable = $this->_websoccer->getConfig('db_prefix') .'_cup';
+		$fromTable = '_cup';
 		$whereCondition = 'winner_id = %d ORDER BY name ASC';
 		$result = $this->_db->querySelect('id AS cup_id,name AS cup_name,logo AS cup_logo', $fromTable, $whereCondition, $teamId);
 
@@ -136,7 +136,7 @@ class TeamDetailsModel implements IModel {
 				);
 
 		// age
-		if ($this->_websoccer->getConfig('players_aging') == 'birthday') {
+		if (getConfig('players_aging') == 'birthday') {
 			$ageColumn = 'TIMESTAMPDIFF(YEAR,geburtstag,CURDATE())';
 		} else {
 			$ageColumn = 'age';
@@ -144,7 +144,7 @@ class TeamDetailsModel implements IModel {
 		$columns['AVG(' . $ageColumn . ')'] = 'avgAge';
 
 		// marketvalue
-		if ($this->_websoccer->getConfig('transfermarket_computed_marketvalue')) {
+		if (getConfig('transfermarket_computed_marketvalue')) {
 			$columns['SUM(w_staerke)'] = 'sumStrength';
 			$columns['SUM(w_technik)'] = 'sumTechnique';
 			$columns['SUM(w_frische)'] = 'sumFreshness';
@@ -154,11 +154,11 @@ class TeamDetailsModel implements IModel {
 			$columns['SUM(marktwert)'] = 'sumMarketValue';
 		}
 
-		$result = $this->_db->querySelect($columns, $this->_websoccer->getConfig('db_prefix') .'_spieler', 'verein_id = %d AND status = \'1\'', $teamId);
+		$result = $this->_db->querySelect($columns,'_spieler', 'verein_id = %d AND status = \'1\'', $teamId);
 		$playerfacts = $result->fetch_array();
 		$result->free();
 
-		if ($this->_websoccer->getConfig('transfermarket_computed_marketvalue')) {
+		if (getConfig('transfermarket_computed_marketvalue')) {
 			$playerfacts['sumMarketValue'] = $this->computeMarketValue($playerfacts['sumStrength'], $playerfacts['sumTechnique'],
 					$playerfacts['sumFreshness'], $playerfacts['sumSatisfaction'], $playerfacts['sumStamina']);
 		}
@@ -174,11 +174,11 @@ class TeamDetailsModel implements IModel {
 
 	private function computeMarketValue($strength, $technique, $freshness, $satisfaction, $stamina) {
 
-		$weightStrength = $this->_websoccer->getConfig('sim_weight_strength');
-		$weightTech = $this->_websoccer->getConfig('sim_weight_strengthTech');
-		$weightStamina = $this->_websoccer->getConfig('sim_weight_strengthStamina');
-		$weightFreshness = $this->_websoccer->getConfig('sim_weight_strengthFreshness');
-		$weightSatisfaction = $this->_websoccer->getConfig('sim_weight_strengthSatisfaction');
+		$weightStrength = getConfig('sim_weight_strength');
+		$weightTech = getConfig('sim_weight_strengthTech');
+		$weightStamina = getConfig('sim_weight_strengthStamina');
+		$weightFreshness = getConfig('sim_weight_strengthFreshness');
+		$weightSatisfaction = getConfig('sim_weight_strengthSatisfaction');
 
 		$totalStrength = $weightStrength * $strength;
 		$totalStrength += $weightTech * $technique;
@@ -188,7 +188,7 @@ class TeamDetailsModel implements IModel {
 
 		$totalStrength /= $weightStrength + $weightTech + $weightStamina + $weightFreshness + $weightSatisfaction;
 
-		return $totalStrength * $this->_websoccer->getConfig('transfermarket_value_per_strength');
+		return $totalStrength * getConfig('transfermarket_value_per_strength');
 	}
 
 }

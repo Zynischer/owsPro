@@ -59,7 +59,7 @@ class FormationModel implements IModel {
 
 		// next x matches
 		$nextMatches = MatchesDataService::getNextMatches($this->_websoccer, $this->_db, $clubId,
-				$this->_websoccer->getConfig('formation_max_next_matches'));
+				getConfig('formation_max_next_matches'));
 		if (!count($nextMatches)) {
 			throw new Exception(getMessage('next_match_block_no_nextmatch'));
 		}

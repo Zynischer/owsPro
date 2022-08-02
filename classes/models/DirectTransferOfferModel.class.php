@@ -45,7 +45,7 @@ class DirectTransferOfferModel implements IModel {
 
 	public function renderView() {
 		// is feature enabled?
-		if (!$this->_websoccer->getConfig("transferoffers_enabled")) {
+		if (!getConfig("transferoffers_enabled")) {
 			return FALSE;
 		}
 

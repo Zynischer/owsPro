@@ -54,7 +54,7 @@ class MatchesDataService {
 
 	public static function getNextMatch(WebSoccer $websoccer, DbConnection $db, $clubId) {
 		$fromTable = self::_getFromPart($websoccer);
-		$formationTable = $websoccer->getConfig('db_prefix') . '_aufstellung';
+		$formationTable = '_aufstellung';
 		$fromTable .= ' LEFT JOIN ' . $formationTable . ' AS HOME_F ON HOME_F.verein_id = HOME.id AND HOME_F.match_id = M.id';
 		$fromTable .= ' LEFT JOIN ' . $formationTable . ' AS GUEST_F ON GUEST_F.verein_id = GUEST.id AND GUEST_F.match_id = M.id';
 
@@ -117,12 +117,12 @@ class MatchesDataService {
 		$fromTable = self::_getFromPart($websoccer);
 
 		if ($loadStadiumInfo) {
-			$fromTable .= ' LEFT JOIN '. $websoccer->getConfig('db_prefix') . '_stadion AS S ON  S.id = IF(M.stadion_id IS NOT NULL, M.stadion_id, HOME.stadion_id)';
+			$fromTable .= ' LEFT JOIN _stadion AS S ON  S.id = IF(M.stadion_id IS NOT NULL, M.stadion_id, HOME.stadion_id)';
 			$columns['S.name'] = 'match_stadium_name';
 		}
 
 		if ($loadSeasonInfo) {
-			$fromTable .= ' LEFT JOIN '. $websoccer->getConfig('db_prefix') . '_saison AS SEASON ON SEASON.id = M.saison_id';
+			$fromTable .= ' LEFT JOIN _saison AS SEASON ON SEASON.id = M.saison_id';
 			$columns['SEASON.name'] = 'match_season_name';
 			$columns['SEASON.liga_id'] = 'match_league_id';
 		}
@@ -188,7 +188,7 @@ class MatchesDataService {
 	}
 
 	public static function getMatchSubstitutionsById(WebSoccer $websoccer, DbConnection $db, $matchId) {
-		$fromTable = $websoccer->getConfig('db_prefix') . '_spiel AS M';
+		$fromTable = '_spiel AS M';
 
 		// where
 		$whereCondition = 'M.id = %d';
@@ -305,8 +305,8 @@ class MatchesDataService {
 		$columns['R.firstround_date'] = 'round_date';
 
 		// get rounds from matches
-		$fromTable = $websoccer->getConfig('db_prefix') . '_cup_round AS R ';
-		$fromTable .= ' INNER JOIN ' . $websoccer->getConfig('db_prefix') . '_cup AS C ON C.id = R.cup_id';
+		$fromTable = '_cup_round AS R ';
+		$fromTable .= ' INNER JOIN _cup AS C ON C.id = R.cup_id';
 		$result = $db->querySelect($columns, $fromTable, 'archived != \'1\' ORDER BY cup ASC, round_date ASC');
 
 		$cuprounds = array();
@@ -392,7 +392,7 @@ class MatchesDataService {
 		$whereCondition = 'M.datum >= %d AND M.datum < %d';
 		$parameters = array($startTs, $endTs);
 
-		$result = $db->querySelect('COUNT(*) AS hits', $websoccer->getConfig('db_prefix') . '_spiel AS M', $whereCondition, $parameters);
+		$result = $db->querySelect('COUNT(*) AS hits','_spiel AS M', $whereCondition, $parameters);
 		$matches = $result->fetch_array();
 		$result->free();
 
@@ -414,7 +414,7 @@ class MatchesDataService {
 
 	public static function getMatchdayNumberOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId) {
 		$columns = 'spieltag AS matchday';
-		$fromTable = $websoccer->getConfig('db_prefix') . '_spiel';
+		$fromTable = '_spiel';
 		$whereCondition = 'spieltyp = \'Ligaspiel\' AND berechnet = 1 AND (home_verein = %d OR gast_verein = %d) ORDER BY datum DESC';
 		$parameters = array($teamId, $teamId);
 
@@ -431,8 +431,8 @@ class MatchesDataService {
 
 	public static function getMatchReportPlayerRecords(WebSoccer $websoccer, DbConnection $db, $matchId, $teamId) {
 
-		$fromTable = $websoccer->getConfig('db_prefix') . '_spiel_berechnung AS M';
-		$fromTable .= ' INNER JOIN ' . $websoccer->getConfig('db_prefix') . '_spieler AS P ON P.id = M.spieler_id';
+		$fromTable = '_spiel_berechnung AS M';
+		$fromTable .= ' INNER JOIN _spieler AS P ON P.id = M.spieler_id';
 
 		$columns['P.id'] = 'id';
 		$columns['P.vorname'] = 'firstName';
@@ -470,8 +470,8 @@ class MatchesDataService {
 
 	public static function getMatchPlayerRecordsByField(WebSoccer $websoccer, DbConnection $db, $matchId, $teamId) {
 
-		$fromTable = $websoccer->getConfig('db_prefix') . '_spiel_berechnung AS M';
-		$fromTable .= ' INNER JOIN ' . $websoccer->getConfig('db_prefix') . '_spieler AS P ON P.id = M.spieler_id';
+		$fromTable = '_spiel_berechnung AS M';
+		$fromTable .= ' INNER JOIN _spieler AS P ON P.id = M.spieler_id';
 
 		$columns = array(
 				'P.id' => 'id',
@@ -501,7 +501,7 @@ class MatchesDataService {
 				'M.note' => 'grade'
 		);
 
-		if ($websoccer->getConfig('players_aging') == 'birthday') {
+		if (getConfig('players_aging') == 'birthday') {
 			$ageColumn = 'TIMESTAMPDIFF(YEAR,P.geburtstag,CURDATE())';
 		} else {
 			$ageColumn = 'P.age';
@@ -526,8 +526,8 @@ class MatchesDataService {
 
 	public static function getMatchReportMessages(WebSoccer $websoccer, DbConnection $db, I18n $i18n, $matchId) {
 
-		$fromTable = $websoccer->getConfig('db_prefix') . '_matchreport AS R';
-		$fromTable .= ' INNER JOIN ' . $websoccer->getConfig('db_prefix') . '_spiel_text AS T ON R.message_id = T.id';
+		$fromTable = '_matchreport AS R';
+		$fromTable .= ' INNER JOIN _spiel_text AS T ON R.message_id = T.id';
 
 		$columns['R.id'] = 'report_id';
 		$columns['R.minute'] = 'minute';
@@ -638,7 +638,7 @@ class MatchesDataService {
 	}
 
 	private static function _getFromPart(WebSoccer $websoccer) {
-		$tablePrefix = $websoccer->getConfig('db_prefix');
+		$tablePrefix = getConfig('db_prefix');
 
 		// from
 		$fromTable = $tablePrefix . '_spiel AS M';

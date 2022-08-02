@@ -80,7 +80,7 @@ class ChooseTrainerController implements IActionController {
 		// create new units
 		$columns["team_id"] = $teamId;
 		$columns["trainer_id"] = $trainer["id"];
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_training_unit";
+		$fromTable = "_training_unit";
 
 		for ($unitNo = 1; $unitNo <= $numberOfUnits; $unitNo++) {
 			$this->_db->queryInsert($columns, $fromTable);

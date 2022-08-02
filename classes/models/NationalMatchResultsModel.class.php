@@ -39,7 +39,7 @@ class NationalMatchResultsModel implements IModel {
 	 * @see IModel::renderView()
 	 */
 	public function renderView() {
-		return $this->_websoccer->getConfig("nationalteams_enabled");
+		return getConfig("nationalteams_enabled");
 	}
 
 	/**

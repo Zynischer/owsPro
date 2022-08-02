@@ -32,7 +32,7 @@ class LogoutController implements IActionController {
 	}
 
 	public function executeAction($parameters) {
-		$authenticatorClasses = explode(",", $this->_websoccer->getConfig("authentication_mechanism"));
+		$authenticatorClasses = explode(",",getConfig("authentication_mechanism"));
 		foreach ($authenticatorClasses as $authenticatorClass) {
 			$authenticatorClass = trim($authenticatorClass);
 			if (!class_exists($authenticatorClass)) {

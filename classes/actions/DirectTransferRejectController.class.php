@@ -39,7 +39,7 @@ class DirectTransferRejectController implements IActionController {
 	public function executeAction($parameters) {
 
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("transferoffers_enabled")) {
+		if (!getConfig("transferoffers_enabled")) {
 			return;
 		}
 
@@ -47,7 +47,7 @@ class DirectTransferRejectController implements IActionController {
 
 
 		// get offer information
-		$result = $this->_db->querySelect("*", $this->_websoccer->getConfig("db_prefix") . "_transfer_offer",
+		$result = $this->_db->querySelect("*","_transfer_offer",
 				"id = %d AND receiver_club_id = %d",
 				array($parameters["id"], $clubId));
 		$offer = $result->fetch_array();
@@ -61,7 +61,7 @@ class DirectTransferRejectController implements IActionController {
 					"rejected_date" => getNowAsTimestamp(),
 					"rejected_message" => $parameters["comment"],
 					"rejected_allow_alternative" => ($parameters["allow_alternative"]) ? 1 : 0
-				), $this->_websoccer->getConfig("db_prefix") . "_transfer_offer", "id = %d", $offer["id"]);
+				),"_transfer_offer", "id = %d", $offer["id"]);
 
 		// get player name for notification
 		$player = PlayersDataService::getPlayerById($this->_websoccer, $this->_db, $offer["player_id"]);

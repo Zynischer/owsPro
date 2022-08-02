@@ -46,8 +46,7 @@ class FinancesSummaryModel implements IModel {
 				'SUM(betrag)' => 'balance',
 				'AVG(betrag)' => 'avgAmount'
 				);
-		$result = $this->_db->querySelect($columns,
-				$this->_websoccer->getConfig('db_prefix') . '_konto',
+		$result = $this->_db->querySelect($columns,'_konto',
 				'verein_id = %d AND datum > %d GROUP BY verwendung HAVING COUNT(*) > 5', array($this->_teamId, $minDate));
 		$majorPositions = array();
 		while ($position = $result->fetch_array()) {

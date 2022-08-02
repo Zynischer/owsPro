@@ -1,21 +1,21 @@
-<?php 
+<?php
 /******************************************************
 
   This file is part of OpenWebSoccer-Sim.
 
-  OpenWebSoccer-Sim is free software: you can redistribute it 
-  and/or modify it under the terms of the 
-  GNU Lesser General Public License 
+  OpenWebSoccer-Sim is free software: you can redistribute it
+  and/or modify it under the terms of the
+  GNU Lesser General Public License
   as published by the Free Software Foundation, either version 3 of
   the License, or any later version.
 
   OpenWebSoccer-Sim is distributed in the hope that it will be
   useful, but WITHOUT ANY WARRANTY; without even the implied
-  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public 
-  License along with OpenWebSoccer-Sim.  
+  You should have received a copy of the GNU Lesser General Public
+  License along with OpenWebSoccer-Sim.
   If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************/
@@ -26,12 +26,12 @@ include(BASE_FOLDER . '/admin/config/global.inc.php');
 define('JOBS_CONFIG_FILE', BASE_FOLDER . '/admin/config/jobs.xml');
 
 // execution enabled?
-if (!$website->getConfig('webjobexecution_enabled')) {
+if (!getConfig('webjobexecution_enabled')) {
 	die('External job execution disabled');
 }
 
 // do not execute if site is in offline mode
-if ($website->getConfig('offline') == 'offline') {
+if (getConfig('offline') == 'offline') {
 	die('Site is in offline mode');
 }
 
@@ -46,7 +46,7 @@ $securityToken = $_REQUEST['sectoken'];
 $jobId = $_REQUEST['jobid'];
 
 // check security token
-if ($website->getConfig('webjobexecution_key') !== $securityToken) {
+if (getConfig('webjobexecution_key') !== $securityToken) {
 	die('invalid security token');
 }
 
@@ -60,10 +60,10 @@ if (!$jobConfig) {
 // execute
 $jobClass = (string) $jobConfig[0]->attributes()->class;
 if (class_exists($jobClass)) {
-	
-	$i18n = I18n::getInstance($website->getConfig('supported_languages'));
+
+	$i18n = I18n::getInstance(getConfig('supported_languages'));
 	$job = new $jobClass($website, $db, $i18n, $jobId);
-	
+
 } else {
 	die('class not found: ' . $jobClass);
 }

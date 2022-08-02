@@ -137,7 +137,7 @@ class ActionHandler {
 				} else if ($type == 'url' && !filter_var($paramValue, FILTER_VALIDATE_URL)) {
 					$errorMessages[$paramId] = getMessage('validation_error_not_a_url');
 				} else if ($type == 'date') {
-					$format = $website->getConfig('date_format');
+					$format = getConfig('date_format');
 					if (!DateTime::createFromFormat($format, $paramValue)) {
 						$errorMessages[$paramId] = getMessage('validation_error_invaliddate', $format);
 					}
@@ -187,7 +187,7 @@ class ActionHandler {
 		// check if user has enough credit
 		if ($creditsRequired > $website->getUser()->premiumBalance) {
 
-			$targetPage = $website->getConfig('premium_infopage');
+			$targetPage = getConfig('premium_infopage');
 
 			// redirect to external info page
 			if (filter_var($targetPage, FILTER_VALIDATE_URL)) {

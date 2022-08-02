@@ -70,7 +70,7 @@ class DbSessionManager implements SessionHandlerInterface {
 	 * @return boolean TRUE
 	 */
 	public function destroy($sessionId) {
-		$fromTable = $this->_websoccer->getConfig('db_prefix') . '_session';
+		$fromTable = '_session';
 		$whereCondition = 'session_id = \'%s\'';
 
 		$this->_db->queryDelete($fromTable, $whereCondition, $sessionId);
@@ -85,7 +85,7 @@ class DbSessionManager implements SessionHandlerInterface {
 	 */
 	public function read($sessionId) {
 		$columns = 'expires, session_data';
-		$fromTable = $this->_websoccer->getConfig('db_prefix') . '_session';
+		$fromTable = '_session';
 		$whereCondition = 'session_id = \'%s\'';
 
 		$data = ''; // PHP 7 expects a string as return value, NULL is not valid
@@ -119,7 +119,7 @@ class DbSessionManager implements SessionHandlerInterface {
 	 */
 	public function validate_sid($key) {
 		$columns = 'expires';
-		$fromTable = $this->_websoccer->getConfig('db_prefix') . '_session';
+		$fromTable = '_session';
 		$whereCondition = 'session_id = \'%s\'';
 
 		$result = $this->_db->querySelect($columns, $fromTable, $whereCondition, $key);
@@ -147,10 +147,10 @@ class DbSessionManager implements SessionHandlerInterface {
 	 * @param string $data data
 	 */
 	public function write($sessionId, $data) {
-		$lifetime = (int) $this->_websoccer->getConfig('session_lifetime');
+		$lifetime = (int)getConfig('session_lifetime');
 		$expiry = getNowAsTimestamp() + $lifetime;
 
-		$fromTable = $this->_websoccer->getConfig('db_prefix') . '_session';
+		$fromTable = '_session';
 		$columns['session_data'] = $data;
 		$columns['expires'] = $expiry;
 
@@ -177,7 +177,7 @@ class DbSessionManager implements SessionHandlerInterface {
 	}
 
 	private function _deleteExpiredSessions() {
-		$fromTable = $this->_websoccer->getConfig('db_prefix') . '_session';
+		$fromTable = '_session';
 		$whereCondition = 'expires < %d';
 
 		$this->_db->queryDelete($fromTable, $whereCondition,getNowAsTimestamp());

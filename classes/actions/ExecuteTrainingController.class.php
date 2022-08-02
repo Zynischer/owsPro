@@ -58,7 +58,7 @@ class ExecuteTrainingController implements IActionController {
 
 		// check if minimum time break between two units is matched
 		$previousExecution = TrainingDataService::getLatestTrainingExecutionTime($this->_websoccer, $this->_db, $teamId);
-		$earliestValidExecution = $previousExecution + 3600 * $this->_websoccer->getConfig("training_min_hours_between_execution");
+		$earliestValidExecution = $previousExecution + 3600 * getConfig("training_min_hours_between_execution");
 		$now = getNowAsTimestamp();
 
 		if ($now < $earliestValidExecution) {
@@ -92,7 +92,7 @@ class ExecuteTrainingController implements IActionController {
 
 		// update execution time of unit
 		$columns["date_executed"] = $now;
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_training_unit";
+		$fromTable = "_training_unit";
 		$whereCondition = "id = %d";
 		$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $unit["id"]);
 
@@ -111,7 +111,7 @@ class ExecuteTrainingController implements IActionController {
 		// freshness decrease for stamina and technique training
 		$freshnessDecrease = round(1 + $unit["intensity"] / 100 * 5);
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "id = %d";
 
 		$trainingEffects = array();

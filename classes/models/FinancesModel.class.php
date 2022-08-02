@@ -48,7 +48,7 @@ class FinancesModel implements IModel {
 		$team = TeamsDataService::getTeamSummaryById($this->_websoccer, $this->_db, $teamId);
 
 		$count = BankAccountDataService::countAccountStatementsOfTeam($this->_websoccer, $this->_db, $teamId);
-		$eps = $this->_websoccer->getConfig("entries_per_page");
+		$eps = getConfig("entries_per_page");
 		$paginator = new Paginator($count, $eps, $this->_websoccer);
 
 		if ($count > 0) {

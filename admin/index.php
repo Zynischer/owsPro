@@ -113,7 +113,7 @@ function printNavItem($currentSite, $pageId, $navLabel, $entity = '') {
             </p>
             <ul class="nav">
               <li><a href="<?php
-              $contextRoot = $website->getConfig("context_root");
+              $contextRoot = getConfig("context_root");
               echo  (strlen($contextRoot)) ? $contextRoot : "/"; ?>"><i class="icon-globe icon-white"></i> <?php echo getMessage("admincenter_link_website"); ?></a></li>
 			  <li><a href="?site=profile"><i class="icon-user icon-white"></i> <?php echo getMessage("admincenter_link_profile"); ?></a></li>
 			  <li><a href="?site=clearcache"><i class="icon-refresh icon-white"></i> <?php echo getMessage("admincenter_link_clear_cache"); ?></a></li>
@@ -227,7 +227,7 @@ if (preg_match('#^[a-z0-9_-]+$#i', $site) && file_exists($includeFile) ) {
 			});
 		});
 		$(".datepicker").datepicker({
-			format: "<?php echo str_replace("Y", "yyyy", $website->getConfig("date_format")); ?>",
+			format: "<?php echo str_replace("Y", "yyyy",getConfig("date_format")); ?>",
 			language: "<?php echo $i18n->getCurrentLanguage(); ?>",
 			autoclose: true
 		});

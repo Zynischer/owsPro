@@ -53,7 +53,7 @@ class StadiumEnvironmentModel implements IModel {
 			throw new Exception(getMessage("feature_requires_team"));
 		}
 
-		$dbPrefix = $this->_websoccer->getConfig('db_prefix');
+		$dbPrefix = getConfig('db_prefix');
 
 		// get existing buildings
 		$existingBuildings = array();

@@ -36,7 +36,7 @@ class ChooseTeamController implements IActionController {
 		$user = $this->_websoccer->getUser();
 
 		// check whether featue is enabled
-		if (!$this->_websoccer->getConfig("assign_team_automatically")) {
+		if (!getConfig("assign_team_automatically")) {
 			throw new Exception(getMessage("freeclubs_msg_error"));
 		}
 
@@ -47,7 +47,7 @@ class ChooseTeamController implements IActionController {
 		$teamId = $parameters["teamId"];
 
 		// check whether club still has no manager
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_verein";
+		$fromTable = "_verein";
 		$whereCondition = "id = %d AND status = 1 AND (user_id = 0 OR user_id IS NULL OR interimmanager = '1')";
 		$result = $this->_db->querySelect("id", $fromTable, $whereCondition, $teamId);
 		$club = $result->fetch_array();

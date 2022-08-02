@@ -54,7 +54,7 @@ class MatchStatisticsModel implements IModel {
 		$columns["SUM(passes_successed)"] = "passes_successed";
 		$columns["SUM(passes_failed)"] = "passes_failed";
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_spiel_berechnung";
+		$fromTable = "_spiel_berechnung";
 		$whereCondition = "spiel_id = %d AND team_id = %d";
 
 		// home team

@@ -129,7 +129,7 @@ class SaveYouthFormationController implements IActionController {
 
 	private function saveFormation($teamId, $parameters, $validSubstitutions, $matchinfo, $teamPrefix) {
 		// delete old formation
-		$this->_db->queryDelete($this->_websoccer->getConfig("db_prefix") ."_youthmatch_player", "match_id = %d AND team_id = %d",
+		$this->_db->queryDelete("_youthmatch_player", "match_id = %d AND team_id = %d",
 				 array($parameters["matchid"], $teamId));
 
 		// define mapping of player number and actual main position on field
@@ -240,7 +240,7 @@ class SaveYouthFormationController implements IActionController {
 		}
 
 		// save substitutions
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_youthmatch";
+		$fromTable = "_youthmatch";
 		$columns = array();
 		for ($subNo = 1; $subNo <= 3; $subNo++) {
 			if (in_array($subNo, $validSubstitutions)) {
@@ -275,7 +275,7 @@ class SaveYouthFormationController implements IActionController {
 				"name" => $playerId
 				);
 
-		$this->_db->queryInsert($columns, $this->_websoccer->getConfig("db_prefix") ."_youthmatch_player");
+		$this->_db->queryInsert($columns,"_youthmatch_player");
 	}
 
 }

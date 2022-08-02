@@ -43,14 +43,14 @@ class BookCampController implements IActionController {
 		$team = TeamsDataService::getTeamSummaryById($this->_websoccer, $this->_db, $teamId);
 
 		// check if duration is in range
-		$min = $this->_websoccer->getConfig("trainingcamp_min_days");
-		$max = $this->_websoccer->getConfig("trainingcamp_max_days");
+		$min = getConfig("trainingcamp_min_days");
+		$max = getConfig("trainingcamp_max_days");
 		if ($parameters["days"] < $min || $parameters["days"] > $max) {
 			throw new Exception(sprintf(getMessage("trainingcamp_booking_err_invaliddays"), $min, $max));
 		}
 
 		// check if date is in future
-		$startDateObj = DateTime::createFromFormat($this->_websoccer->getConfig("date_format") . " H:i", $parameters["start_date"] . " 00:00");
+		$startDateObj = DateTime::createFromFormat(getConfig("date_format") . " H:i", $parameters["start_date"] . " 00:00");
 		$startDateTimestamp = $startDateObj->getTimestamp();
 		$endDateTimestamp = $startDateTimestamp + 3600 * 24 * $parameters["days"];
 
@@ -59,9 +59,9 @@ class BookCampController implements IActionController {
 		}
 
 		// check if too far in future
-		$maxDate = $now + $this->_websoccer->getConfig("trainingcamp_booking_max_days_in_future") * 3600 * 24;
+		$maxDate = $now + getConfig("trainingcamp_booking_max_days_in_future") * 3600 * 24;
 		if ($startDateTimestamp > $maxDate) {
-			throw new Exception(getMessage("trainingcamp_booking_err_datetoofar", $this->_websoccer->getConfig("trainingcamp_booking_max_days_in_future")));
+			throw new Exception(getMessage("trainingcamp_booking_err_datetoofar", getConfig("trainingcamp_booking_max_days_in_future")));
 		}
 
 		// get camp details
@@ -100,7 +100,7 @@ class BookCampController implements IActionController {
 		$columns["lager_id"] = $camp["id"];
 		$columns["datum_start"] = $startDateTimestamp;
 		$columns["datum_ende"] = $endDateTimestamp;
-		$this->_db->queryInsert($columns, $this->_websoccer->getConfig("db_prefix") . "_trainingslager_belegung");
+		$this->_db->queryInsert($columns,"_trainingslager_belegung");
 
 		// success message
 		$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,

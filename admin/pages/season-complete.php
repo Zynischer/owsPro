@@ -282,13 +282,13 @@ elseif ($show == 'select') {
 					// debit penalty
 					if ($_POST['target_missed_penalty'] > 0) {
 						BankAccountDataService::debitAmount($website, $db, $team['id'], $_POST['target_missed_penalty'],
-							'seasontarget_failed_penalty_subject', $website->getConfig('projectname'));
+							'seasontarget_failed_penalty_subject',getConfig('projectname'));
 					}
 
 				// pay reward for accomplishing target
 				} else if ($team['min_target_rank'] > 0 && $team['min_target_rank'] >= $rank && $_POST['target_accomplished_reward'] > 0) {
 					BankAccountDataService::creditAmount($website, $db, $team['id'], $_POST['target_accomplished_reward'],
-						'seasontarget_accomplished_reward_subject', $website->getConfig('projectname'));
+						'seasontarget_accomplished_reward_subject',getConfig('projectname'));
 				}
 			}
 

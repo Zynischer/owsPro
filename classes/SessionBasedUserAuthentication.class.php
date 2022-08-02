@@ -43,7 +43,7 @@ class SessionBasedUserAuthentication implements IUserAuthentication {
 	public function verifyAndUpdateCurrentUser(User $currentUser) {
 
 		$db = DbConnection::getInstance();
-		$fromTable = $this->_website->getConfig('db_prefix') .'_user';
+		$fromTable = '_user';
 
 		if (!isset($_SESSION[SESSION_PARAM_USERID]) || !$_SESSION[SESSION_PARAM_USERID]) {
 
@@ -134,7 +134,7 @@ class SessionBasedUserAuthentication implements IUserAuthentication {
 		$currentUser->setProfilePicture($this->_website, $userdata['picture']);
 
 		// update language
-		$i18n = I18n::getInstance($this->_website->getConfig('supported_languages'));
+		$i18n = I18n::getInstance(getConfig('supported_languages'));
 		$i18n->setCurrentLanguage($userdata['lang']);
 
 		// update timestamp of last action

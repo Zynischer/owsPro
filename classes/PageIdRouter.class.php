@@ -48,12 +48,12 @@ class PageIdRouter {
 
 		// redirect to log-in form if website is generally protected
 		$user = $websoccer->getUser();
-		if ($websoccer->getConfig('password_protected') && $user->getRole() == ROLE_GUEST) {
+		if (getConfig('password_protected') && $user->getRole() == ROLE_GUEST) {
 
 			// list of page IDs that needs to be excluded.
 			$freePageIds = array(LOGIN_PAGE_ID, 'register', 'register-success', 'activate-user', 'forgot-password', 'imprint', 'logout', 'termsandconditions');
 
-			if (!$websoccer->getConfig('password_protected_startpage')) {
+			if (!getConfig('password_protected_startpage')) {
 				$freePageIds[] = DEFAULT_PAGE_ID;
 			}
 

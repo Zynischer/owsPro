@@ -35,7 +35,7 @@ class YouthPlayerDetailsModel implements IModel {
 	}
 
 	public function renderView() {
-		return $this->_websoccer->getConfig("youth_enabled");
+		return getConfig("youth_enabled");
 	}
 
 	public function getTemplateParameters() {

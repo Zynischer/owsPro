@@ -47,7 +47,7 @@ class OrderBuildingController implements IActionController {
 			throw new Exception(getMessage("feature_requires_team"));
 		}
 
-		$dbPrefix = $this->_websoccer->getConfig('db_prefix');
+		$dbPrefix = getConfig('db_prefix');
 		$result = $this->_db->querySelect('*', $dbPrefix . '_stadiumbuilding', 'id = %d', $buildingId);
 		$building = $result->fetch_array();
 		$result->free();

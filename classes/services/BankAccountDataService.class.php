@@ -36,7 +36,7 @@ class BankAccountDataService {
 	public static function countAccountStatementsOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId) {
 		$columns = "COUNT(*) AS hits";
 
-		$fromTable = $websoccer->getConfig("db_prefix") . "_konto";
+		$fromTable = "_konto";
 
 		$whereCondition = "verein_id = %d";
 		$parameters = $teamId;
@@ -71,7 +71,7 @@ class BankAccountDataService {
 
 		$limit = $startIndex .",". $entries_per_page;
 
-		$fromTable = $websoccer->getConfig("db_prefix") . "_konto";
+		$fromTable = "_konto";
 
 		$whereCondition = "verein_id = %d ORDER BY datum DESC";
 		$parameters = $teamId;
@@ -149,12 +149,12 @@ class BankAccountDataService {
 	private static function createTransaction(WebSoccer $websoccer, DbConnection $db, $team, $teamId, $amount, $subject, $sender) {
 
 		// ignore transaction if team is without user and option is enabled
-		if (!$team["user_id"] && $websoccer->getConfig("no_transactions_for_teams_without_user")) {
+		if (!$team["user_id"] && getConfig("no_transactions_for_teams_without_user")) {
 			return;
 		}
 
 		// create transaction
-		$fromTable = $websoccer->getConfig("db_prefix") ."_konto";
+		$fromTable = "_konto";
 		$columns["verein_id"] = $teamId;
 		$columns["absender"] = $sender;
 		$columns["betrag"] = $amount;
@@ -165,7 +165,7 @@ class BankAccountDataService {
 		// update team budget
 		$newBudget = $team["team_budget"] + $amount;
 		$updateColumns["finanz_budget"] = $newBudget;
-		$fromTable = $websoccer->getConfig("db_prefix") ."_verein";
+		$fromTable = "_verein";
 		$whereCondition = "id = %d";
 		$parameters = $teamId;
 		$db->queryUpdate($updateColumns, $fromTable, $whereCondition, $parameters);

@@ -253,8 +253,8 @@ if (!$rows['hits']) {
 	// rows
 	echo "<tbody>";
 
-	$dateFormat = $website->getConfig("date_format");
-	$datetimeFormat = $website->getConfig("datetime_format");
+	$dateFormat = getConfig("date_format");
+	$datetimeFormat = getConfig("datetime_format");
 
 	$editTooltip = getMessage("manage_edit");
 	$deleteTooltip = getMessage("manage_delete");

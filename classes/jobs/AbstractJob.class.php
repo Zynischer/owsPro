@@ -119,10 +119,10 @@ abstract class AbstractJob {
 			try {
 				// reconnect to db
 				$this->_db->close();
-				$this->_db->connect($this->_websoccer->getConfig('db_host'),
-					$this->_websoccer->getConfig('db_user'),
-					$this->_websoccer->getConfig('db_passwort'),
-					$this->_websoccer->getConfig('db_name'));
+				$this->_db->connect(getConfig('db_host'),
+					getConfig('db_user'),
+					getConfig('db_passwort'),
+					getConfig('db_name'));
 
 				$this->execute();
 

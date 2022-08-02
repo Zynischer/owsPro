@@ -41,7 +41,7 @@ if (!$show) {
 	$formFields["email"] = array("type" => "email", "value" => $admin['email'], "required" => "true");
 	$formFields["newpassword"] = array("type" => "password", "value" => "");
 	$formFields["repeatpassword"] = array("type" => "password", "value" => "");
-	$formFields["language"] = array("type" => "select", "value" => $admin["lang"], "selection" => $website->getConfig("supported_languages"));
+	$formFields["language"] = array("type" => "select", "value" => $admin["lang"], "selection" => getConfig("supported_languages"));
 	foreach ($formFields as $fieldId => $fieldInfo) {
 		echo FormBuilder::createFormGroup($i18n, $fieldId, $fieldInfo, $fieldInfo["value"], "profile_label_");
 	}

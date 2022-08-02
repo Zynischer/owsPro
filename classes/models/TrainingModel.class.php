@@ -61,7 +61,7 @@ class TrainingModel implements IModel {
 		if (!isset($training_unit["id"])) {
 			// get trainers
 			$count = TrainingDataService::countTrainers($this->_websoccer, $this->_db);
-			$eps = $this->_websoccer->getConfig("entries_per_page");
+			$eps = getConfig("entries_per_page");
 			$paginator = new Paginator($count, $eps, $this->_websoccer);
 
 			if ($count > 0) {

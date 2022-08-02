@@ -40,7 +40,7 @@ class TransferBidController implements IActionController {
 	 */
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig('transfermarket_enabled')) {
+		if (!getConfig('transfermarket_enabled')) {
 			return;
 		}
 
@@ -86,7 +86,7 @@ class TransferBidController implements IActionController {
 		// check if user has been already traded too often with the other user
 		if ($player['team_id'] > 0) {
 			$noOfTransactions = TransfermarketDataService::getTransactionsBetweenUsers($this->_websoccer, $this->_db, $player['team_user_id'], $user->id);
-			$maxTransactions = $this->_websoccer->getConfig('transfermarket_max_transactions_between_users');
+			$maxTransactions = getConfig('transfermarket_max_transactions_between_users');
 			if ($noOfTransactions >= $maxTransactions) {
 				throw new Exception(getMessage('transfer_bid_too_many_transactions_with_user', $noOfTransactions));
 			}
@@ -130,7 +130,7 @@ class TransferBidController implements IActionController {
 
 		// check if budget is enough for all current highest bids of user.
 		$team = TeamsDataService::getTeamSummaryById($this->_websoccer, $this->_db, $clubId);
-		$result = $this->_db->querySelect('SUM(abloese) + SUM(handgeld) AS bidsamount', $this->_websoccer->getConfig('db_prefix') .'_transfer_angebot',
+		$result = $this->_db->querySelect('SUM(abloese) + SUM(handgeld) AS bidsamount','_transfer_angebot',
 				'user_id = %d AND ishighest = \'1\'', $user->id);
 		$bids = $result->fetch_array();
 		$result->free();
@@ -143,7 +143,7 @@ class TransferBidController implements IActionController {
 
 		// mark previous highest bid as outbidden
 		if (isset($highestBid['bid_id'])) {
-			$this->_db->queryUpdate(array('ishighest' => '0'), $this->_websoccer->getConfig('db_prefix') .'_transfer_angebot',
+			$this->_db->queryUpdate(array('ishighest' => '0'),'_transfer_angebot',
 					'id = %d', $highestBid['bid_id']);
 		}
 
@@ -174,7 +174,7 @@ class TransferBidController implements IActionController {
 		$columns['verein_id'] = $clubId;
 		$columns['ishighest'] = '1';
 
-		$fromTable = $this->_websoccer->getConfig('db_prefix') .'_transfer_angebot';
+		$fromTable = '_transfer_angebot';
 
 		$this->_db->queryInsert($columns, $fromTable);
 

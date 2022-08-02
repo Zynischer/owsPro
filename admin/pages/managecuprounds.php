@@ -34,7 +34,7 @@ if (!$admin["r_admin"] && !$admin["r_demo"] && !$admin["r_spiele"]) {
 
 $cupid = (isset($_REQUEST["cup"]) && is_numeric($_REQUEST["cup"])) ? $_REQUEST["cup"] : 0;
 
-$result = $db->querySelect("name", $website->getConfig("db_prefix") . "_cup", "id = %d", $cupid);
+$result = $db->querySelect("name","_cup", "id = %d", $cupid);
 $cup = $result->fetch_array();
 $result->free();
 if (!isset($cup["name"])) {
@@ -74,7 +74,7 @@ if ($action == "create") {
 		foreach ($formFields as $fieldId => $fieldInfo) {
 
 			if ($fieldInfo["type"] == "timestamp") {
-				$dateObj = DateTime::createFromFormat($website->getConfig("date_format") .", H:i",
+				$dateObj = DateTime::createFromFormat(getConfig("date_format") .", H:i",
 						$_POST[$fieldId ."_date"] .", ". $_POST[$fieldId ."_time"]);
 				$fieldValue = ($dateObj) ? $dateObj->getTimestamp() : 0;
 
@@ -110,7 +110,7 @@ if ($action == "create") {
 
 		}
 
-		$db->queryInsert($columns, $website->getConfig("db_prefix") . "_cup_round");
+		$db->queryInsert($columns,"_cup_round");
 
 	} catch (Exception $e) {
 		echo createErrorMessage(getMessage("subpage_error_alertbox_title") , $e->getMessage());
@@ -122,13 +122,13 @@ if ($action == "create") {
 		throw new Exception(getMessage("validationerror_no_changes_as_demo"));
 	}
 
-	$db->queryDelete($website->getConfig("db_prefix") . "_cup_round", "id = %d", $_GET["id"]);
+	$db->queryDelete("_cup_round", "id = %d", $_GET["id"]);
 
 	echo createSuccessMessage(getMessage("manage_success_delete"), "");
 }
 
 // get existing rounds as hierarchy
-$result = $db->querySelect("*", $website->getConfig("db_prefix") . "_cup_round", "cup_id = %d ORDER BY firstround_date DESC", $cupid);
+$result = $db->querySelect("*","_cup_round", "cup_id = %d ORDER BY firstround_date DESC", $cupid);
 $hierarchy = array();
 while ($round = $result->fetch_array()) {
 	$hierarchy[$round["id"]]["round"] = $round;
@@ -187,27 +187,27 @@ function renderRound($roundNode) {
 		$columns["finalround"] = (isset($_POST["finalround"]) && $_POST["finalround"] == "1") ? 1 : 0;
 		$columns["groupmatches"] = (isset($_POST["groupmatches"]) && $_POST["groupmatches"] == "1") ? 1 : 0;
 
-		$firstDateObj = DateTime::createFromFormat($website->getConfig("date_format") .", H:i",
+		$firstDateObj = DateTime::createFromFormat(getConfig("date_format") .", H:i",
 				$_POST["firstround_date_date"] .", ". $_POST["firstround_date_time"]);
 		$columns["firstround_date"] = $firstDateObj->getTimestamp();
 
 
 		if (isset($_POST["secondround_date_date"])) {
-			$secondDateObj = DateTime::createFromFormat($website->getConfig("date_format") .", H:i",
+			$secondDateObj = DateTime::createFromFormat(getConfig("date_format") .", H:i",
 				$_POST["secondround_date_date"] .", ". $_POST["secondround_date_time"]);
 			$columns["secondround_date"] = $secondDateObj->getTimestamp();
 		}
 
-		$db->queryUpdate($columns, $website->getConfig("db_prefix") . "_cup_round", "id = %d", $roundNode["round"]["id"]);
+		$db->queryUpdate($columns,"_cup_round", "id = %d", $roundNode["round"]["id"]);
 
 		// name has changed, so also update already existing matches
 		if ($roundNode["round"]["name"] !== $_POST["name"]) {
-			$db->queryUpdate(array("pokalrunde" => $_POST["name"]), $website->getConfig("db_prefix") . "_spiel", "pokalname = '%s' AND pokalrunde = '%s'",
+			$db->queryUpdate(array("pokalrunde" => $_POST["name"]),"_spiel", "pokalname = '%s' AND pokalrunde = '%s'",
 					array($cup["name"], $roundNode["round"]["name"]));
 		}
 
 		// update local instance
-		$result = $db->querySelect("*", $website->getConfig("db_prefix") . "_cup_round", "id = %d", $roundNode["round"]["id"]);
+		$result = $db->querySelect("*","_cup_round", "id = %d", $roundNode["round"]["id"]);
 		$roundNode["round"] = $result->fetch_array();
 		$result->free();
 

@@ -46,11 +46,11 @@ if (!$show) {
         <table class='table table-bordered' style='width: 500px;'>
           <tr>
             <td><b><?php echo getMessage('home_projectinfo_name'); ?></b></td>
-            <td><?php echo escapeOutput($website->getConfig('projectname')) ?></td>
+            <td><?php echo escapeOutput(getConfig('projectname')) ?></td>
           </tr>
           <tr>
             <td><b><?php echo getMessage('home_projectinfo_adminemail'); ?></b></td>
-            <td><a href='mailto:<?php echo $website->getConfig('systememail'); ?>'><?php echo $website->getConfig('systememail'); ?></a></td>
+            <td><a href='mailto:<?php echo getConfig('systememail'); ?>'><?php echo getConfig('systememail'); ?></a></td>
           </tr>
         </table>
 

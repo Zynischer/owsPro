@@ -30,7 +30,7 @@ define('BASE_FOLDER', __DIR__ .'/../..');
 include(BASE_FOLDER . '/admin/config/global.inc.php');
 
 // check if enabled
-if (!$website->getConfig('micropayment_enabled')) {
+if (!getConfig('micropayment_enabled')) {
 	die('micropayments.de is not enabled');
 }
 

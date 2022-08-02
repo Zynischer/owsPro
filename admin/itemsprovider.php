@@ -4,25 +4,25 @@
 
   This file is part of OpenWebSoccer-Sim.
 
-  OpenWebSoccer-Sim is free software: you can redistribute it 
-  and/or modify it under the terms of the 
-  GNU Lesser General Public License 
+  OpenWebSoccer-Sim is free software: you can redistribute it
+  and/or modify it under the terms of the
+  GNU Lesser General Public License
   as published by the Free Software Foundation, either version 3 of
   the License, or any later version.
 
   OpenWebSoccer-Sim is distributed in the hope that it will be
   useful, but WITHOUT ANY WARRANTY; without even the implied
-  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public 
-  License along with OpenWebSoccer-Sim.  
+  You should have received a copy of the GNU Lesser General Public
+  License along with OpenWebSoccer-Sim.
   If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************/
 
 // this file provides items of an entity. Can be used for auto-complete feature of Primary Key selection fields.
-// GET parameters: 
+// GET parameters:
 // 		$dbtable - the DB table name without prefix
 //		$labelcolumns - the DB column names from whcih the label shall be constructed
 //		$search - an optional search string. All label columns will be searched (case insensitive).
@@ -65,20 +65,20 @@ if ($itemId > 0) {
 			$whereCondition .= ' OR ';
 		}
 		$first = FALSE;
-		
+
 		$whereCondition .= 'LOWER(' . $labelColumn . ') LIKE \'%%%s%%\'';
 		$queryParameters[] = $search;
 	}
 }
 
-		
+
 $whereCondition .= ' ORDER BY '. $labelColumns . ' ASC';
-$result = $db->querySelect('id, ' . $labelColumns, $website->getConfig('db_prefix') . '_' . $dbTable, $whereCondition, $queryParameters, MAX_ITEMS);
+$result = $db->querySelect('id, ' . $labelColumns,'_' . $dbTable, $whereCondition, $queryParameters, MAX_ITEMS);
 
 $items = array();
 // collect items;
 while($item = $result->fetch_array()) {
-	
+
 	// construct label
 	$label = '';
 	$first = TRUE;
@@ -89,7 +89,7 @@ while($item = $result->fetch_array()) {
 		$first = FALSE;
 		$label .= $item[trim($labelColumn)];
 	}
-	
+
 	$items[] = array('id' => $item['id'], 'text' => $label);
 }
 $result->free();

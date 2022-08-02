@@ -36,7 +36,7 @@ class RemoveYouthPlayerFromMarketController implements IActionController {
 
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("youth_enabled")) {
+		if (!getConfig("youth_enabled")) {
 			return NULL;
 		}
 
@@ -63,7 +63,7 @@ class RemoveYouthPlayerFromMarketController implements IActionController {
 
 		$columns = array("transfer_fee" => 0);
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_youthplayer";
+		$fromTable = "_youthplayer";
 		$whereCondition = "id = %d";
 
 		$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $playerId);

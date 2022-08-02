@@ -36,7 +36,7 @@ class BorrowPlayerController implements IActionController {
 
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("lending_enabled")) {
+		if (!getConfig("lending_enabled")) {
 			return NULL;
 		}
 
@@ -71,10 +71,10 @@ class BorrowPlayerController implements IActionController {
 		}
 
 		// check min and max duration
-		if ($parameters["matches"] < $this->_websoccer->getConfig("lending_matches_min")
-				|| $parameters["matches"] > $this->_websoccer->getConfig("lending_matches_max")) {
+		if ($parameters["matches"] < getConfig("lending_matches_min")
+				|| $parameters["matches"] > getConfig("lending_matches_max")) {
 			throw new Exception(sprintf(getMessage("lending_hire_err_illegalduration"),
-					$this->_websoccer->getConfig("lending_matches_min"), $this->_websoccer->getConfig("lending_matches_max")));
+					getConfig("lending_matches_min"), getConfig("lending_matches_max")));
 		}
 
 		// check player's contract length
@@ -116,7 +116,7 @@ class BorrowPlayerController implements IActionController {
 
 		$columns = array("lending_matches" => $matches, "lending_owner_id" => $ownerId, "verein_id" => $clubId);
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "id = %d";
 
 		$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $playerId);

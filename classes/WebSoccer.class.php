@@ -26,7 +26,7 @@
  * @author Rolf Joseph
  */
 class val{
-	static $ws,$db,$i18n,$user,$skin,$pageId,$templateEngine,$_frontMessages,$_isAjaxRequest,$_contextParameters,$_absence,$_leagueId,$_type,$connection,$_queryCache;}
+	static $instance,$websoccer,$db,$i18n,$user,$skin,$pageId,$templateEngine,$_frontMessages,$_isAjaxRequest,$_contextParameters,$_absence,$_leagueId,$_type,$connection,$_queryCache;}
 function getUser(){
 	if(val::$user==NULL)val::$user=new User();
 	return val::$user;}
@@ -47,7 +47,7 @@ function getSkin(){
 function getPageId(){return val::$pageId;}
 function setPageId($pageId){val::$pageId=$pageId;}
 function getTemplateEngine($i18n,ViewHandler $viewHandler=NULL){
-	if(val::$templateEngine==NULL)val::$templateEngine=new TemplateEngine(val::$instance,$i18n,$viewHandler);
+	if(val::$templateEngine==NULL)val::$templateEngine=new TemplateEngine(WebSoccer::getInstance(),$i18n,$viewHandler);
 	return val::$templateEngine;}
 function getRequestParameter($name){
 	if(isset($_REQUEST[$name])){
@@ -79,8 +79,8 @@ function getFormattedDatetime($timestamp,I18n $i18n=NULL){
 	return date(getConfig('datetime_format'),$timestamp);}
 function getNowAsTimestamp(){return time()+getConfig('time_offset');}
 function resetConfigCache(){
-	$i18n=I18n::getInstance(getConfig('supported_languages'));
-	$cacheBuilder=new ConfigCacheFileWriter($i18n->getSupportedLanguages());
+	getConfig('supported_languages');
+	$cacheBuilder=new ConfigCacheFileWriter(getSupportedLanguages());
 	$cacheBuilder->buildConfigCache();}
 function addFrontMessage(FrontMessage$message){
 		val::$_frontMessages[]=$message;}
@@ -128,7 +128,7 @@ class WebSoccer{
 		return$action[$id];}
 	function getSkin(){
 		if($this->_skin==NULL){
-			$skinName=$this->getConfig('skin');
+			$skinName=getConfig('skin');
 			if(class_exists($skinName))$this->_skin=new $skinName($this);
 			else throw new Exception('Configured skin \''.$skinName.'\' does not exist. Check the system settings.');}
 		return$this->_skin;}
@@ -148,29 +148,29 @@ class WebSoccer{
 		if($pageId==NULL)$pageId=$this->getPageId();
 		if(strlen($queryString))$queryString='&'.$queryString;
 		if($fullUrl){
-			$url=$this->getConfig('homepage').$this->getConfig('context_root');
+			$url=getConfig('homepage').getConfig('context_root');
 			if($pageId!='home'||strlen($queryString))$url .='/?page='.$pageId.$queryString;}
-		else$url=$this->getConfig('context_root').'/?page='.$pageId.$queryString;
+		else$url=getConfig('context_root').'/?page='.$pageId.$queryString;
 		return$url;}
 	function getInternalActionUrl($actionId,$queryString='',$pageId=NULL,$fullUrl=FALSE){
 		if($pageId==NULL)$pageId=$this->getRequestParameter('page');
 		if(strlen($queryString))$queryString='&'.$queryString;
-		$url=$this->getConfig('context_root').'/?page='.$pageId.$queryString.'&action='.$actionId;
-		if($fullUrl)$url=$this->getConfig('homepage').$url;
+		$url=getConfig('context_root').'/?page='.$pageId.$queryString.'&action='.$actionId;
+		if($fullUrl)$url=getConfig('homepage').$url;
 		return$url;}
 	function getFormattedDate($timestamp=NULL){
 		if($timestamp==NULL)$timestamp=$this->getNowAsTimestamp();
-		return date($this->getConfig('date_format'),$timestamp);}
+		return date(getConfig('date_format'),$timestamp);}
 	function getFormattedDatetime($timestamp,I18n$i18n=NULL){
 		if($timestamp==NULL)$timestamp=$this->getNowAsTimestamp();
 		if($i18n!=NULL){
 			$dateWord=StringUtil::convertTimestampToWord($timestamp,$this->getNowAsTimestamp(),$i18n);
-			if(strlen($dateWord))return$dateWord.', '.date($this->getConfig('time_format'),$timestamp);}
-		return date($this->getConfig('datetime_format'),$timestamp);}
+			if(strlen($dateWord))return$dateWord.', '.date(getConfig('time_format'),$timestamp);}
+		return date(getConfig('datetime_format'),$timestamp);}
 	function getNowAsTimestamp(){
-		return time()+$this->getConfig('time_offset');}
+		return time()+getConfig('time_offset');}
 	function resetConfigCache(){
-		$i18n=I18n::getInstance($this->getConfig('supported_languages'));
+		$i18n=I18n::getInstance(getConfig('supported_languages'));
 		$cacheBuilder=new ConfigCacheFileWriter($i18n->getSupportedLanguages());
 		$cacheBuilder->buildConfigCache();}
 	function addFrontMessage(FrontMessage $message){

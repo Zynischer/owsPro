@@ -43,7 +43,7 @@ class SendMessageController implements IActionController {
 		$senderId = $this->_websoccer->getUser()->id;
 
 		// check if messages is enabled
-		if (!$this->_websoccer->getConfig("messages_enabled")) {
+		if (!getConfig("messages_enabled")) {
 			throw new Exception(getMessage("messages_err_messagesdisabled"));
 		}
 
@@ -62,9 +62,9 @@ class SendMessageController implements IActionController {
 
 		// check when sent last message (needs x minutes break in order to prevent spam)
 		$lastMessage = MessagesDataService::getLastMessageOfUserId($this->_websoccer, $this->_db, $senderId);
-		$timebreakBoundary = $now - $this->_websoccer->getConfig("messages_break_minutes") * 60;
+		$timebreakBoundary = $now - getConfig("messages_break_minutes") * 60;
 		if ($lastMessage != null && $lastMessage["date"] >= $timebreakBoundary) {
-			throw new Exception(getMessage("messages_send_err_timebreak", $this->_websoccer->getConfig("messages_break_minutes")));
+			throw new Exception(getMessage("messages_send_err_timebreak", getConfig("messages_break_minutes")));
 		}
 
 		// create message
@@ -74,7 +74,7 @@ class SendMessageController implements IActionController {
 		$columns["betreff"] = $parameters["subject"];
 		$columns["nachricht"] = $parameters["msgcontent"];
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_briefe";
+		$fromTable = getConfig("db_prefix") . "_briefe";
 
 		// create message in inbox of recipient
 		$columns["typ"] = "eingang";

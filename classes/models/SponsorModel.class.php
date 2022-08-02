@@ -52,7 +52,7 @@ class SponsorModel implements IModel {
 		if (!$sponsor) {
 			$teamMatchday = MatchesDataService::getMatchdayNumberOfTeam($this->_websoccer, $this->_db, $teamId);
 
-			if ($teamMatchday >= $this->_websoccer->getConfig("sponsor_earliest_matchday")) {
+			if ($teamMatchday >= getConfig("sponsor_earliest_matchday")) {
 				$sponsors = SponsorsDataService::getSponsorOffers($this->_websoccer, $this->_db, $teamId);
 			}
 

@@ -83,7 +83,7 @@ class ViewHandler {
 			$minPremiumBalanceRequired = (int) $pageConfig['premiumBalanceMin'];
 			if ($minPremiumBalanceRequired > $this->_website->getUser()->premiumBalance) {
 
-				$targetPage = $this->_website->getConfig('premium_infopage');
+				$targetPage = getConfig('premium_infopage');
 
 				// redirect to external info page
 				if (filter_var($targetPage, FILTER_VALIDATE_URL)) {

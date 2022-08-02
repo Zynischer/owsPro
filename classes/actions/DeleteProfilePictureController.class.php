@@ -41,14 +41,14 @@ class DeleteProfilePictureController implements IActionController {
 	public function executeAction($parameters) {
 
 		// is feature enabled? User reaches here only when cheating, hence no i18n needed.
-		if (!$this->_websoccer->getConfig("user_picture_upload_enabled")) {
+		if (!getConfig("user_picture_upload_enabled")) {
 			throw new Exception("feature is not enabled.");
 		}
 
 		$userId = $this->_websoccer->getUser()->id;
 
 		// delete old picture
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_user";
+		$fromTable = "_user";
 		$whereCondition = "id = %d";
 		$result = $this->_db->querySelect("picture", $fromTable, $whereCondition, $userId);
 		$userinfo = $result->fetch_array();

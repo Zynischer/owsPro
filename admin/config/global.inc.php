@@ -65,7 +65,7 @@ catch(Exception $e){
 	header('HTTP/1.0 500 Error');
 	die();}
 try{$db=DbConnection::getInstance();
-	$db->connect($website->getConfig('db_host'),$website->getConfig('db_user'),$website->getConfig('db_passwort'),$website->getConfig('db_name'));}
+	$db->connect(getConfig('db_host'),getConfig('db_user'),getConfig('db_passwort'),getConfig('db_name'));}
 catch(Exception $e){
 	try{$log=new FileWriter('dberrorlog.txt');
 		$log->writeLine('DB Error: '.$e->getMessage());
@@ -77,5 +77,5 @@ session_set_save_handler(
 	[$handler,'open'],[$handler,'close'],[$handler,'read'],[$handler,'write'],[$handler,'destroy'],[$handler,'gc']);
 register_shutdown_function('session_write_close');
 session_start();
-try{date_default_timezone_set($website->getConfig('time_zone'));}
+try{date_default_timezone_set(getConfig('time_zone'));}
 catch(Exception $e){}

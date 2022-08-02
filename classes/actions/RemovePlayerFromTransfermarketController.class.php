@@ -41,7 +41,7 @@ class RemovePlayerFromTransfermarketController implements IActionController {
 	 */
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("transfermarket_enabled")) {
+		if (!getConfig("transfermarket_enabled")) {
 			return NULL;
 		}
 
@@ -65,7 +65,7 @@ class RemovePlayerFromTransfermarketController implements IActionController {
 				'transfermarkt' => '0',
 				'transfer_start' => 0,
 				'transfer_ende' => 0
-				), $this->_websoccer->getConfig('db_prefix') . '_spieler', 'id = %d', $parameters['id']);
+				),'_spieler', 'id = %d', $parameters['id']);
 
 		// success message
 		$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,

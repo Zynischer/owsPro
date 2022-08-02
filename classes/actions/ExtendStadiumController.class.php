@@ -59,18 +59,18 @@ class ExtendStadiumController implements IActionController {
 
 		// max limit exceeded?
 		$seatsSide = $stadium["places_stands"] + $stadium["places_seats"] + $parameters["side_standing"] + $parameters["side_seats"];
-		if ($seatsSide > $this->_websoccer->getConfig("stadium_max_side")) {
-			throw new Exception(getMessage("stadium_extend_err_exceed_max_side", $this->_websoccer->getConfig("stadium_max_side")));
+		if ($seatsSide > getConfig("stadium_max_side")) {
+			throw new Exception(getMessage("stadium_extend_err_exceed_max_side",getConfig("stadium_max_side")));
 		}
 
 		$seatsGrand = $stadium["places_stands_grand"] + $stadium["places_seats_grand"] + $parameters["grand_standing"] + $parameters["grand_seats"];
-		if ($seatsGrand > $this->_websoccer->getConfig("stadium_max_grand")) {
-			throw new Exception(getMessage("stadium_extend_err_exceed_max_grand", $this->_websoccer->getConfig("stadium_max_grand")));
+		if ($seatsGrand > getConfig("stadium_max_grand")) {
+			throw new Exception(getMessage("stadium_extend_err_exceed_max_grand",getConfig("stadium_max_grand")));
 		}
 
 		$seatsVip = $stadium["places_vip"] + $parameters["vip"];
-		if ($seatsVip > $this->_websoccer->getConfig("stadium_max_vip")) {
-			throw new Exception(getMessage("stadium_extend_err_exceed_max_vip", $this->_websoccer->getConfig("stadium_max_vip")));
+		if ($seatsVip > getConfig("stadium_max_vip")) {
+			throw new Exception(getMessage("stadium_extend_err_exceed_max_vip", getConfig("stadium_max_vip")));
 		}
 
 		// is construction already on-going?
@@ -126,7 +126,7 @@ class ExtendStadiumController implements IActionController {
 				"p_haupt_steh" => ($parameters["grand_standing"]) ? $parameters["grand_standing"] : 0,
 				"p_haupt_sitz" => ($parameters["grand_seats"]) ? $parameters["grand_seats"] : 0,
 				"p_vip" => ($parameters["vip"]) ? $parameters["vip"] : 0
-				), $this->_websoccer->getConfig("db_prefix") . "_stadium_construction");
+				),"_stadium_construction");
 
 		// success message
 		$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,

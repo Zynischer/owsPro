@@ -43,7 +43,7 @@ class FormBuilder {
 		// convert date
 		if ($type == 'timestamp' && isset($fieldInfo['readonly']) && $fieldInfo['readonly']) {
 			$website = WebSoccer::getInstance();
-			$dateFormat = $website->getConfig('datetime_format');
+			$dateFormat = getConfig('datetime_format');
 
 			// generate date
 			if (!strlen($fieldValue)) {
@@ -59,7 +59,7 @@ class FormBuilder {
 				$dateObj = DateTime::createFromFormat('Y-m-d', $fieldValue);
 				if ($dateObj !== FALSE) {
 					$website = WebSoccer::getInstance();
-					$dateFormat = $website->getConfig('date_format');
+					$dateFormat = getConfig('date_format');
 					$fieldValue = $dateObj->format($dateFormat);
 				}
 			}
@@ -110,7 +110,7 @@ class FormBuilder {
 				// date and time picker
 				case 'timestamp':
 					$website = WebSoccer::getInstance();
-					$dateFormat = $website->getConfig('date_format');
+					$dateFormat = getConfig('date_format');
 					if (!$fieldValue) {
 						$fieldValue = getNowAsTimestamp();
 					}
@@ -246,7 +246,7 @@ class FormBuilder {
 
 			if ($fieldInfo['type'] == 'date') {
 				$website = WebSoccer::getInstance();
-				$format = $website->getConfig('date_format');
+				$format = getConfig('date_format');
 				if (!DateTime::createFromFormat($format, $fieldValue)) {
 					throw new Exception(sprintf(getMessage('validationerror_date'), getMessage($labelKeyPrefix . $fieldId), $format));
 				}
@@ -277,7 +277,7 @@ class FormBuilder {
 	public static function createForeignKeyField($i18n, $fieldId, $fieldInfo, $fieldValue) {
 		$website = WebSoccer::getInstance();
 		$db = DbConnection::getInstance();
-		$fromTable = $website->getConfig('db_prefix') .'_'. $fieldInfo['jointable'];
+		$fromTable = '_'. $fieldInfo['jointable'];
 
 		// count total items
 		$result = $db->querySelect('COUNT(*) AS hits', $fromTable, '1=1', '');

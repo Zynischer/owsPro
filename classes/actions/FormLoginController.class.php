@@ -48,7 +48,7 @@ class FormLoginController implements IActionController {
 	 */
 	public function executeAction($parameters) {
 
-		$loginMethodClass = $this->_websoccer->getConfig("login_method");
+		$loginMethodClass = getConfig("login_method");
 		if (!class_exists($loginMethodClass)) {
 			throw new Exception("Login method class does not exist: " . $loginMethodClass);
 		}
@@ -56,7 +56,7 @@ class FormLoginController implements IActionController {
 		$loginMethod = new $loginMethodClass($this->_websoccer, $this->_db);
 
 		// sign in with e-mail
-		if ($this->_websoccer->getConfig("login_type") == "email") {
+		if (getConfig("login_type") == "email") {
 			$userId = $loginMethod->authenticateWithEmail($parameters["loginstr"], $parameters["loginpassword"]);
 
 			// sign in with user name
@@ -75,7 +75,7 @@ class FormLoginController implements IActionController {
 		// "remember me"
 		if (isset($parameters["rememberme"]) && $parameters["rememberme"] == 1) {
 
-			$fromTable = $this->_websoccer->getConfig("db_prefix") . "_user";
+			$fromTable = "_user";
 			$whereCondition = "id = %d";
 			$parameter = $userId;
 

@@ -32,18 +32,18 @@ class SendPasswordController implements IActionController {
 	}
 
 	public function executeAction($parameters) {
-		if (!$this->_websoccer->getConfig("login_allow_sendingpassword")) {
+		if (!getConfig("login_allow_sendingpassword")) {
 			throw new Exception("Action is disabled.");
 		}
 
 		// check captcha
-		if ($this->_websoccer->getConfig("register_use_captcha")
-				&& strlen($this->_websoccer->getConfig("register_captcha_publickey"))
-				&& strlen($this->_websoccer->getConfig("register_captcha_privatekey"))) {
+		if (getConfig("register_use_captcha")
+				&& strlen(getConfig("register_captcha_publickey"))
+				&& strlen(getConfig("register_captcha_privatekey"))) {
 
 			include_once(BASE_FOLDER . "/lib/recaptcha/recaptchalib.php");
 
-			$captchaResponse = recaptcha_check_answer($this->_websoccer->getConfig("register_captcha_privatekey"),
+			$captchaResponse = recaptcha_check_answer(getConfig("register_captcha_privatekey"),
 					$_SERVER["REMOTE_ADDR"],
 					$_POST["recaptcha_challenge_field"],
 					$_POST["recaptcha_response_field"]);
@@ -54,7 +54,7 @@ class SendPasswordController implements IActionController {
 
 		$email = $parameters["useremail"];
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_user";
+		$fromTable = "_user";
 
 		// get user
 		$columns = "id, passwort_salt, passwort_neu_angefordert";

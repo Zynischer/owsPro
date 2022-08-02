@@ -19,15 +19,9 @@
   If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************/
-
 // execute transfer
 DirectTransfersDataService::executeTransferFromOffer($website, $db, $website->getRequestParameter('id'));
-
 // remove pending state
-$db->queryUpdate(array('admin_approval_pending' => '0'), $website->getConfig('db_prefix') . '_transfer_offer',
-		'id = %d', $website->getRequestParameter('id'));
-
+$db->queryUpdate(array('admin_approval_pending' => '0'),'_transfer_offer','id = %d', $website->getRequestParameter('id'));
 // create success message
 echo createSuccessMessage(getMessage('transferoffer_approval_success'), '');
-
-?>

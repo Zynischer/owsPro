@@ -43,7 +43,7 @@ if (!$show) {
 
   			<?php
   			$columns = "id,land,name";
-  			$fromTable = $website->getConfig("db_prefix") . "_liga";
+  			$fromTable = "_liga";
   			$result = $db->querySelect($columns, $fromTable, "1 ORDER BY land ASC, name ASC", array());
   			while ($league = $result->fetch_array()) {
 				echo "<option value=\"". $league["id"] . "\"";

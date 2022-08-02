@@ -31,7 +31,7 @@ class GreenBootstrapSkin extends DefaultBootstrapSkin {
 	 * @see DefaultBootstrapSkin::getCssSources()
 	 */
 	public function getCssSources() {
-		$dir = $this->_websoccer->getConfig('context_root') . '/css/';
+		$dir = getConfig('context_root') . '/css/';
 		$files[] = $dir . 'bootstrap_green.css';
 		$files[] = $dir . 'websoccer.css';
 		$files[] = $dir . 'bootstrap-responsive.min.css';

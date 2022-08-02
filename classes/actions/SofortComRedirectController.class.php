@@ -42,7 +42,7 @@ class SofortComRedirectController implements IActionController {
 	 */
 	public function executeAction($parameters) {
 
-		$configKey = trim($this->_websoccer->getConfig("sofortcom_configkey"));
+		$configKey = trim(getConfig("sofortcom_configkey"));
 
 		if (!strlen($configKey)) {
 			// user should actually not come here, hence no i18n
@@ -52,7 +52,7 @@ class SofortComRedirectController implements IActionController {
 		// verify amount (check if specified in options)
 		$amount = $parameters['amount'];
 
-		$priceOptions = explode(',', $this->_websoccer->getConfig('premium_price_options'));
+		$priceOptions = explode(',',getConfig('premium_price_options'));
 		$validAmount = FALSE;
 		if (count($priceOptions)) {
 			foreach ($priceOptions as $priceOption) {
@@ -80,8 +80,8 @@ class SofortComRedirectController implements IActionController {
 		$notifyUrl = getInternalActionUrl('sofortcom-notify', 'u=' . $this->_websoccer->getUser()->id,'home', TRUE);
 
 		$Sofortueberweisung->setAmount($amount);
-		$Sofortueberweisung->setCurrencyCode($this->_websoccer->getConfig("premium_currency"));
-		$Sofortueberweisung->setReason($this->_websoccer->getConfig("projectname"));
+		$Sofortueberweisung->setCurrencyCode(getConfig("premium_currency"));
+		$Sofortueberweisung->setReason(getConfig("projectname"));
 		$Sofortueberweisung->setSuccessUrl($abortOrSuccessUrl, true);
 		$Sofortueberweisung->setAbortUrl($abortOrSuccessUrl);
 		$Sofortueberweisung->setNotificationUrl($notifyUrl, 'received');

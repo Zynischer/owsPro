@@ -92,13 +92,13 @@ class SaveProfileController implements IActionController {
 		$columns["c_hideinonlinelist"] = $parameters["c_hideinonlinelist"];
 
 		if ($parameters["birthday"]) {
-			$dateObj = DateTime::createFromFormat($this->_websoccer->getConfig("date_format"), $parameters["birthday"]);
+			$dateObj = DateTime::createFromFormat(getConfig("date_format"), $parameters["birthday"]);
 			$columns["geburtstag"] = $dateObj->format("Y-m-d");
 		}
 
 		// update record
 		if (count($columns)) {
-			$fromTable = $this->_websoccer->getConfig("db_prefix") ."_user";
+			$fromTable = "_user";
 			$whereCondition = "id = %d";
 			$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $user->id);
 		}

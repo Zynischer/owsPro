@@ -36,7 +36,7 @@ class LendPlayerController implements IActionController {
 
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("lending_enabled")) {
+		if (!getConfig("lending_enabled")) {
 			return NULL;
 		}
 
@@ -67,13 +67,13 @@ class LendPlayerController implements IActionController {
 
 		// check violation of minimum team size
 		$teamSize = TeamsDataService::getTeamSize($this->_websoccer, $this->_db, $clubId);
-		if ($teamSize <= $this->_websoccer->getConfig("transfermarket_min_teamsize")) {
+		if ($teamSize <= getConfig("transfermarket_min_teamsize")) {
 			throw new Exception(getMessage("lending_err_teamsize_too_small", $teamSize));
 		}
 
 		// remaining contract is too short
 		$minBidBoundary = round($player["player_marketvalue"] / 2);
-		if ($player["player_contract_matches"] <= $this->_websoccer->getConfig("lending_matches_min")) {
+		if ($player["player_contract_matches"] <= getConfig("lending_matches_min")) {
 			throw new Exception(getMessage("lending_err_contract_too_short"));
 		}
 
@@ -90,7 +90,7 @@ class LendPlayerController implements IActionController {
 
 		$columns = array("lending_fee" => $fee);
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "id = %d";
 		$parameters = $playerId;
 

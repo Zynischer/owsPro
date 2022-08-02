@@ -60,7 +60,7 @@ class PlayerDetailsWithDependenciesModel implements IModel {
 	private function _getGrades($playerId) {
 		$grades = array();
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spiel_berechnung";
+		$fromTable = "_spiel_berechnung";
 
 		$columns = "note AS grade";
 

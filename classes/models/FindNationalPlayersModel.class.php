@@ -41,7 +41,7 @@ class FindNationalPlayersModel implements IModel {
 	 * @see IModel::renderView()
 	 */
 	public function renderView() {
-		return $this->_websoccer->getConfig("nationalteams_enabled");
+		return getConfig("nationalteams_enabled");
 	}
 
 	/**
@@ -56,7 +56,7 @@ class FindNationalPlayersModel implements IModel {
 			throw new Exception(getMessage("nationalteams_user_requires_team"));
 		}
 
-		$result = $this->_db->querySelect("name", $this->_websoccer->getConfig("db_prefix") . "_verein", "id = %d", $teamId);
+		$result = $this->_db->querySelect("name","_verein", "id = %d", $teamId);
 		$team = $result->fetch_array();
 		$result->free();
 
@@ -70,7 +70,7 @@ class FindNationalPlayersModel implements IModel {
 				$firstName, $lastName, $position, $mainPosition);
 
 		// setup paginator
-		$eps = $this->_websoccer->getConfig("entries_per_page");
+		$eps = getConfig("entries_per_page");
 		$paginator = new Paginator($playersCount, $eps, $this->_websoccer);
 		$paginator->addParameter("fname", $firstName);
 		$paginator->addParameter("lname", $lastName);

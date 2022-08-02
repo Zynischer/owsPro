@@ -51,7 +51,7 @@ class DataGeneratorService {
 			$generateStadium, $stadiumNamePattern, $stadiumStands, $stadiumSeats, $stadiumStandsGrand, $stadiumSeatsGrand, $stadiumVip) {
 
 		// get country
-		$result = $db->querySelect('*', $websoccer->getConfig('db_prefix') . '_liga', 'id = %d', $leagueId);
+		$result = $db->querySelect('*','_liga', 'id = %d', $leagueId);
 		$league = $result->fetch_array();
 		$result->free();
 
@@ -100,8 +100,8 @@ class DataGeneratorService {
 			$country = $nationality;
 		} else {
 			// get country from team
-			$fromTable = $websoccer->getConfig('db_prefix') . '_verein AS T';
-			$fromTable .= ' INNER JOIN ' . $websoccer->getConfig('db_prefix') . '_liga AS L ON L.id = T.liga_id';
+			$fromTable = '_verein AS T';
+			$fromTable .= ' INNER JOIN _liga AS L ON L.id = T.liga_id';
 			$result = $db->querySelect('L.land AS country', $fromTable, 'T.id = %d', $teamId);
 			$league = $result->fetch_array();
 			$result->free();
@@ -176,7 +176,7 @@ class DataGeneratorService {
 
 	private static function _throwException($messageKey, $parameter = null) {
 		$websoccer = WebSoccer::getInstance();
-		$i18n = I18n::getInstance($websoccer->getConfig('supported_languages'));
+		$i18n = I18n::getInstance(getConfig('supported_languages'));
 		throw new Exception(getMessage($messageKey, $parameter));
 	}
 
@@ -206,7 +206,7 @@ class DataGeneratorService {
 			$stadiumcolumns['p_haupt_sitz'] = $stadiumSeatsGrand;
 			$stadiumcolumns['p_vip'] = $stadiumVip;
 
-			$fromTable = $websoccer->getConfig('db_prefix') . '_stadion';
+			$fromTable = '_stadion';
 
 			$db->queryInsert($stadiumcolumns, $fromTable);
 
@@ -226,7 +226,7 @@ class DataGeneratorService {
 		$teamcolumns['preis_vip'] = $league['preis_vip'];
 		$teamcolumns['status'] = '1';
 
-		$fromTable = $websoccer->getConfig('db_prefix') . '_verein';
+		$fromTable = '_verein';
 		$db->queryInsert($teamcolumns, $fromTable);
 
 		echo '<p>' . $teamName . ' (' . $shortName . ')</p>';
@@ -256,10 +256,10 @@ class DataGeneratorService {
 		} else {
 			$columns['transfermarkt'] = '1';
 			$columns['transfer_start'] = getNowAsTimestamp();
-			$columns['transfer_ende'] = $columns['transfer_start'] + $websoccer->getConfig('transfermarket_duration_days') * 24 * 3600;
+			$columns['transfer_ende'] = $columns['transfer_start'] + getConfig('transfermarket_duration_days') * 24 * 3600;
 		}
 
-		$fromTable = $websoccer->getConfig('db_prefix') . '_spieler';
+		$fromTable = '_spieler';
 		$db->queryInsert($columns, $fromTable);
 	}
 

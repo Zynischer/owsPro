@@ -3,19 +3,19 @@
 
   This file is part of OpenWebSoccer-Sim.
 
-  OpenWebSoccer-Sim is free software: you can redistribute it 
-  and/or modify it under the terms of the 
-  GNU Lesser General Public License 
+  OpenWebSoccer-Sim is free software: you can redistribute it
+  and/or modify it under the terms of the
+  GNU Lesser General Public License
   as published by the Free Software Foundation, either version 3 of
   the License, or any later version.
 
   OpenWebSoccer-Sim is distributed in the hope that it will be
   useful, but WITHOUT ANY WARRANTY; without even the implied
-  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public 
-  License along with OpenWebSoccer-Sim.  
+  You should have received a copy of the GNU Lesser General Public
+  License along with OpenWebSoccer-Sim.
   If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************/
@@ -32,7 +32,7 @@ require(BASE_FOLDER . '/admin/config/global.inc.php');
 include(CONFIGCACHE_FILE_FRONTEND);
 
 // log-in user
-$authenticatorClasses = explode(',', $website->getConfig('authentication_mechanism'));
+$authenticatorClasses = explode(',',getConfig('authentication_mechanism'));
 foreach ($authenticatorClasses as $authenticatorClass) {
 	$authenticatorClass = trim($authenticatorClass);
 	if (!class_exists($authenticatorClass)) {
@@ -43,7 +43,7 @@ foreach ($authenticatorClasses as $authenticatorClass) {
 }
 
 // load i18n messages
-$i18n = I18n::getInstance($website->getConfig('supported_languages'));
+$i18n = I18n::getInstance(getConfig('supported_languages'));
 if ($website->getUser()->language != null) {
 	try {
 		$i18n->setCurrentLanguage($website->getUser()->language);

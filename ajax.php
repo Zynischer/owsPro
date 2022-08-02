@@ -42,7 +42,7 @@ $output['content'] = '';
 header('Content-type: application/json; charset=utf-8');
 
 // do not provide anything in offline mode
-if ($website->getConfig('offline') !== 'offline') {
+if (getConfig('offline') !== 'offline') {
 
 	$parameters = array();
 	$validationMessages = null;

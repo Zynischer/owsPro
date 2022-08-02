@@ -37,8 +37,8 @@ class ActionLogDataService {
 	 */
 	public static function getActionLogsOfUser(WebSoccer $websoccer, DbConnection $db, $userId, $limit = 10) {
 
-		$fromTable = $websoccer->getConfig('db_prefix') . '_useractionlog AS L';
-		$fromTable .= ' INNER JOIN ' . $websoccer->getConfig('db_prefix') . '_user AS U ON U.id = L.user_id';
+		$fromTable = '_useractionlog AS L';
+		$fromTable .= ' INNER JOIN _user AS U ON U.id = L.user_id';
 
 		$columns = array(
 				'L.id' => 'log_id',
@@ -70,8 +70,8 @@ class ActionLogDataService {
 	 */
 	public static function getLatestActionLogs(WebSoccer $websoccer, DbConnection $db, $limit = 10) {
 
-		$fromTable = $websoccer->getConfig('db_prefix') . '_useractionlog AS L';
-		$fromTable .= ' INNER JOIN ' . $websoccer->getConfig('db_prefix') . '_user AS U ON U.id = L.user_id';
+		$fromTable = '_useractionlog AS L';
+		$fromTable .= ' INNER JOIN _user AS U ON U.id = L.user_id';
 
 		$columns = array(
 				'L.id' => 'log_id',
@@ -104,7 +104,7 @@ class ActionLogDataService {
 	 */
 	public static function createOrUpdateActionLog(WebSoccer $websoccer, DbConnection $db, $userId, $actionId) {
 
-		$fromTable = $websoccer->getConfig('db_prefix') . '_useractionlog';
+		$fromTable = '_useractionlog';
 
 		// delete old entries of user (entries which are older than 20 days)
 		$deleteTimeThreshold = getNowAsTimestamp() - 24 * 3600 * 20;

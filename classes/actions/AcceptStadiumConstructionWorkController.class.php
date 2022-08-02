@@ -58,8 +58,8 @@ class AcceptStadiumConstructionWorkController implements IActionController {
 		// not completed: postpone deadline
 		if ($constructionResult == "notcompleted") {
 
-			$newDeadline = getNowAsTimestamp() + $this->_websoccer->getConfig("stadium_construction_delay") * 24 * 3600;
-			$this->_db->queryUpdate(array("deadline" => $newDeadline), $this->_websoccer->getConfig("db_prefix") . "_stadium_construction",
+			$newDeadline = getNowAsTimestamp() + getConfig("stadium_construction_delay") * 24 * 3600;
+			$this->_db->queryUpdate(array("deadline" => $newDeadline),"_stadium_construction",
 					"id = %d", $construction["id"]);
 
 			// show warning alert
@@ -78,15 +78,11 @@ class AcceptStadiumConstructionWorkController implements IActionController {
 			$columns["p_haupt_steh"] = $stadium["places_stands_grand"] + $construction["p_haupt_steh"];
 			$columns["p_haupt_sitz"] = $stadium["places_seats_grand"] + $construction["p_haupt_sitz"];
 			$columns["p_vip"] = $stadium["places_vip"] + $construction["p_vip"];
-			$this->_db->queryUpdate($columns, $this->_websoccer->getConfig("db_prefix") . "_stadion", "id = %d",
+			$this->_db->queryUpdate($columns,"_stadion", "id = %d",
 					$stadium["stadium_id"]);
 
 			// delete order
-			$this->_db->queryDelete($this->_websoccer->getConfig("db_prefix") . "_stadium_construction",
-					"id = %d", $construction["id"]);
-
-			// create success message
-			$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,
+			$this->_db->queryDelete(addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,
 					getMessage("stadium_acceptconstruction_completed_title"),
 					getMessage("stadium_acceptconstruction_completed_details")));
 		}

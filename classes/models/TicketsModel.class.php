@@ -42,7 +42,11 @@ class TicketsModel implements IModel {
 
 		$teamId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 		if ($teamId < 1) {
-			throw new Exception(		$columns["T.preis_sitz"] = "p_seats";
+			throw new Exception($this->_i18n->getMessage("feature_requires_team"));
+		}
+
+		$columns["T.preis_stehen"] = "p_stands";
+		$columns["T.preis_sitz"] = "p_seats";
 		$columns["T.preis_haupt_stehen"] = "p_stands_grand";
 		$columns["T.preis_haupt_sitze"] = "p_seats_grand";
 		$columns["T.preis_vip"] = "p_vip";
@@ -59,8 +63,8 @@ class TicketsModel implements IModel {
 		$columns["S.p_haupt_sitz"] = "s_seats_grand";
 		$columns["S.p_vip"] = "s_vip";
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_verein AS T";
-		$fromTable .= " LEFT JOIN " . $this->_websoccer->getConfig("db_prefix") . "_stadion AS S ON S.id = T.stadion_id";
+		$fromTable = "_verein AS T";
+		$fromTable .= " LEFT JOIN _stadion AS S ON S.id = T.stadion_id";
 		$whereCondition = "T.id = %d";
 		$parameters = $teamId;
 

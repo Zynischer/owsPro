@@ -37,21 +37,21 @@ class RegisterFormModel implements IModel {
 	}
 
 	public function getTemplateParameters() {
-		if (!$this->_websoccer->getConfig("allow_userregistration")) {
+		if (!$getConfig("allow_userregistration")) {
 			throw new Exception(getMessage("registration_disabled"));
 		}
 
 		$parameters = array();
-		if ($this->_websoccer->getConfig("register_use_captcha")
-				&& strlen($this->_websoccer->getConfig("register_captcha_publickey"))
-				&& strlen($this->_websoccer->getConfig("register_captcha_privatekey"))) {
+		if (getConfig("register_use_captcha")
+				&& strlen(getConfig("register_captcha_publickey"))
+				&& strlen(getConfig("register_captcha_privatekey"))) {
 
 			include_once(BASE_FOLDER . "/lib/recaptcha/recaptchalib.php");
 
 			// support SSL
 			$useSsl = (!empty($_SERVER["HTTPS"]));
 
-			$captchaCode = recaptcha_get_html($this->_websoccer->getConfig("register_captcha_publickey"), null, $useSsl);
+			$captchaCode = recaptcha_get_html(getConfig("register_captcha_publickey"), null, $useSsl);
 
 
 			$parameters["captchaCode"] = $captchaCode;

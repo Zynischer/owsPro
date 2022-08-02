@@ -39,7 +39,7 @@ class NewsDetailsModel implements IModel {
 	}
 
 	public function getTemplateParameters() {
-		$tablePrefix = $this->_websoccer->getConfig("db_prefix") . "_";
+		$tablePrefix = "_";
 		$fromTable = $tablePrefix . "news AS NewsTab";
 		$fromTable .= " LEFT JOIN " . $tablePrefix . "admin AS AdminTab ON NewsTab.autor_id = AdminTab.id";
 		$whereCondition = "NewsTab.id = %d AND status = 1";

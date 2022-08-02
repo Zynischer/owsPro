@@ -49,7 +49,7 @@ if(!$show){
 				echo'<div class=\'tab-pane';
 				if($firstTab)echo' active';
 				echo'\' id=\''.$tabId.'\'>';
-				foreach($settings as$settingId => $settingInfo)echo FormBuilder::createFormGroup($i18n,$settingId,$settingInfo,$website->getConfig($settingId),'settings_label_');
+				foreach($settings as$settingId => $settingInfo)echo FormBuilder::createFormGroup($i18n,$settingId,$settingInfo,getConfig($settingId),'settings_label_');
 				echo'</div>';
 				$firstTab=FALSE;}?></div>
 		<div class='form-actions'>

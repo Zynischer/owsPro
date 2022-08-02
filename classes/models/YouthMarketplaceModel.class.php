@@ -35,7 +35,7 @@ class YouthMarketplaceModel implements IModel {
 	}
 
 	public function renderView() {
-		return $this->_websoccer->getConfig("youth_enabled");
+		return getConfig("youth_enabled");
 	}
 
 	public function getTemplateParameters() {
@@ -43,7 +43,7 @@ class YouthMarketplaceModel implements IModel {
 		$positionFilter = $this->_websoccer->getRequestParameter("position");
 
 		$count = YouthPlayersDataService::countTransferableYouthPlayers($this->_websoccer, $this->_db, $positionFilter);
-		$eps = $this->_websoccer->getConfig("entries_per_page");
+		$eps = getConfig("entries_per_page");
 		$paginator = new Paginator($count, $eps, $this->_websoccer);
 
 		if ($positionFilter != null) {

@@ -55,8 +55,7 @@ class SaveFormationController implements IActionController {
 
 		// check and get next match
 		// next x matches
-		$nextMatches = MatchesDataService::getNextMatches($this->_websoccer, $this->_db, $teamId,
-				$this->_websoccer->getConfig('formation_max_next_matches'));
+		$nextMatches = MatchesDataService::getNextMatches($this->_websoccer, $this->_db, $teamId,getConfig('formation_max_next_matches'));
 		if (!count($nextMatches)) {
 			throw new Exception(getMessage('formation_err_nonextmatch'));
 		}
@@ -152,7 +151,7 @@ class SaveFormationController implements IActionController {
 	}
 
 	private function saveFormation($teamId, $matchId, $parameters, $validSubstitutions) {
-		$fromTable = $this->_websoccer->getConfig('db_prefix') .'_aufstellung';
+		$fromTable = '_aufstellung';
 
 		$columns['verein_id'] = $teamId;
 		$columns['datum'] = getNowAsTimestamp();
@@ -207,9 +206,9 @@ class SaveFormationController implements IActionController {
 			$existingTemplates = $result->fetch_array();
 			$result->free();
 
-			if ($existingTemplates && $existingTemplates['templates'] >= $this->_websoccer->getConfig('formation_max_templates')) {
+			if ($existingTemplates && $existingTemplates['templates'] >= getConfig('formation_max_templates')) {
 				$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_WARNING,
-					getMessage('formation_template_saving_failed_because_boundary_title', $this->_websoccer->getConfig('formation_max_templates')),
+					getMessage('formation_template_saving_failed_because_boundary_title',getConfig('formation_max_templates')),
 					getMessage('formation_template_saving_failed_because_boundary_details')));
 			} else {
 				$columns['match_id'] = NULL;

@@ -43,7 +43,7 @@ class UploadClubPictureController implements IActionController {
 	public function executeAction($parameters) {
 
 		// is feature enabled? User reaches here only when cheating, hence no i18n needed.
-		if (!$this->_websoccer->getConfig("upload_clublogo_max_size")) {
+		if (!getConfig("upload_clublogo_max_size")) {
 			throw new Exception("feature is not enabled.");
 		}
 
@@ -84,7 +84,7 @@ class UploadClubPictureController implements IActionController {
 		}
 
 		// check file size (just for security issues. Usually, PHP will not accept too big files)
-		$maxFilesize = $this->_websoccer->getConfig("upload_clublogo_max_size") * 1024;
+		$maxFilesize = getConfig("upload_clublogo_max_size") * 1024;
 		if ($_POST["MAX_FILE_SIZE"] != $maxFilesize || $_FILES["picture"]["size"] > $maxFilesize) {
 			throw new Exception(getMessage("change-profile-picture_err_illegalfilesize"));
 		}
@@ -107,7 +107,7 @@ class UploadClubPictureController implements IActionController {
 		}
 
 		// delete old picture
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_verein";
+		$fromTable = "_verein";
 		$whereCondition = "id = %d";
 		$result = $this->_db->querySelect("bild", $fromTable, $whereCondition, $clubId);
 		$clubinfo = $result->fetch_array();

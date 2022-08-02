@@ -35,7 +35,7 @@ class TransfermarketOverviewModel implements IModel {
 	}
 
 	public function renderView() {
-		return ($this->_websoccer->getConfig("transfermarket_enabled") == 1);
+		return (getConfig("transfermarket_enabled") == 1);
 	}
 
 	public function getTemplateParameters() {
@@ -58,7 +58,7 @@ class TransfermarketOverviewModel implements IModel {
 		}
 
 		$count = PlayersDataService::countPlayersOnTransferList($this->_websoccer, $this->_db, $positionFilter);
-		$eps = $this->_websoccer->getConfig("entries_per_page");
+		$eps = getConfig("entries_per_page");
 		$paginator = new Paginator($count, $eps, $this->_websoccer);
 		if ($positionFilter != null) {
 			$paginator->addParameter("position", $positionInput);

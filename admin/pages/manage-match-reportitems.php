@@ -41,7 +41,7 @@ if ($action == "delete") {
 	}
 
 	$itemId = (int) $_REQUEST["itemid"];
-	$db->queryDelete($website->getConfig("db_prefix") . "_matchreport", "id = %d", array($itemId));
+	$db->queryDelete("_matchreport", "id = %d", array($itemId));
 	echo createSuccessMessage(getMessage("manage_success_delete"), "");
 }
 // ******** create match report item
@@ -65,7 +65,7 @@ elseif ($action == "create") {
 				"minute" => $minute,
 				"goals" => $goals,
 				"playernames" => $playerNames
-				), $website->getConfig("db_prefix") . "_matchreport");
+				),"_matchreport");
 	}
 }
 

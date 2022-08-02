@@ -6,9 +6,9 @@
 
 {% block page_content %}
 
-{% if getContextParameters()["premium_balance_required"] is defined %}
+{% if env.getContextParameters()["premium_balance_required"] is defined %}
 <div class="alert">
-	<strong>{{ i18n.getMessage("premium_info_notenoughcredit_alert")|format(getContextParameters()["premium_balance_required"], env.getConfig("premium_credit_unit")) }}</strong>
+	<strong>{{ i18n.getMessage("premium_info_notenoughcredit_alert")|format(env.getContextParameters()["premium_balance_required"], env.getConfig("premium_credit_unit")) }}</strong>
 </div>
 {% endif %}
 

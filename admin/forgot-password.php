@@ -25,7 +25,7 @@ require_once('config/global.inc.php');
 require_once('functions.inc.php');
 
 // include messages
-$i18n = I18n::getInstance($website->getConfig('supported_languages'));
+$i18n = I18n::getInstance(getConfig('supported_languages'));
 
 if (isset($_GET['lang'])) {
 	$i18n->setCurrentLanguage($_GET['lang']);

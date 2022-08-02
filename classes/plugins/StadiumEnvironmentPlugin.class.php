@@ -47,14 +47,14 @@ class StadiumEnvironmentPlugin {
 		$bonus = self::getBonusSumFromBuildings($event->websoccer, $event->db, 'effect_youthscouting', $event->teamId);
 
 		if ($bonus != 0) {
-			$playerTable = $event->websoccer->getConfig('db_prefix') . '_youthplayer';
+			$playerTable = '_youthplayer';
 			$result = $event->db->querySelect('strength', $playerTable, 'id = %d', $event->playerId);
 			$player = $result->fetch_array();
 			$result->free();
 
 			if ($player) {
-				$minStrength = (int) $event->websoccer->getConfig('youth_scouting_min_strength');
-				$maxStrength = (int) $event->websoccer->getConfig('youth_scouting_max_strength');
+				$minStrength = (int)getConfig('youth_scouting_min_strength');
+				$maxStrength = (int)getConfig('youth_scouting_max_strength');
 
 				$strength = max($minStrength, min($maxStrength, $player['strength'] + $bonus));
 				if ($strength != $player['strength']) {
@@ -113,10 +113,10 @@ class StadiumEnvironmentPlugin {
 
 		if ($sum > 0) {
 			BankAccountDataService::creditAmount($event->websoccer, $event->db, $homeTeamId, $sum,
-				'stadiumenvironment_matchincome_subject', $event->websoccer->getConfig('projectname'));
+				'stadiumenvironment_matchincome_subject',getConfig('projectname'));
 		} else {
 			BankAccountDataService::debitAmount($event->websoccer, $event->db, $homeTeamId, abs($sum),
-				'stadiumenvironment_costs_per_match_subject', $event->websoccer->getConfig('projectname'));
+				'stadiumenvironment_costs_per_match_subject',getConfig('projectname'));
 		}
 	}
 
@@ -141,7 +141,7 @@ class StadiumEnvironmentPlugin {
 		if ($sumHome > 0 || $sumGuest > 0) {
 
 			// get injured players
-			$playerTable = $event->websoccer->getConfig('db_prefix') . '_spieler';
+			$playerTable = '_spieler';
 			$result = $event->db->querySelect('id,verein_id AS team_id,verletzt AS injured', $playerTable,
 					'(verein_id = %d OR verein_id = %d) AND verletzt > 0', array($homeTeamId, $guestTeamId));
 			while ($player = $result->fetch_array()) {
@@ -166,7 +166,7 @@ class StadiumEnvironmentPlugin {
 
 	private static function getBonusSumFromBuildings(WebSoccer $websoccer, DbConnection $db, $attributeName, $teamId) {
 
-		$dbPrefix = $websoccer->getConfig('db_prefix');
+		$dbPrefix = getConfig('db_prefix');
 		$result = $db->querySelect('SUM(' . $attributeName . ') AS attrSum', $dbPrefix . '_buildings_of_team INNER JOIN '. $dbPrefix . '_stadiumbuilding ON id = building_id',
 				'team_id = %d AND construction_deadline < %d', array($teamId,getNowAsTimestamp()));
 		$resArray = $result->fetch_array();

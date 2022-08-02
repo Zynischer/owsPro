@@ -26,12 +26,12 @@ include(BASE_FOLDER . '/frontbase.inc.php');
 
 // offline mode
 $isOffline = FALSE;
-if ($website->getConfig('offline') == 'offline') {
+if (getConfig('offline') == 'offline') {
 	$isOffline = TRUE;
 
 	// is recurring offline mode active?
 } else {
-	$offlineTimeSpansConfig = $website->getConfig('offline_times');
+	$offlineTimeSpansConfig = getConfig('offline_times');
 	if (strlen($offlineTimeSpansConfig)) {
 
 		$timeSpans = explode(',', $offlineTimeSpansConfig);
@@ -54,7 +54,7 @@ if ($website->getConfig('offline') == 'offline') {
 }
 
 if ($isOffline) {
-	$parameters['offline_message'] = nl2br($website->getConfig('offline_text'));
+	$parameters['offline_message'] = nl2br(getConfig('offline_text'));
 	echo getTemplateEngine($i18n)->loadTemplate('views/offline')->render($parameters);
 
 	// show page
@@ -64,7 +64,7 @@ if ($isOffline) {
 	if (!isset($_SESSION['badgechecked']) && $website->getUser()->getRole() == ROLE_USER
 			&& $website->getUser()->getClubId($website, $db)) {
 		$userId = $website->getUser()->id;
-		$result = $db->querySelect('datum_anmeldung', $website->getConfig('db_prefix') . '_user', 'id = %d', $userId);
+		$result = $db->querySelect('datum_anmeldung','_user', 'id = %d', $userId);
 		$userinfo = $result->fetch_array();
 		$result->free();
 

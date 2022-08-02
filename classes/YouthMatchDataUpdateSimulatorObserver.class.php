@@ -3,34 +3,34 @@
 
   This file is part of OpenWebSoccer-Sim.
 
-  OpenWebSoccer-Sim is free software: you can redistribute it 
-  and/or modify it under the terms of the 
-  GNU Lesser General Public License 
+  OpenWebSoccer-Sim is free software: you can redistribute it
+  and/or modify it under the terms of the
+  GNU Lesser General Public License
   as published by the Free Software Foundation, either version 3 of
   the License, or any later version.
 
   OpenWebSoccer-Sim is distributed in the hope that it will be
   useful, but WITHOUT ANY WARRANTY; without even the implied
-  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public 
-  License along with OpenWebSoccer-Sim.  
+  You should have received a copy of the GNU Lesser General Public
+  License along with OpenWebSoccer-Sim.
   If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************/
 
 /**
  * Updates data base after a youth match has completed.
- * 
+ *
  * @author Ingo Hofmann
  */
 class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 	private $_websoccer;
 	private $_db;
-	
+
 	/**
-	 * 
+	 *
 	 * @param WebSoccer $websoccer application context
 	 * @param DbConnection $db DB connection
 	 */
@@ -38,34 +38,34 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 		$this->_websoccer = $websoccer;
 		$this->_db = $db;
 	}
-	
+
 	/**
 	 * @see ISimulatorObserver::onBeforeMatchStarts()
 	 */
 	public function onBeforeMatchStarts(SimulationMatch $match) {
 		// nothing to do here, just be compliant with API...
 	}
-	
+
 	/**
 	 * Create a match report item.
-	 * 
+	 *
 	 * @see ISimulatorObserver::onSubstitution()
 	 */
 	public function onSubstitution(SimulationMatch $match, SimulationSubstitution $substitution) {
 		YouthMatchesDataService::createMatchReportItem($this->_websoccer, $this->_db, $match->id, $match->minute,
 			'ymreport_substitution', array(
-				'in' => $substitution->playerIn->name, 
+				'in' => $substitution->playerIn->name,
 				'out' => $substitution->playerOut->name), $substitution->playerIn->team->id == $match->homeTeam->id);
 	}
-	
+
 	/**
 	 * @see ISimulatorObserver::onMatchCompleted()
 	 */
 	public function onMatchCompleted(SimulationMatch $match) {
-	
+
 		$this->_updateTeam($match, $match->homeTeam);
 		$this->_updateTeam($match, $match->guestTeam);
-		
+
 		// save result and set as simulated
 		$columns = array(
 				'home_noformation' => ($match->homeTeam->noFormationSet) ? '1' : '0',
@@ -74,12 +74,12 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 				'guest_goals' => $match->guestTeam->getGoals(),
 				'simulated' => '1'
 				);
-		$this->_db->queryUpdate($columns, $this->_websoccer->getConfig('db_prefix') . '_youthmatch', 'id = %d', $match->id);
+		$this->_db->queryUpdate($columns,'_youthmatch', 'id = %d', $match->id);
 	}
-	
+
 	/**
 	 * pay salary ans triger player updates.
-	 * 
+	 *
 	 * @param SimulationMatch $match
 	 * @param SimulationTeam $team
 	 */
@@ -87,10 +87,10 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 		// debit players salary
 		$salary = YouthPlayersDataService::computeSalarySumOfYouthPlayersOfTeam($this->_websoccer, $this->_db, $team->id);
 		if ($salary) {
-			BankAccountDataService::debitAmount($this->_websoccer, $this->_db, $team->id, 
+			BankAccountDataService::debitAmount($this->_websoccer, $this->_db, $team->id,
 				$salary, 'youthteam_salarypayment_subject', 'match_salarypayment_sender');
 		}
-		
+
 		// update players who played
 		if (is_array($team->positionsAndPlayers)) {
 			foreach($team->positionsAndPlayers as $position => $players) {
@@ -105,16 +105,16 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 			}
 		}
 	}
-	
+
 	/**
 	 * Update overall player statistics and match records of player.
-	 * 
+	 *
 	 * @param SimulationMatch $match
 	 * @param SimulationPlayer $player
 	 * @param $isOnPitch TRUE if player is on pitch in the end, FALSE if got removed (substitution or red card or injury).
 	 */
 	private function _updatePlayer(SimulationMatch $match, SimulationPlayer $player, $isOnPitch) {
-		
+
 		// update match statistics
 		$columns = array(
 				'name' => $player->name,
@@ -133,25 +133,25 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 				'assists' => $player->getAssists(),
 				'state' => ($isOnPitch) ? '1' : 'Ausgewechselt'
 				);
-		$this->_db->queryUpdate($columns, $this->_websoccer->getConfig('db_prefix') . '_youthmatch_player', 
+		$this->_db->queryUpdate($columns,'_youthmatch_player',
 				'match_id = %d AND player_id = %d', array($match->id, $player->id));
-		
+
 		// update player record, if actually played
-		if ($this->_websoccer->getConfig('sim_played_min_minutes') <= $player->getMinutesPlayed()) {
-			
+		if (getConfig('sim_played_min_minutes') <= $player->getMinutesPlayed()) {
+
 			// query existing statistics
-			$result = $this->_db->querySelect('*', $this->_websoccer->getConfig('db_prefix') . '_youthplayer', 
+			$result = $this->_db->querySelect('*','_youthplayer',
 					'id = %d', $player->id);
 			$playerinfo = $result->fetch_array();
 			$result->free();
-			
+
 			$strengthChange = $this->_computeStrengthChange($player);
-			
+
 			// trigger plug-ins
-			$event = new YouthPlayerPlayedEvent($this->_websoccer, $this->_db, I18n::getInstance($this->_websoccer->getConfig('supported_languages')), 
+			$event = new YouthPlayerPlayedEvent($this->_websoccer, $this->_db, I18n::getInstance(getConfig('supported_languages')),
 					$player, $strengthChange);
 			PluginMediator::dispatchEvent($event);
-			
+
 			$yellowRedCards = 0;
 			if ($player->yellowCards == 2) {
 				$yellowCards = 1;
@@ -159,11 +159,11 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 			} else {
 				$yellowCards = $player->yellowCards;
 			}
-			
+
 			// ensure that new strength does not exceed boundaries (max/min strength)
 			$strength = $playerinfo['strength'] + $strengthChange;
-			$maxStrength = $this->_websoccer->getConfig('youth_scouting_max_strength');
-			$minStrength = $this->_websoccer->getConfig('youth_scouting_min_strength');
+			$maxStrength = getConfig('youth_scouting_max_strength');
+			$minStrength = getConfig('youth_scouting_min_strength');
 			if ($strength > $maxStrength) {
 				$strengthChange = 0;
 				$strength = $maxStrength;
@@ -171,7 +171,7 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 				$strengthChange = 0;
 				$strength = $minStrength;
 			}
-			
+
 			// save
 			$columns = array(
 					'strength' => $strength,
@@ -183,32 +183,32 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 					'st_cards_yellow_red' => $playerinfo['st_cards_yellow_red'] + $yellowRedCards,
 					'st_cards_red' => $playerinfo['st_cards_red'] + $player->redCard
 					);
-			$this->_db->queryUpdate($columns, $this->_websoccer->getConfig('db_prefix') . '_youthplayer',
+			$this->_db->queryUpdate($columns,'_youthplayer',
 					'id = %d', $player->id);
 		}
 	}
-	
+
 	/**
 	 * Computes strength change after match, depending on player's grade/mark.
-	 * 
+	 *
 	 * @param SimulationPlayer $player
 	 * @return int number of strength points which the player gained.
 	 */
 	private function _computeStrengthChange(SimulationPlayer $player) {
 		$mark = $player->getMark();
-		
+
 		if ($mark <= 1.3) {
-			return $this->_websoccer->getConfig('youth_strengthchange_verygood');
+			return getConfig('youth_strengthchange_verygood');
 		} else if ($mark <= 2.3) {
-			return $this->_websoccer->getConfig('youth_strengthchange_good');
+			return getConfig('youth_strengthchange_good');
 		} else if ($mark > 4.25 && $mark <= 5) {
-			return $this->_websoccer->getConfig('youth_strengthchange_bad');
+			return getConfig('youth_strengthchange_bad');
 		} else if ($mark > 5) {
-			return $this->_websoccer->getConfig('youth_strengthchange_verybad');
+			return getConfig('youth_strengthchange_verybad');
 		}
-		
+
 		return 0;
 	}
-	
+
 }
 ?>

@@ -49,7 +49,7 @@ class NewsListModel implements IModel {
 	 * @see IModel::getTemplateParameters()
 	 */
 	public function getTemplateParameters() {
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_news";
+		$fromTable = "_news";
 		$whereCondition = "status = %d";
 		$parameters = "1";
 

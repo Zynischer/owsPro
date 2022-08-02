@@ -67,7 +67,7 @@ class MatchDetailsModel implements IModel {
 
 			$userTeamId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 			$userNationalTeamId = NationalteamsDataService::getNationalTeamManagedByCurrentUser($this->_websoccer, $this->_db);
-			if (!$match['match_simulated'] && $this->_websoccer->getConfig('sim_allow_livechanges')
+			if (!$match['match_simulated'] && getConfig('sim_allow_livechanges')
 					&& ($match['match_home_id'] == $userTeamId || $match['match_guest_id'] == $userTeamId
 							|| $match['match_home_id'] == $userNationalTeamId || $match['match_guest_id'] == $userNationalTeamId)) {
 				$allowTacticChanges = TRUE;

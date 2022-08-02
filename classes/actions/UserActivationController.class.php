@@ -35,7 +35,7 @@ class UserActivationController implements IActionController {
 		$key = $parameters["key"];
 		$userid = $parameters["userid"];
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_user";
+		$fromTable = "_user";
 
 		// get user
 		$columns = "id";

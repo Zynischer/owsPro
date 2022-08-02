@@ -36,7 +36,7 @@ class CancelYouthMatchRequestController implements IActionController {
 
 	public function executeAction($parameters) {
 		// check if feature is enabled
-		if (!$this->_websoccer->getConfig("youth_enabled")) {
+		if (!getConfig("youth_enabled")) {
 			return NULL;
 		}
 
@@ -45,7 +45,7 @@ class CancelYouthMatchRequestController implements IActionController {
 		$clubId = $user->getClubId($this->_websoccer, $this->_db);
 
 		// get request info
-		$fromTable = $this->_websoccer->getConfig("db_prefix") . "_youthmatch_request";
+		$fromTable = "_youthmatch_request";
 		$result = $this->_db->querySelect("*", $fromTable, "id = %d", $parameters["id"]);
 		$request = $result->fetch_array();
 		$result->free();

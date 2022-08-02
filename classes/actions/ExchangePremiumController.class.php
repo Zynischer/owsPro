@@ -44,7 +44,7 @@ class ExchangePremiumController implements IActionController {
 		$user = $this->_websoccer->getUser();
 
 		// check if feature is enabled
-		$exchangeRate = (int) $this->_websoccer->getConfig("premium_exchangerate_gamecurrency");
+		$exchangeRate = (int)getConfig("premium_exchangerate_gamecurrency");
 		if ($exchangeRate <= 0) {
 			throw new Exception("featue is disabled!");
 		}

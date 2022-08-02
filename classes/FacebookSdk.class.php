@@ -53,8 +53,8 @@ class FacebookSdk {
 	private function __construct(WebSoccer $websoccer) {
 		$this->_websoccer = $websoccer;
 		$this->_facebook = new Facebook(array(
-				'appId' => $websoccer->getConfig('facebook_appid'),
-				'secret' => $websoccer->getConfig('facebook_appsecret')
+				'appId' => getConfig('facebook_appid'),
+				'secret' => getConfig('facebook_appsecret')
 				));
 	}
 

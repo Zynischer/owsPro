@@ -39,7 +39,7 @@ class PaypalLinkModel implements IModel {
 	 * @see IModel::renderView()
 	 */
 	public function renderView() {
-		return $this->_websoccer->getConfig("paypal_enabled");
+		return getConfig("paypal_enabled");
 	}
 
 	/**
@@ -49,7 +49,7 @@ class PaypalLinkModel implements IModel {
 	public function getTemplateParameters() {
 
 		$userId = $this->_websoccer->getUser()->id;
-		$linkCode = $this->_websoccer->getConfig("paypal_buttonhtml");
+		$linkCode = getConfig("paypal_buttonhtml");
 
 		$customField = "<input type=\"hidden\" name=\"custom\" value=\"". $userId . "\">";
 		$notifyUrlField = "<input type=\"hidden\" name=\"notify_url\" value=\"". getInternalActionUrl("paypal-notify", null, null, TRUE) . "\">";

@@ -54,7 +54,7 @@ class UnmarkLendableController implements IActionController {
 
 		$columns = array("lending_fee" => 0);
 
-		$fromTable = $this->_websoccer->getConfig("db_prefix") ."_spieler";
+		$fromTable = "_spieler";
 		$whereCondition = "id = %d";
 		$parameters = $parameters["id"];
 

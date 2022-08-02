@@ -55,13 +55,13 @@ class GoogleplusSdk {
 		$this->_websoccer = $websoccer;
 
 		$client = new Google_Client();
-		$client->setApplicationName($this->_websoccer->getConfig('googleplus_appname'));
+		$client->setApplicationName(getConfig('googleplus_appname'));
 		// Visit https://code.google.com/apis/console?api=plus to generate your
 		// client id, client secret, and to register your redirect uri.
-		$client->setClientId($this->_websoccer->getConfig('googleplus_clientid'));
-		$client->setClientSecret($this->_websoccer->getConfig('googleplus_clientsecret'));
+		$client->setClientId(getConfig('googleplus_clientid'));
+		$client->setClientSecret(getConfig('googleplus_clientsecret'));
 		$client->setRedirectUri(getInternalActionUrl('googleplus-login', null, 'home', TRUE));
-		$client->setDeveloperKey($this->_websoccer->getConfig('googleplus_developerkey'));
+		$client->setDeveloperKey(getConfig('googleplus_developerkey'));
 
 		$client->setScopes(array('https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/userinfo.email'));
 
