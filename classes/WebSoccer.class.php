@@ -19,6 +19,16 @@
   If not, see <http://www.gnu.org/licenses/>.
 
 ******************************************************/
+owsPro();						// Funktion owsPro als als oberste Definition zur Verfügung stellen.
+WebSoccer();					// Gekapselte Klasse WebSoccer				  zur Verfügung stellen.
+WebSoccer_functions();			// Gekapseelte Websoccer native Funktionen    zur Verfügung stellen.
+WebSoccer_class();				// gekapselte original WebSocccer Klasse	  zur Verfügung stellne.
+DbConnection();					// Gekapselte Klasse DbConnection			  zur Verfügung stellen.
+DbConnection_functions();		// Gekapseelte DbConnection native Funktionen zur Verfügung stellen.
+DbConnection_class();			// gekapselte original DbConnection Klasse	  zur Verfügung stellne.
+I18n();							// Gekapselte Klasse I18n			  		  zur Verfügung stellen.
+I18n_functions();				// Gekapseelte I18n native Funktionen 		  zur Verfügung stellen.
+I18n_class();					// gekapselte original I18nn Klasse	  		  zur Verfügung stellne.
 /**
  * Die Codeausführung schneller machen, indem vorab die wichtigsten
  * Dateien im Opcache kompiliert vorliegen.
@@ -26,8 +36,7 @@
  *
  * @author Rolf Joseph
  */
-if(version_compare(phpversion(),'8.1.0','<'))echo'';
-else if(!function_exists('owsPro'))opcache_compile_file('classes/WebSoccer.class.php');
+if(!function_exists('owsPro'))opcache_compile_file('WebSoccer.class.php');
 /**
  * Funktions-Kapselung der original Klasse, nativer PHP-Funktionen.
  * Dies wird durch den Konstrukt Funktion in einer Funktion realisiert.
@@ -39,16 +48,6 @@ else if(!function_exists('owsPro'))opcache_compile_file('classes/WebSoccer.class
  *
  * @author Rolf Joseph
  */
-owsPro();						// Funktion owsPro als als oberste Definition zur Verfügung stellen.
-WebSoccer();					// Gekapselte Klasse WebSoccer				  zur Verfügung stellen.
-WebSoccer_functions();			// Gekapseelte Websoccer native Funktionen    zur Verfügung stellen.
-WebSoccer_class();				// gekapselte original WebSocccer Klasse	  zur Verfügung stellne.
-DbConnection();					// Gekapselte Klasse DbConnection			  zur Verfügung stellen.
-DbConnection_functions();		// Gekapseelte DbConnection native Funktionen zur Verfügung stellen.
-DbConnection_class();			// gekapselte original DbConnection Klasse	  zur Verfügung stellne.
-I18n();							// Gekapselte Klasse I18n			  		  zur Verfügung stellen.
-I18n_functions();				// Gekapseelte I18n native Funktionen 		  zur Verfügung stellen.
-I18n_class();					// gekapselte original I18nn Klasse	  		  zur Verfügung stellne.
 // Funktion owsPro als als oberste Definition
 function owsPro(){
 // Gekapselte Klasse WebSoccer
@@ -421,7 +420,7 @@ define('LANG_SESSION_PARAM','lang');
  */
 function I18n_functions(){
 function getSupportedLanguages(){
-		return $supportedLanguages=array_map('trim',explode(',',getConfig("supported_languages")));}
+	return $supportedLanguages=array_map('trim',explode(',',getConfig("supported_languages")));}
 function getCurrentLanguage(){
 	if($currentLanguage==0){
 		if(isset($_SESSION[LANG_SESSION_PARAM]))$lang=$_SESSION[LANG_SESSION_PARAM];
@@ -480,7 +479,7 @@ class I18n{
 		if($paramaters!=NULL)$message=sprintf($message,$paramaters);
 		return$message;}
 	function hasMessage($messageKey){
-		global $msg;
+		global$msg;
 		return isset($msg[$messageKey]);}
 	function getNavigationLabel($pageId){
 		return$this->getMessage($pageId.PAGE_NAV_LABEL_SUFFIX);}
