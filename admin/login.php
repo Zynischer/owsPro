@@ -55,7 +55,7 @@ if ($inputUser or $inputPassword) {
 
 		// correct Pwd?
 		$columns = array('id', 'passwort', 'passwort_salt', 'passwort_neu', 'name');
-		$fromTable = $conf['db_prefix'] .'_admin';
+		$fromTable = '_admin';
 		$whereCondition = 'name = \'%s\'';
 		$parameters = $inputUser;
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $parameters);
@@ -82,7 +82,7 @@ if ($inputUser or $inputPassword) {
 				// update new PW
 				if ($admin['passwort_neu'] == $hashedPw) {
 					$columns = array('passwort' => $hashedPw, 'passwort_neu_angefordert' => 0, 'passwort_neu' => '');
-					$fromTable = $conf['db_prefix'] .'_admin';
+					$fromTable = '_admin';
 					$whereCondition = 'id = %d';
 					$parameter = $admin['id'];
 					$db->queryUpdate($columns, $fromTable, $whereCondition, $parameter);

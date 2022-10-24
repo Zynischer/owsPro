@@ -41,7 +41,7 @@ class DeleteMessageController implements IActionController {
 		}
 
 		// delete
-		$fromTable = getConfig("db_prefix") . "_briefe";
+		$fromTable = "_briefe";
 		$whereCondition = "id = %d";
 		$this->_db->queryDelete($fromTable, $whereCondition, $id);
 

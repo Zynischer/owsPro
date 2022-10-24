@@ -61,14 +61,12 @@ class TeamHistoryModel implements IModel {
 				'CUP.name' => 'cup_name',
 				'CUPROUND.name' => 'cup_round_name'
 				);
-		$tablePrefix = getConfig('db_prefix');
-
-		$fromTable = $tablePrefix . '_achievement AS A';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_saison AS SEASON ON SEASON.id = A.season_id';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_liga AS L ON SEASON.liga_id = L.id';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_cup_round AS CUPROUND ON CUPROUND.id = A.cup_round_id';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_cup AS CUP ON CUP.id = CUPROUND.cup_id';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_user AS U ON U.id = A.user_id';
+		$fromTable = '_achievement AS A';
+		$fromTable .= ' LEFT JOIN _saison AS SEASON ON SEASON.id = A.season_id';
+		$fromTable .= ' LEFT JOIN _liga AS L ON SEASON.liga_id = L.id';
+		$fromTable .= ' LEFT JOIN _cup_round AS CUPROUND ON CUPROUND.id = A.cup_round_id';
+		$fromTable .= ' LEFT JOIN _cup AS CUP ON CUP.id = CUPROUND.cup_id';
+		$fromTable .= ' LEFT JOIN _user AS U ON U.id = A.user_id';
 
 		$whereCondition = 'A.team_id = %d ORDER BY A.date_recorded DESC';
 
@@ -85,7 +83,7 @@ class TeamHistoryModel implements IModel {
 
 				// delete achievement, since it is an older cup round than already saved
 			} else {
-				$this->_db->queryDelete($tablePrefix . '_achievement', 'id = %d', $achievement['achievement_id']);
+				$this->_db->queryDelete('_achievement', 'id = %d', $achievement['achievement_id']);
 			}
 
 		}

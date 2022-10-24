@@ -72,8 +72,7 @@ class LentPlayersModel implements IModel {
 		}
 		$columns[$ageColumn] = 'age';
 
-		$dbPrefix = getConfig("db_prefix");
-		$fromTable = $dbPrefix . "_spieler P INNER JOIN " . $dbPrefix . "_verein C ON C.id = P.verein_id";
+		$fromTable = "_spieler P INNER JOIN _verein C ON C.id = P.verein_id";
 		$whereCondition = "P.status = 1 AND lending_owner_id = %d";
 
 		$whereCondition .= " ORDER BY lending_matches ASC, position ASC, position_main ASC, nachname ASC, vorname ASC";

@@ -56,7 +56,7 @@ class DirectTransferCancelController implements IActionController {
 			throw new Exception(getMessage("transferoffers_offer_cancellation_notfound"));
 		}
 
-		$this->_db->queryDelete(getConfig("db_prefix") . "_transfer_offer", "id = %d", $offer["id"]);
+		$this->_db->queryDelete("_transfer_offer", "id = %d", $offer["id"]);
 
 		// show success message
 		$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,

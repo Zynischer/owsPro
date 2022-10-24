@@ -73,7 +73,7 @@ elseif ($show == "save") {
 
     echo "<h1>". $mainTitle ." &raquo; ". getMessage("subpage_save_title") . "</h1>";
 
-    $fromTable = $conf['db_prefix'] ."_admin";
+    $fromTable = "_admin";
     $whereCondition = "id = %d";
     $parameter = $admin['id'];
 

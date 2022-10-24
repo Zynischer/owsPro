@@ -46,7 +46,7 @@ if ($inputEmail) {
 
 		// correct Pwd?
 		$columns = array('id', 'passwort_neu_angefordert', 'name', 'passwort_salt');
-		$fromTable = $conf['db_prefix'] .'_admin';
+		$fromTable = '_admin';
 		$whereCondition = 'email = \'%s\'';
 		$parameters = $inputEmail;
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $parameters);
@@ -63,7 +63,7 @@ if ($inputEmail) {
 			// store new PW
 			$columns = array('passwort_neu' => $hashedPw,
 							'passwort_neu_angefordert' => $now);
-			$fromTable = $conf['db_prefix'] .'_admin';
+			$fromTable = '_admin';
 			$whereCondition = 'id = %d';
 			$parameter = $admin['id'];
 			$db->queryUpdate($columns, $fromTable, $whereCondition, $parameter);

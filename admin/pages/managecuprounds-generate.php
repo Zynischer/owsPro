@@ -118,7 +118,7 @@ if ($action == "generate" && isset($_POST["teams"]) && is_array($_POST["teams"])
 				<tbody>
 					<?php
 					$result = $db->querySelect("T.id AS team_id,T.name AS team_name,L.name AS league_name,L.land AS league_country",
-							getConfig("db_prefix") . "_verein AS T LEFT JOIN _liga AS L ON L.id = T.liga_id",
+							getConfig("_verein AS T LEFT JOIN _liga AS L ON L.id = T.liga_id",
 							"1=1 ORDER BY team_name ASC");
 
 					while ($team = $result->fetch_array()) {

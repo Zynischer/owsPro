@@ -81,8 +81,8 @@ if (!$show) {
 			'U.lastonline' => 'user_lastonline'
 		);
 
-		$fromTable = getConfig('db_prefix') . '_verein AS C';
-		$fromTable .= ' INNER JOIN ' . getConfig('db_prefix') . '_user AS U ON U.id = C.user_id';
+		$fromTable = '_verein AS C';
+		$fromTable .= ' INNER JOIN ' . '_user AS U ON U.id = C.user_id';
 
 		$whereCondition = 'C.status = \'1\' AND (1=0';
 		$parameters = array();

@@ -52,14 +52,13 @@ class ShoutboxLeagueModel implements IModel {
 		$messages = array();
 
 		// query latest shoutbox messages from the same competition
-		$tablePrefix = getConfig('db_prefix');
-		$fromTable = $tablePrefix . '_shoutmessage AS MESSAGE';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_user AS U ON U.id = MESSAGE.user_id';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_spiel AS M ON M.id = MESSAGE.match_id';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_verein AS HOME ON HOME.id = M.home_verein';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_verein AS GUEST ON GUEST.id = M.gast_verein';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_saison AS SEASON ON (M.saison_id = SEASON.id)';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_liga AS L ON (L.id = SEASON.liga_id)';
+		$fromTable = '_shoutmessage AS MESSAGE';
+		$fromTable .= ' INNER JOIN _user AS U ON U.id = MESSAGE.user_id';
+		$fromTable .= ' INNER JOIN _spiel AS M ON M.id = MESSAGE.match_id';
+		$fromTable .= ' INNER JOIN _verein AS HOME ON HOME.id = M.home_verein';
+		$fromTable .= ' INNER JOIN _verein AS GUEST ON GUEST.id = M.gast_verein';
+		$fromTable .= ' INNER JOIN _saison AS SEASON ON (M.saison_id = SEASON.id)';
+		$fromTable .= ' INNER JOIN _liga AS L ON (L.id = SEASON.liga_id)';
 
 		$whereCondition = 'L.id = %d ORDER BY MESSAGE.created_date DESC';
 

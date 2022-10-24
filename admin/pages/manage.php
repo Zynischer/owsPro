@@ -61,12 +61,11 @@ if (isset($_REQUEST['id'])) $id = (int) $_REQUEST['id'];
 echo "<h1>". getMessage("entity_". $entity)  ."</h1>";
 
 // remove alias
-$tablePrefix = "_";
-$mainTable = $tablePrefix . $entityConfig[0]->attributes()->dbtable;
+$mainTable = $entityConfig[0]->attributes()->dbtable;
 $spaceTablePos = strrpos($mainTable, " ");
 $mainTableAlias = ($spaceTablePos) ? substr($mainTable, $spaceTablePos) . "." : "";
 $dbTableWithoutPrefix = ModuleConfigHelper::removeAliasFromDbTableName($entityConfig[0]->attributes()->dbtable);
-$dbTable = $tablePrefix . $dbTableWithoutPrefix;
+$dbTable = $dbTableWithoutPrefix;
 
 // show overview by default
 $showOverview = TRUE;

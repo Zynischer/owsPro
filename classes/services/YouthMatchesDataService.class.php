@@ -122,13 +122,11 @@ class YouthMatchesDataService {
 	 * @return array list of matches or empty array if no matches found.
 	 */
 	public static function getMatchesOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId, $startIndex, $entries_per_page) {
-		$tablePrefix = getConfig("db_prefix");
-
-		$fromTable = $tablePrefix . "_youthmatch AS M";
-		$fromTable .= " INNER JOIN " . $tablePrefix . "_verein AS HOME ON M.home_team_id = HOME.id";
-		$fromTable .= " INNER JOIN " . $tablePrefix . "_verein AS GUEST ON M.guest_team_id = GUEST.id";
-		$fromTable .= " LEFT JOIN " . $tablePrefix . "_user AS HOMEUSER ON HOME.user_id = HOMEUSER.id";
-		$fromTable .= " LEFT JOIN " . $tablePrefix . "_user AS GUESTUSER ON GUEST.user_id = GUESTUSER.id";
+		$fromTable = "_youthmatch AS M";
+		$fromTable .= " INNER JOIN _verein AS HOME ON M.home_team_id = HOME.id";
+		$fromTable .= " INNER JOIN _verein AS GUEST ON M.guest_team_id = GUEST.id";
+		$fromTable .= " LEFT JOIN _user AS HOMEUSER ON HOME.user_id = HOMEUSER.id";
+		$fromTable .= " LEFT JOIN _user AS GUESTUSER ON GUEST.user_id = GUESTUSER.id";
 
 		// select
 		$columns["M.id"] = "match_id";

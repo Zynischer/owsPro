@@ -112,12 +112,8 @@ class TeamsDataService {
 		if (!$teamId) {
 			return NULL;
 		}
-
-		$tablePrefix = getConfig('db_prefix');
-
-		// from
-		$fromTable = $tablePrefix . '_verein AS C';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_liga AS L ON C.liga_id = L.id';
+		$fromTable = '_verein AS C';
+		$fromTable .= ' LEFT JOIN _liga AS L ON C.liga_id = L.id';
 
 		// where
 		$whereCondition = 'C.status = 1 AND C.id = %d';
@@ -535,14 +531,11 @@ class TeamsDataService {
 	}
 
 	private static function _getFromPart(WebSoccer $websoccer) {
-		$tablePrefix = getConfig('db_prefix');
-
-		// from
-		$fromTable = $tablePrefix . '_verein AS C';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_liga AS L ON C.liga_id = L.id';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_sponsor AS SPON ON C.sponsor_id = SPON.id';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_user AS U ON C.user_id = U.id';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_user AS DEPUTY ON C.user_id_actual = DEPUTY.id';
+		$fromTable = '_verein AS C';
+		$fromTable .= ' LEFT JOIN _liga AS L ON C.liga_id = L.id';
+		$fromTable .= ' LEFT JOIN _sponsor AS SPON ON C.sponsor_id = SPON.id';
+		$fromTable .= ' LEFT JOIN _user AS U ON C.user_id = U.id';
+		$fromTable .= ' LEFT JOIN _user AS DEPUTY ON C.user_id_actual = DEPUTY.id';
 		return $fromTable;
 	}
 

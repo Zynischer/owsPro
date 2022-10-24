@@ -59,10 +59,7 @@ class TeamDetailsModel implements IModel {
 
 		// compute strength level of national team
 		if ($team['is_nationalteam']) {
-			$dbPrefix = getConfig('db_prefix') ;
-			$result = $this->_db->querySelect('AVG(P.w_staerke) AS avgstrength',
-					$dbPrefix . '_spieler AS P INNER JOIN ' . $dbPrefix . '_nationalplayer AS NP ON P.id = NP.player_id',
-					'NP.team_id = %d', $team['team_id']);
+					$result = $this->_db->querySelect('AVG(P.w_staerke) AS avgstrength','_spieler AS P INNER JOIN _nationalplayer AS NP ON P.id = NP.player_id','NP.team_id = %d', $team['team_id']);
 			$players = $result->fetch_array();
 			$result->free();
 			if ($players) {

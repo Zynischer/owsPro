@@ -48,13 +48,12 @@ class ShoutboxModel implements IModel {
 		$messages = array();
 
 		// query latest shoutbox messages from the same competition
-		$tablePrefix = getConfig('db_prefix');
-		$fromTable = $tablePrefix . '_shoutmessage AS MESSAGE';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_user AS U ON U.id = MESSAGE.user_id';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_spiel AS M ON M.id = MESSAGE.match_id';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_verein AS HOME ON HOME.id = M.home_verein';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_verein AS GUEST ON GUEST.id = M.gast_verein';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_spiel AS REFERENCE ON (M.saison_id IS NOT NULL AND M.saison_id = REFERENCE.saison_id OR M.pokalname IS NOT NULL AND M.pokalname != \'\' AND  M.pokalname = REFERENCE.pokalname OR REFERENCE.spieltyp = \'Freundschaft\' AND M.spieltyp = REFERENCE.spieltyp)';
+		$fromTable = '_shoutmessage AS MESSAGE';
+		$fromTable .= ' INNER JOIN _user AS U ON U.id = MESSAGE.user_id';
+		$fromTable .= ' INNER JOIN _spiel AS M ON M.id = MESSAGE.match_id';
+		$fromTable .= ' INNER JOIN _verein AS HOME ON HOME.id = M.home_verein';
+		$fromTable .= ' INNER JOIN _verein AS GUEST ON GUEST.id = M.gast_verein';
+		$fromTable .= ' INNER JOIN _spiel AS REFERENCE ON (M.saison_id IS NOT NULL AND M.saison_id = REFERENCE.saison_id OR M.pokalname IS NOT NULL AND M.pokalname != \'\' AND  M.pokalname = REFERENCE.pokalname OR REFERENCE.spieltyp = \'Freundschaft\' AND M.spieltyp = REFERENCE.spieltyp)';
 
 		$whereCondition = 'REFERENCE.id = %d ORDER BY MESSAGE.created_date DESC';
 

@@ -638,14 +638,11 @@ class MatchesDataService {
 	}
 
 	private static function _getFromPart(WebSoccer $websoccer) {
-		$tablePrefix = getConfig('db_prefix');
-
-		// from
-		$fromTable = $tablePrefix . '_spiel AS M';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_verein AS HOME ON M.home_verein = HOME.id';
-		$fromTable .= ' INNER JOIN ' . $tablePrefix . '_verein AS GUEST ON M.gast_verein = GUEST.id';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_user AS HOMEUSER ON M.home_user_id = HOMEUSER.id';
-		$fromTable .= ' LEFT JOIN ' . $tablePrefix . '_user AS GUESTUSER ON M.gast_user_id = GUESTUSER.id';
+		$fromTable = '_spiel AS M';
+		$fromTable .= ' INNER JOIN _verein AS HOME ON M.home_verein = HOME.id';
+		$fromTable .= ' INNER JOIN _verein AS GUEST ON M.gast_verein = GUEST.id';
+		$fromTable .= ' LEFT JOIN _user AS HOMEUSER ON M.home_user_id = HOMEUSER.id';
+		$fromTable .= ' LEFT JOIN _user AS GUESTUSER ON M.gast_user_id = GUESTUSER.id';
 		return $fromTable;
 	}
 

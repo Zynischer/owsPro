@@ -67,9 +67,9 @@ if (!$show) {
 	  $columns = array();
 	  $columns["T1.id"] = "id";
 	  $columns["T1.name"] = "name";
-	  $columns["(SELECT COUNT(*) FROM " . $conf['db_prefix'] . "_spieler AS S WHERE S.verein_id = T1.id)"] = "playerscount";
+	  $columns["(SELECT COUNT(*) FROM _spieler AS S WHERE S.verein_id = T1.id)"] = "playerscount";
 
-	  $fromTable = $conf['db_prefix'] . "_verein AS T1";
+	  $fromTable = "_verein AS T1";
 	  $whereCondition = "T1.liga_id = %d ORDER BY T1.name ASC";
 	  $result = $db->querySelect($columns, $fromTable, $whereCondition, $leagueid);
 
@@ -215,7 +215,7 @@ $_POST['entity_player_vertrag_gehalt'], $_POST['entity_player_vertrag_spiele'], 
 		// generate for all teams of league
 
 		$columns = "id";
-		$fromTable = $conf['db_prefix'] . "_verein";
+		$fromTable = "_verein";
 		$whereCondition = "liga_id = %d";
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $leagueid);
 		while ($team = $result->fetch_array()) {
