@@ -45,7 +45,7 @@ class AcceptYouthMatchRequestController implements IActionController {
 		$clubId = $user->getClubId($this->_websoccer, $this->_db);
 
 		// get request info
-		$fromTable = "_youthmatch_request";
+		$fromTable = "youthmatch_request";
 		$result = $this->_db->querySelect("*", $fromTable, "id = %d", $parameters["id"]);
 		$request = $result->fetch_array();
 		$result->free();
@@ -87,7 +87,7 @@ class AcceptYouthMatchRequestController implements IActionController {
 				"matchdate" => $request["matchdate"],
 				"home_team_id" => $request["team_id"],
 				"guest_team_id" => $clubId
-				),"_youthmatch");
+				),"youthmatch");
 
 		// delete match request
 		$this->_db->queryDelete($fromTable, "id = %d", $parameters["id"]);

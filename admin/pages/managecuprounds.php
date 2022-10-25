@@ -34,7 +34,7 @@ if (!$admin["r_admin"] && !$admin["r_demo"] && !$admin["r_spiele"]) {
 
 $cupid = (isset($_REQUEST["cup"]) && is_numeric($_REQUEST["cup"])) ? $_REQUEST["cup"] : 0;
 
-$result = $db->querySelect("name","_cup", "id = %d", $cupid);
+$result = $db->querySelect("name","cup", "id = %d", $cupid);
 $cup = $result->fetch_array();
 $result->free();
 if (!isset($cup["name"])) {
@@ -110,7 +110,7 @@ if ($action == "create") {
 
 		}
 
-		$db->queryInsert($columns,"_cup_round");
+		$db->queryInsert($columns,"cup_round");
 
 	} catch (Exception $e) {
 		echo createErrorMessage(getMessage("subpage_error_alertbox_title") , $e->getMessage());
@@ -128,7 +128,7 @@ if ($action == "create") {
 }
 
 // get existing rounds as hierarchy
-$result = $db->querySelect("*","_cup_round", "cup_id = %d ORDER BY firstround_date DESC", $cupid);
+$result = $db->querySelect("*","cup_round", "cup_id = %d ORDER BY firstround_date DESC", $cupid);
 $hierarchy = array();
 while ($round = $result->fetch_array()) {
 	$hierarchy[$round["id"]]["round"] = $round;
@@ -198,16 +198,16 @@ function renderRound($roundNode) {
 			$columns["secondround_date"] = $secondDateObj->getTimestamp();
 		}
 
-		$db->queryUpdate($columns,"_cup_round", "id = %d", $roundNode["round"]["id"]);
+		$db->queryUpdate($columns,"cup_round", "id = %d", $roundNode["round"]["id"]);
 
 		// name has changed, so also update already existing matches
 		if ($roundNode["round"]["name"] !== $_POST["name"]) {
-			$db->queryUpdate(array("pokalrunde" => $_POST["name"]),"_spiel", "pokalname = '%s' AND pokalrunde = '%s'",
+			$db->queryUpdate(array("pokalrunde" => $_POST["name"]),"spiel", "pokalname = '%s' AND pokalrunde = '%s'",
 					array($cup["name"], $roundNode["round"]["name"]));
 		}
 
 		// update local instance
-		$result = $db->querySelect("*","_cup_round", "id = %d", $roundNode["round"]["id"]);
+		$result = $db->querySelect("*","cup_round", "id = %d", $roundNode["round"]["id"]);
 		$roundNode["round"] = $result->fetch_array();
 		$result->free();
 

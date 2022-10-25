@@ -43,12 +43,12 @@ class DisableAccountController implements IActionController {
 		// fire user
 		$clubId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 		if ($clubId) {
-			$this->_db->queryUpdate(array("user_id" => '', "captain_id" => ''),"_verein",
+			$this->_db->queryUpdate(array("user_id" => '', "captain_id" => ''),"verein",
 					"user_id = %d", $this->_websoccer->getUser()->id);
 		}
 
 		// disable user
-		$this->_db->queryUpdate(array("status" => "0"),"_user",
+		$this->_db->queryUpdate(array("status" => "0"),"user",
 				"id = %d", $this->_websoccer->getUser()->id);
 
 		// logout user

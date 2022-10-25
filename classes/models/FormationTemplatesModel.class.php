@@ -49,7 +49,7 @@ class FormationTemplatesModel implements IModel {
 	public function getTemplateParameters() {
 
 		$templates = array();
-		$result = $this->_db->querySelect('id, datum AS date, templatename','_aufstellung',
+		$result = $this->_db->querySelect('id, datum AS date, templatename','aufstellung',
 				'verein_id = %d AND templatename IS NOT NULL ORDER BY datum DESC',
 				$this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db));
 		while ($template = $result->fetch_array()) {

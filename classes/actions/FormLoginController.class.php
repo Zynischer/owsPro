@@ -75,7 +75,7 @@ class FormLoginController implements IActionController {
 		// "remember me"
 		if (isset($parameters["rememberme"]) && $parameters["rememberme"] == 1) {
 
-			$fromTable = "_user";
+			$fromTable = "user";
 			$whereCondition = "id = %d";
 			$parameter = $userId;
 

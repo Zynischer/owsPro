@@ -73,7 +73,7 @@ if ($itemId > 0) {
 
 
 $whereCondition .= ' ORDER BY '. $labelColumns . ' ASC';
-$result = $db->querySelect('id, ' . $labelColumns,'_' . $dbTable, $whereCondition, $queryParameters, MAX_ITEMS);
+$result = $db->querySelect('id, ' . $labelColumns,$dbTable, $whereCondition, $queryParameters, MAX_ITEMS);
 
 $items = array();
 // collect items;

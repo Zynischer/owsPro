@@ -74,7 +74,7 @@ class SendMessageController implements IActionController {
 		$columns["betreff"] = $parameters["subject"];
 		$columns["nachricht"] = $parameters["msgcontent"];
 
-		$fromTable = "_briefe";
+		$fromTable = "briefe";
 
 		// create message in inbox of recipient
 		$columns["typ"] = "eingang";

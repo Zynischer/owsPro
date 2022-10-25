@@ -75,14 +75,14 @@ if (!$show) {
 			'C.id' => 'team_id',
 			'C.name' => 'team_name',
 			'C.finanz_budget' => 'team_budget',
-			'(SELECT COUNT(*) FROM _spieler AS PlayerTab WHERE PlayerTab.verein_id = C.id AND status = \'1\')' => 'team_players',
+			'(SELECT COUNT(*) FROM spieler AS PlayerTab WHERE PlayerTab.verein_id = C.id AND status = \'1\')' => 'team_players',
 			'U.id' => 'user_id',
 			'U.nick' => 'user_nick',
 			'U.lastonline' => 'user_lastonline'
 		);
 
-		$fromTable = '_verein AS C';
-		$fromTable .= ' INNER JOIN ' . '_user AS U ON U.id = C.user_id';
+		$fromTable = 'verein AS C';
+		$fromTable .= ' INNER JOIN ' . 'user AS U ON U.id = C.user_id';
 
 		$whereCondition = 'C.status = \'1\' AND (1=0';
 		$parameters = array();
@@ -98,7 +98,7 @@ if (!$show) {
 		}
 
 		if (!empty($_POST['maxplayers'])) {
-			$whereCondition .= ' OR (SELECT COUNT(*) FROM _spieler AS PlayerTab WHERE PlayerTab.verein_id = C.id AND status = \'1\') < %d';
+			$whereCondition .= ' OR (SELECT COUNT(*) FROM spieler AS PlayerTab WHERE PlayerTab.verein_id = C.id AND status = \'1\') < %d';
 			$parameters[] = $_POST['maxplayers'];
 		}
 
@@ -285,11 +285,11 @@ elseif ($show == 'dismiss') {
 			'captain_id' => '',
 			'finanz_budget' => (!empty($_POST['minbudget'])) ? max($_POST['minbudget'], $team['team_budget']) : $team['team_budget']
 		);
-		$db->queryUpdate($teamcolumns,'_verein', 'id = %d', $teamId);
+		$db->queryUpdate($teamcolumns,'verein', 'id = %d', $teamId);
 
 		// disable user
 		if (isset($_POST['disableusers']) && $_POST['disableusers']) {
-			$db->queryUpdate(array('status' => '0'),'_user', 'id = %d', $team['user_id']);
+			$db->queryUpdate(array('status' => '0'),'user', 'id = %d', $team['user_id']);
 		}
 
 		// send message to user
@@ -301,7 +301,7 @@ elseif ($show == 'dismiss') {
 					'datum' => getNowAsTimestamp(),
 					'betreff' => trim($_POST['message_subject']),
 					'nachricht' => trim($_POST['message_content'])
-				),'_briefe');
+				),'briefe');
 		}
 
 		// count and update players
@@ -319,7 +319,7 @@ elseif ($show == 'dismiss') {
 		$positionsCount['MS'] = 0;
 		$positionsCount['RS'] = 0;
 
-		$result = $db->querySelect('id, position_main, w_kondition, w_frische, w_zufriedenheit, vertrag_spiele','_spieler',
+		$result = $db->querySelect('id, position_main, w_kondition, w_frische, w_zufriedenheit, vertrag_spiele','spieler',
 			'verein_id = %d AND status = \'1\'', $teamId);
 		while ($player = $result->fetch_array()) {
 			$updateRequired = FALSE;
@@ -354,7 +354,7 @@ elseif ($show == 'dismiss') {
 					'w_kondition' => $stamina,
 					'w_zufriedenheit' => $satisfaction,
 					'vertrag_spiele' => $contractMatches
-				),'_spieler', 'id = %d', $player['id']);
+				),'spieler', 'id = %d', $player['id']);
 
 			// increase position count
 			if (strlen($player['position_main'])) {

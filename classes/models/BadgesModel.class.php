@@ -48,7 +48,7 @@ class BadgesModel implements IModel {
 	 */
 	public function getTemplateParameters() {
 
-		$result = $this->_db->querySelect('*','_badge', '1 ORDER BY event ASC, level ASC');
+		$result = $this->_db->querySelect('*','badge', '1 ORDER BY event ASC, level ASC');
 		$badges = array();
 		while ($badge = $result->fetch_array()) {
 			$badges[] = $badge;

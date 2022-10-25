@@ -277,7 +277,7 @@ class FormBuilder {
 	public static function createForeignKeyField($i18n, $fieldId, $fieldInfo, $fieldValue) {
 		$website = WebSoccer::getInstance();
 		$db = DbConnection::getInstance();
-		$fromTable = '_'. $fieldInfo['jointable'];
+		$fromTable = $fieldInfo['jointable'];
 
 		// count total items
 		$result = $db->querySelect('COUNT(*) AS hits', $fromTable, '1=1', '');

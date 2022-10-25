@@ -33,9 +33,9 @@ class UpdateStatisticsJob extends AbstractJob {
 	function execute() {
 		// get some parameters for our query
 		$pointsWin = 3;
-		$statisticTable = '_team_league_statistics';
-		$clubTable = '_verein';
-		$matchTable = '_spiel';
+		$statisticTable = 'team_league_statistics';
+		$clubTable = 'verein';
+		$matchTable = 'spiel';
 
 		// build the monster query which fills our statistics cache
 		$query = "REPLACE INTO $statisticTable
@@ -82,9 +82,9 @@ FROM (SELECT C.id AS team_id, M.saison_id AS season_id,
 		$this->_db->executeQuery($query);
 
 		// update team strengths
-		$strengthQuery = ' UPDATE _verein c INNER JOIN (';
+		$strengthQuery = ' UPDATE verein c INNER JOIN (';
 		$strengthQuery .= ' SELECT verein_id, AVG( w_staerke ) AS strength_avg';
-		$strengthQuery .= ' FROM _spieler';
+		$strengthQuery .= ' FROM spieler';
 		$strengthQuery .= ' GROUP BY verein_id';
 		$strengthQuery .= ' ) AS r ON r.verein_id = c.id';
 		$strengthQuery .= ' SET c.strength = r.strength_avg';

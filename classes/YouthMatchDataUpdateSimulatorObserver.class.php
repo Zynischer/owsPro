@@ -74,7 +74,7 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 				'guest_goals' => $match->guestTeam->getGoals(),
 				'simulated' => '1'
 				);
-		$this->_db->queryUpdate($columns,'_youthmatch', 'id = %d', $match->id);
+		$this->_db->queryUpdate($columns,'youthmatch', 'id = %d', $match->id);
 	}
 
 	/**
@@ -133,14 +133,14 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 				'assists' => $player->getAssists(),
 				'state' => ($isOnPitch) ? '1' : 'Ausgewechselt'
 				);
-		$this->_db->queryUpdate($columns,'_youthmatch_player',
+		$this->_db->queryUpdate($columns,'youthmatch_player',
 				'match_id = %d AND player_id = %d', array($match->id, $player->id));
 
 		// update player record, if actually played
 		if (getConfig('sim_played_min_minutes') <= $player->getMinutesPlayed()) {
 
 			// query existing statistics
-			$result = $this->_db->querySelect('*','_youthplayer',
+			$result = $this->_db->querySelect('*','youthplayer',
 					'id = %d', $player->id);
 			$playerinfo = $result->fetch_array();
 			$result->free();
@@ -183,7 +183,7 @@ class YouthMatchDataUpdateSimulatorObserver implements ISimulatorObserver {
 					'st_cards_yellow_red' => $playerinfo['st_cards_yellow_red'] + $yellowRedCards,
 					'st_cards_red' => $playerinfo['st_cards_red'] + $player->redCard
 					);
-			$this->_db->queryUpdate($columns,'_youthplayer',
+			$this->_db->queryUpdate($columns,'youthplayer',
 					'id = %d', $player->id);
 		}
 	}

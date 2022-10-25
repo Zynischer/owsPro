@@ -56,7 +56,7 @@ class AdminPasswordConverter implements IConverter {
 		if (isset($_POST['id']) && $_POST['id']) {
 			$db = DbConnection::getInstance();
 			$columns = 'passwort, passwort_salt';
-			$fromTable = '_admin';
+			$fromTable = 'admin';
 			$whereCondition = 'id = %d';
 			$result = $db->querySelect($columns, $fromTable, $whereCondition, $_POST['id'], 1);
 			$admin = $result->fetch_array();

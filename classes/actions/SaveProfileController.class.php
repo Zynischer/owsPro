@@ -98,7 +98,7 @@ class SaveProfileController implements IActionController {
 
 		// update record
 		if (count($columns)) {
-			$fromTable = "_user";
+			$fromTable = "user";
 			$whereCondition = "id = %d";
 			$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $user->id);
 		}

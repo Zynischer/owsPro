@@ -45,7 +45,7 @@ if ($action == "complete") {
 	}
 
 	// set goals and minutes played
-	$statTable = "_spiel_berechnung";
+	$statTable = "spiel_berechnung";
 	$result = $db->querySelect("SUM(tore) AS goals, MAX(minuten_gespielt) AS minutes", $statTable, "spiel_id = %d AND team_id = %d",
 			array($matchId, $match["match_home_id"]));
 	$homeStat = $result->fetch_array();
@@ -61,12 +61,12 @@ if ($action == "complete") {
 			"home_tore" => $homeStat["goals"],
 			"gast_tore" => $guestStat["goals"],
 			"berechnet" => "1"
-			),"_spiel", "id = %d", $matchId);
+			),"spiel", "id = %d", $matchId);
 
 	// create internal model
-	$fromTable = "_spiel AS M";
-	$fromTable .= " INNER JOIN _verein AS HOME_T ON HOME_T.id = M.home_verein";
-	$fromTable .= " INNER JOIN _verein AS GUEST_T ON GUEST_T.id = M.gast_verein";
+	$fromTable = "spiel AS M";
+	$fromTable .= " INNER JOIN verein AS HOME_T ON HOME_T.id = M.home_verein";
+	$fromTable .= " INNER JOIN verein AS GUEST_T ON GUEST_T.id = M.gast_verein";
 
 	$columns = array();
 	$columns["M.id"] = "match_id";

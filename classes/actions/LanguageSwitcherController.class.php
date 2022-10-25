@@ -39,7 +39,7 @@ class LanguageSwitcherController implements IActionController {
 		// update user profile
 		$user = $this->_websoccer->getUser();
 		if ($user->id != null) {
-			$fromTable = "_user";
+			$fromTable = "user";
 			$columns = array("lang" => $lang);
 			$whereCondition = "id = %d";
 			$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $user->id);

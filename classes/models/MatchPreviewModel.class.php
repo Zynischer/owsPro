@@ -82,7 +82,7 @@ class MatchPreviewModel implements IModel {
 
 	private function _getUserInfoByTeam($teamId) {
 		$columns = 'U.id AS user_id, nick, email, picture';
-		$fromTable = '_user AS U INNER JOIN _verein AS C ON C.user_id = U.id';
+		$fromTable = 'user AS U INNER JOIN verein AS C ON C.user_id = U.id';
 		$result = $this->_db->querySelect($columns, $fromTable, 'C.id = %d', $teamId);
 		$user = $result->fetch_array();
 		$result->free();

@@ -126,7 +126,7 @@ class ExtendStadiumController implements IActionController {
 				"p_haupt_steh" => ($parameters["grand_standing"]) ? $parameters["grand_standing"] : 0,
 				"p_haupt_sitz" => ($parameters["grand_seats"]) ? $parameters["grand_seats"] : 0,
 				"p_vip" => ($parameters["vip"]) ? $parameters["vip"] : 0
-				),"_stadium_construction");
+				),"stadium_construction");
 
 		// success message
 		$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,

@@ -41,7 +41,7 @@ class LeaguesOverviewModel implements IModel {
 	public function getTemplateParameters() {
 
 		// get table markers
-		$fromTable = "_liga";
+		$fromTable = "liga";
 		$whereCondition = "1=1 GROUP BY land ORDER BY land ASC";
 
 		$columns["land"] = "name";

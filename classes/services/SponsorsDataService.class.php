@@ -36,8 +36,8 @@ class SponsorsDataService {
 		$columns["S.b_meisterschaft"] = "amount_championship";
 		$columns["S.bild"] = "picture";
 
-		$fromTable = "_sponsor AS S";
-		$fromTable .= " INNER JOIN _verein AS T ON T.sponsor_id = S.id";
+		$fromTable = "sponsor AS S";
+		$fromTable .= " INNER JOIN verein AS T ON T.sponsor_id = S.id";
 		$whereCondition = "T.id = %d AND T.sponsor_spiele > 0";
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $clubId, 1);
 		$sponsor = $result->fetch_array();
@@ -58,9 +58,9 @@ class SponsorsDataService {
 		$columns["S.b_sieg"] = "amount_win";
 		$columns["S.b_meisterschaft"] = "amount_championship";
 
-		$fromTable = "_sponsor AS S";
+		$fromTable = "sponsor AS S";
 		$whereCondition = "S.liga_id = %d AND (S.min_platz = 0 OR S.min_platz >= %d)"
-							. " AND (S.max_teams <= 0 OR S.max_teams > (SELECT COUNT(*) FROM _verein AS T WHERE T.sponsor_id = S.id AND T.sponsor_spiele > 0))"
+							. " AND (S.max_teams <= 0 OR S.max_teams > (SELECT COUNT(*) FROM verein AS T WHERE T.sponsor_id = S.id AND T.sponsor_spiele > 0))"
 							. " ORDER BY S.b_spiel DESC";
 		$parameters = array($team["team_league_id"], $teamRank);
 

@@ -64,7 +64,7 @@ if ($isOffline) {
 	if (!isset($_SESSION['badgechecked']) && $website->getUser()->getRole() == ROLE_USER
 			&& $website->getUser()->getClubId($website, $db)) {
 		$userId = $website->getUser()->id;
-		$result = $db->querySelect('datum_anmeldung','_user', 'id = %d', $userId);
+		$result = $db->querySelect('datum_anmeldung','user', 'id = %d', $userId);
 		$userinfo = $result->fetch_array();
 		$result->free();
 

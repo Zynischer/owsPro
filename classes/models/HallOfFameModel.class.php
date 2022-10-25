@@ -60,9 +60,9 @@ class HallOfFameModel implements IModel {
 				'C.name' => 'team_name',
 				'C.bild' => 'team_picture'
 				);
-		$fromTable = '_saison AS S';
-		$fromTable .= ' INNER JOIN _liga AS L ON L.id = S.liga_id';
-		$fromTable .= ' INNER JOIN _verein AS C ON C.id = S.platz_1_id';
+		$fromTable = 'saison AS S';
+		$fromTable .= ' INNER JOIN liga AS L ON L.id = S.liga_id';
+		$fromTable .= ' INNER JOIN verein AS C ON C.id = S.platz_1_id';
 		$whereCondition = 'S.beendet = \'1\' ORDER BY L.land ASC, L.name ASC, S.id DESC';
 		$result = $this->_db->querySelect($columns, $fromTable, $whereCondition);
 		while ($season = $result->fetch_array()) {
@@ -77,8 +77,8 @@ class HallOfFameModel implements IModel {
 				'C.name' => 'team_name',
 				'C.bild' => 'team_picture'
 		);
-		$fromTable = '_cup AS CUP';
-		$fromTable .= ' INNER JOIN _verein AS C ON C.id = CUP.winner_id';
+		$fromTable = 'cup AS CUP';
+		$fromTable .= ' INNER JOIN verein AS C ON C.id = CUP.winner_id';
 		$whereCondition = 'CUP.winner_id IS NOT NULL ORDER BY CUP.id DESC';
 		$result = $this->_db->querySelect($columns, $fromTable, $whereCondition);
 		while ($cup = $result->fetch_array()) {

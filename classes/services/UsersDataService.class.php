@@ -67,7 +67,7 @@ class UsersDataService {
 		if (getConfig("premium_initial_credit")) {
 			$columns["premium_balance"] = getConfig("premium_initial_credit");
 		}
-		$db->queryInsert($columns,"_user");
+		$db->queryInsert($columns,"user");
 
 		// provide ID of created user.
 		if (strlen($username)) {
@@ -94,7 +94,7 @@ class UsersDataService {
 	public static function countActiveUsersWithHighscore(WebSoccer $websoccer, DbConnection $db) {
 		$columns = "COUNT(id) AS hits";
 
-		$fromTable = "_user";
+		$fromTable = "user";
 		$whereCondition = "status = 1 AND highscore > 0 GROUP BY id";
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition);
@@ -131,8 +131,8 @@ class UsersDataService {
 
 		$limit = $startIndex .",". $entries_per_page;
 
-		$fromTable = "_user AS U";
-		$fromTable .= " LEFT JOIN _verein AS C ON C.user_id = U.id";
+		$fromTable = "user AS U";
+		$fromTable .= " LEFT JOIN verein AS C ON C.user_id = U.id";
 		$whereCondition = "U.status = 1 AND highscore > 0 GROUP BY id ORDER BY highscore DESC, datum_anmeldung ASC";
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, null, $limit);
@@ -178,7 +178,7 @@ class UsersDataService {
 
 		$columns["premium_balance"] = "premium_balance";
 
-		$fromTable = "_user";
+		$fromTable = "user";
 		$whereCondition = "id = %d AND status = 1";
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $userId);
@@ -204,7 +204,7 @@ class UsersDataService {
 	public static function getUserIdByNick(WebSoccer $websoccer, DbConnection $db, $nick) {
 		$columns = "id";
 
-		$fromTable = "_user";
+		$fromTable = "user";
 		$whereCondition = "nick = '%s' AND status = 1";
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $nick);
@@ -229,7 +229,7 @@ class UsersDataService {
 	public static function getUserIdByEmail(WebSoccer $websoccer, DbConnection $db, $email) {
 		$columns = "id";
 
-		$fromTable = "_user";
+		$fromTable = "user";
 		$whereCondition = "email = '%s' AND status = 1";
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $email);
@@ -253,7 +253,7 @@ class UsersDataService {
 	 */
 	public static function findUsernames(WebSoccer $websoccer, DbConnection $db, $nickStart) {
 		$columns = "nick";
-		$fromTable = "_user";
+		$fromTable = "user";
 		$whereCondition = "UPPER(nick) LIKE '%s%%' AND status = 1";
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, strtoupper($nickStart), 10);
@@ -324,7 +324,7 @@ class UsersDataService {
 	public static function countOnlineUsers(WebSoccer $websoccer, DbConnection $db) {
 		$timeBoundary = getNowAsTimestamp() - 15 * 60;
 
-		$result = $db->querySelect("COUNT(*) AS hits","_user",
+		$result = $db->querySelect("COUNT(*) AS hits","user",
 				"lastonline >= %d", $timeBoundary);
 		$users = $result->fetch_array();
 		$result->free();
@@ -361,8 +361,8 @@ class UsersDataService {
 
 		$limit = $startIndex .",". $entries_per_page;
 
-		$fromTable = "_user AS U";
-		$fromTable .= " LEFT JOIN _verein AS C ON C.user_id = U.id";
+		$fromTable = "user AS U";
+		$fromTable .= " LEFT JOIN verein AS C ON C.user_id = U.id";
 		$whereCondition = "U.status = 1 AND lastonline >= %d GROUP BY id ORDER BY lastonline DESC";
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $timeBoundary, $limit);
@@ -385,7 +385,7 @@ class UsersDataService {
 	 * @return int total number of enabled users.
 	 */
 	public static function countTotalUsers(WebSoccer $websoccer, DbConnection $db) {
-		$result = $db->querySelect("COUNT(*) AS hits","_user",
+		$result = $db->querySelect("COUNT(*) AS hits","user",
 				"status = 1");
 		$users = $result->fetch_array();
 		$result->free();

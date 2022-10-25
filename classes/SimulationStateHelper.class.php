@@ -43,7 +43,7 @@ class SimulationStateHelper {
 	 */
 	public static function createSimulationRecord(WebSoccer $websoccer, DbConnection $db, $matchId, SimulationPlayer $player, $onBench = FALSE) {
 
-		$fromTable = '_spiel_berechnung';
+		$fromTable = 'spiel_berechnung';
 
 		$db->queryInsert(self::getPlayerColumns($matchId, $player, ($onBench) ? 'Ersatzbank' : '1'), $fromTable);
 	}
@@ -228,7 +228,7 @@ class SimulationStateHelper {
 			}
 		}
 
-		$fromTable = '_spiel';
+		$fromTable = 'spiel';
 		$whereCondition = 'id = %d';
 		$parameters = $match->id;
 
@@ -263,7 +263,7 @@ class SimulationStateHelper {
 	}
 
 	private static function updatePlayerState(WebSoccer $websoccer, DbConnection $db, $matchId, $player, $fieldArea) {
-		$fromTable = '_spiel_berechnung';
+		$fromTable = 'spiel_berechnung';
 		$whereCondition = 'spieler_id = %d AND spiel_id = %d';
 		$parameters = array($player->id, $matchId);
 
@@ -337,7 +337,7 @@ class SimulationStateHelper {
 		$columns['passes_failed'] = 'passes_failed';
 		$columns['assists'] = 'assists';
 
-		$fromTable = '_spiel_berechnung';
+		$fromTable = 'spiel_berechnung';
 		$whereCondition = 'spiel_id = %d AND team_id = %d ORDER BY id ASC';
 		$parameters = array($matchId, $team->id);
 

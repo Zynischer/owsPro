@@ -48,7 +48,7 @@ class UniqueCupNameValidator implements IValidator {
 		$db = DbConnection::getInstance();
 
 		// any cup with same name (but different ID)?
-		$result = $db->querySelect('id','_cup',
+		$result = $db->querySelect('id','cup',
 				'name = \'%s\'', $this->_value, 1);
 		$cups = $result->fetch_array();
 		$result->free();
@@ -58,7 +58,7 @@ class UniqueCupNameValidator implements IValidator {
 		}
 
 		// any match using the name for cup name?
-		$result = $db->querySelect('COUNT(*) AS hits','_spiel',
+		$result = $db->querySelect('COUNT(*) AS hits','spiel',
 				'pokalname = \'%s\'', $this->_value);
 		$matches = $result->fetch_array();
 		$result->free();

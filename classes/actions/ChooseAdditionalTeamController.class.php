@@ -51,7 +51,7 @@ class ChooseAdditionalTeamController implements IActionController {
 		// check minimum highscore
 		$minHighscore = (int)getConfig('additional_team_min_highscore');
 		if ($minHighscore) {
-			$result = $this->_db->querySelect('highscore','_user',
+			$result = $this->_db->querySelect('highscore','user',
 					'id = %d', $user->id);
 			$userinfo = $result->fetch_array();
 			$result->free();
@@ -62,7 +62,7 @@ class ChooseAdditionalTeamController implements IActionController {
 		}
 
 		// check maximum number of teams per user
-		$fromTable = '_verein';
+		$fromTable = 'verein';
 		$result = $this->_db->querySelect('id,liga_id', $fromTable, 'user_id = %d', $user->id);
 		$teamsOfUser = array();
 		while ($teamOfUser = $result->fetch_array()) {

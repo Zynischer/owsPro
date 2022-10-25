@@ -177,7 +177,7 @@ class SaveMatchChangesController implements IActionController {
 
 		// execute update
 		if (count($columns)) {
-			$fromTable = '_spiel';
+			$fromTable = 'spiel';
 			$whereCondition = 'id = %d';
 
 			$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $matchId);
@@ -207,7 +207,7 @@ class SaveMatchChangesController implements IActionController {
 			}
 		}
 
-		$updateTable = '_spiel_berechnung';
+		$updateTable = 'spiel_berechnung';
 		$whereCondition = 'id = %d';
 
 		$setupMainMapping = array(
@@ -259,7 +259,7 @@ class SaveMatchChangesController implements IActionController {
 	private function _createMatchReportMessage(User $user, $matchId, $minute, $isHomeTeam) {
 
 		// get available messages
-		$result = $this->_db->querySelect('id','_spiel_text', 'aktion = \'Taktikaenderung\'');
+		$result = $this->_db->querySelect('id','spiel_text', 'aktion = \'Taktikaenderung\'');
 		$messages = array();
 		while ($message = $result->fetch_array()) {
 			$messages[] = $message['id'];
@@ -279,7 +279,7 @@ class SaveMatchChangesController implements IActionController {
 				'active_home' => $isHomeTeam,
 				'playernames' => $user->username
 				),
-				'_matchreport');
+				'matchreport');
 	}
 
 }

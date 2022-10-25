@@ -63,7 +63,7 @@ class RemoveYouthPlayerFromMarketController implements IActionController {
 
 		$columns = array("transfer_fee" => 0);
 
-		$fromTable = "_youthplayer";
+		$fromTable = "youthplayer";
 		$whereCondition = "id = %d";
 
 		$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $playerId);

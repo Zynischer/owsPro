@@ -41,7 +41,7 @@ class DeleteShoutBoxMessageController implements IActionController {
 	 */
 	public function executeAction($parameters) {
 
-		$this->_db->queryDelete('_shoutmessage',
+		$this->_db->queryDelete('shoutmessage',
 				'id = %d', $parameters['mid']);
 
 		return null;

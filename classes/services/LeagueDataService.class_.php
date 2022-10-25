@@ -35,7 +35,7 @@ class LeagueDataService {
 	 * @return array data about league or empty array if league could not be found.
 	 */
 	public static function getLeagueById(WebSoccer $websoccer, DbConnection $db, $leagueId) {
-		$fromTable = "_liga AS L";
+		$fromTable = "liga AS L";
 
 		// where
 		$whereCondition = "L.id = %d";
@@ -62,7 +62,7 @@ class LeagueDataService {
 	 * @return array list of leagues or empty array.
 	 */
 	public static function getLeaguesSortedByCountry(WebSoccer $websoccer, DbConnection $db) {
-		$fromTable = "_liga AS L";
+		$fromTable = "liga AS L";
 
 		// where
 		$whereCondition = "1 ORDER BY league_country ASC, league_name ASC";
@@ -84,7 +84,7 @@ class LeagueDataService {
 	 * @return int total number of leagues.
 	 */
 	public static function countTotalLeagues(WebSoccer $websoccer, DbConnection $db) {
-		$result = $db->querySelect("COUNT(*) AS hits","_liga",
+		$result = $db->querySelect("COUNT(*) AS hits","liga",
 				"1=1");
 		$leagues = $result->fetch_array();
 		$result->free();

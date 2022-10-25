@@ -49,7 +49,7 @@ class NewsListModel implements IModel {
 	 * @see IModel::getTemplateParameters()
 	 */
 	public function getTemplateParameters() {
-		$fromTable = "_news";
+		$fromTable = "news";
 		$whereCondition = "status = %d";
 		$parameters = "1";
 

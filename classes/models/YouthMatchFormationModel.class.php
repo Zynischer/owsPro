@@ -210,7 +210,7 @@ class YouthMatchFormationModel implements IModel {
 				"midfield" => 0,
 				"om" => 0,
 				"striker" => 0);
-		$result = $this->_db->querySelect("*","_youthmatch_player",
+		$result = $this->_db->querySelect("*","youthmatch_player",
 				"match_id = %d AND team_id = %d", array($matchinfo["id"], $matchinfo[$teamPrefix . "_team_id"]));
 		while ($player = $result->fetch_array()) {
 			if ($player["state"] == "Ersatzbank") {

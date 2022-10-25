@@ -86,7 +86,7 @@ class SellPlayerController implements IActionController {
 		$columns["transfer_ende"] = $now + 24 * 3600 * getConfig("transfermarket_duration_days");
 		$columns["transfer_mindestgebot"] = $minBid;
 
-		$fromTable = "_spieler";
+		$fromTable = "spieler";
 		$whereCondition = "id = %d";
 		$parameters = $playerId;
 

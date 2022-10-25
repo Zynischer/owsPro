@@ -63,8 +63,8 @@ class TicketsModel implements IModel {
 		$columns["S.p_haupt_sitz"] = "s_seats_grand";
 		$columns["S.p_vip"] = "s_vip";
 
-		$fromTable = "_verein AS T";
-		$fromTable .= " LEFT JOIN _stadion AS S ON S.id = T.stadion_id";
+		$fromTable = "verein AS T";
+		$fromTable .= " LEFT JOIN stadion AS S ON S.id = T.stadion_id";
 		$whereCondition = "T.id = %d";
 		$parameters = $teamId;
 

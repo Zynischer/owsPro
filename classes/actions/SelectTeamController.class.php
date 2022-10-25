@@ -45,7 +45,7 @@ class SelectTeamController implements IActionController {
 		}
 
 		// check whether club is one of user's teams
-		$fromTable = "_verein";
+		$fromTable = "verein";
 		$whereCondition = "id = %d AND user_id = %d AND status = '1' AND nationalteam != '1'";
 		$result = $this->_db->querySelect("id", $fromTable, $whereCondition, array($teamId, $user->id));
 		$club = $result->fetch_array();

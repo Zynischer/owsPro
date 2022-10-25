@@ -70,7 +70,7 @@ class DbSessionManager implements SessionHandlerInterface {
 	 * @return boolean TRUE
 	 */
 	public function destroy($sessionId) {
-		$fromTable = '_session';
+		$fromTable = 'session';
 		$whereCondition = 'session_id = \'%s\'';
 
 		$this->_db->queryDelete($fromTable, $whereCondition, $sessionId);
@@ -85,7 +85,7 @@ class DbSessionManager implements SessionHandlerInterface {
 	 */
 	public function read($sessionId) {
 		$columns = 'expires, session_data';
-		$fromTable = '_session';
+		$fromTable = 'session';
 		$whereCondition = 'session_id = \'%s\'';
 
 		$data = ''; // PHP 7 expects a string as return value, NULL is not valid
@@ -119,7 +119,7 @@ class DbSessionManager implements SessionHandlerInterface {
 	 */
 	public function validate_sid($key) {
 		$columns = 'expires';
-		$fromTable = '_session';
+		$fromTable = 'session';
 		$whereCondition = 'session_id = \'%s\'';
 
 		$result = $this->_db->querySelect($columns, $fromTable, $whereCondition, $key);
@@ -150,7 +150,7 @@ class DbSessionManager implements SessionHandlerInterface {
 		$lifetime = (int)getConfig('session_lifetime');
 		$expiry = getNowAsTimestamp() + $lifetime;
 
-		$fromTable = '_session';
+		$fromTable = 'session';
 		$columns['session_data'] = $data;
 		$columns['expires'] = $expiry;
 
@@ -177,7 +177,7 @@ class DbSessionManager implements SessionHandlerInterface {
 	}
 
 	private function _deleteExpiredSessions() {
-		$fromTable = '_session';
+		$fromTable = 'session';
 		$whereCondition = 'expires < %d';
 
 		$this->_db->queryDelete($fromTable, $whereCondition,getNowAsTimestamp());

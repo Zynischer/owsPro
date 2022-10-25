@@ -52,7 +52,7 @@ class SaveUsernameController implements IActionController {
 			throw new Exception(getMessage("registration_illegal_username"));
 		}
 
-		$fromTable = "_user";
+		$fromTable = "user";
 
 		// check if user name exists
 		$wherePart = "UPPER(nick) = '%s'";

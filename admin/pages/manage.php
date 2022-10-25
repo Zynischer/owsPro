@@ -65,7 +65,7 @@ $mainTable = $entityConfig[0]->attributes()->dbtable;
 $spaceTablePos = strrpos($mainTable, " ");
 $mainTableAlias = ($spaceTablePos) ? substr($mainTable, $spaceTablePos) . "." : "";
 $dbTableWithoutPrefix = ModuleConfigHelper::removeAliasFromDbTableName($entityConfig[0]->attributes()->dbtable);
-$dbTable = $dbTableWithoutPrefix;
+$dbTable = $tablePrefix . $dbTableWithoutPrefix;
 
 // show overview by default
 $showOverview = TRUE;

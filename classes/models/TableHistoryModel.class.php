@@ -59,7 +59,7 @@ class TableHistoryModel implements IModel {
 		}
 
 		// get current season
-		$result = $this->_db->querySelect('id','_saison',
+		$result = $this->_db->querySelect('id','saison',
 				'liga_id = %d AND beendet = \'0\' ORDER BY name DESC', $team['team_league_id'], 1);
 		$season = $result->fetch_array();
 		$result->free();
@@ -71,7 +71,7 @@ class TableHistoryModel implements IModel {
 					'H.matchday' => 'matchday',
 					'H.rank' => 'rank'
 					);
-			$fromTable = '_leaguehistory AS H';
+			$fromTable = 'leaguehistory AS H';
 			$result = $this->_db->querySelect('matchday, rank', $fromTable,
 					'season_id = %d AND team_id = %s ORDER BY matchday ASC', array($season['id'], $team['team_id']));
 			while ($historyRecord = $result->fetch_array()) {
@@ -81,7 +81,7 @@ class TableHistoryModel implements IModel {
 		}
 
 		// count teams in league
-		$result = $this->_db->querySelect('COUNT(*) AS cnt','_verein',
+		$result = $this->_db->querySelect('COUNT(*) AS cnt','verein',
 				'liga_id = %d AND status = \'1\'', $team['team_league_id'], 1);
 		$teams = $result->fetch_array();
 		$result->free();

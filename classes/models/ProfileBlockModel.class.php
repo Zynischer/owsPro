@@ -39,7 +39,7 @@ class ProfileBlockModel implements IModel {
 	}
 
 	public function getTemplateParameters() {
-		$fromTable = "_user";
+		$fromTable = "user";
 
 		$user = $this->_websoccer->getUser();
 

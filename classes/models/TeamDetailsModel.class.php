@@ -59,7 +59,7 @@ class TeamDetailsModel implements IModel {
 
 		// compute strength level of national team
 		if ($team['is_nationalteam']) {
-					$result = $this->_db->querySelect('AVG(P.w_staerke) AS avgstrength','_spieler AS P INNER JOIN _nationalplayer AS NP ON P.id = NP.player_id','NP.team_id = %d', $team['team_id']);
+					$result = $this->_db->querySelect('AVG(P.w_staerke) AS avgstrength','spieler AS P INNER JOIN nationalplayer AS NP ON P.id = NP.player_id','NP.team_id = %d', $team['team_id']);
 			$players = $result->fetch_array();
 			$result->free();
 			if ($players) {
@@ -80,7 +80,7 @@ class TeamDetailsModel implements IModel {
 
 	private function getVictories($teamId, $leagueId) {
 
-		$fromTable = '_saison AS S INNER JOIN _liga AS L ON L.id = S.liga_id';
+		$fromTable = 'saison AS S INNER JOIN liga AS L ON L.id = S.liga_id';
 
 		$columns['S.name'] = 'season_name';
 		$columns['L.name'] = 'league_name';
@@ -115,7 +115,7 @@ class TeamDetailsModel implements IModel {
 	}
 
 	private function getCupVictories($teamId) {
-		$fromTable = '_cup';
+		$fromTable = 'cup';
 		$whereCondition = 'winner_id = %d ORDER BY name ASC';
 		$result = $this->_db->querySelect('id AS cup_id,name AS cup_name,logo AS cup_logo', $fromTable, $whereCondition, $teamId);
 
@@ -151,7 +151,7 @@ class TeamDetailsModel implements IModel {
 			$columns['SUM(marktwert)'] = 'sumMarketValue';
 		}
 
-		$result = $this->_db->querySelect($columns,'_spieler', 'verein_id = %d AND status = \'1\'', $teamId);
+		$result = $this->_db->querySelect($columns,'spieler', 'verein_id = %d AND status = \'1\'', $teamId);
 		$playerfacts = $result->fetch_array();
 		$result->free();
 

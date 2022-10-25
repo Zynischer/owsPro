@@ -41,7 +41,7 @@ class RandomEventsDataService {
 		}
 
 		// user must manage at least one team
-		$result = $db->querySelect('id','_verein', 'user_id = %d AND status = \'1\'', $userId);
+		$result = $db->querySelect('id','verein', 'user_id = %d AND status = \'1\'', $userId);
 		$clubIds = array();
 		while ($club = $result->fetch_array()) {
 			$clubIds[] = $club['id'];
@@ -57,7 +57,7 @@ class RandomEventsDataService {
 		// do not create an event within first 24 hours of registration
 		$now = getNowAsTimestamp();
 
-		$result = $db->querySelect('datum_anmeldung','_user',
+		$result = $db->querySelect('datum_anmeldung','user',
 				'id = %d', $userId, 1);
 		$user = $result->fetch_array();
 		$result->free();
@@ -66,7 +66,7 @@ class RandomEventsDataService {
 		}
 
 		// is a new event due? check occurance of latest event for user
-		$result = $db->querySelect('occurrence_date','_randomevent_occurrence',
+		$result = $db->querySelect('occurrence_date','randomevent_occurrence',
 				'user_id = %d ORDER BY occurrence_date DESC', $userId, 1);
 		$latestEvent = $result->fetch_array();
 		$result->free();
@@ -81,7 +81,7 @@ class RandomEventsDataService {
 		// In general, only the latest 10 occurences should remain.
 		if ($latestEvent) {
 			$deleteBoundary = $now - 24 * 3600 * 10 * $eventsInterval;
-			$db->queryDelete('_randomevent_occurrence',
+			$db->queryDelete('randomevent_occurrence',
 					'user_id = %d AND occurrence_date < %d', array($userId, $deleteBoundary));
 		}
 	}
@@ -90,8 +90,8 @@ class RandomEventsDataService {
 
 		// get events which have not occured lately for the same user.
 		// Since admin might have created a lot of events, we pick any 100 random events (ignoring weights here).
-		$result = $db->querySelect('*','_randomevent',
-				'weight > 0 AND id NOT IN (SELECT event_id FROM _randomevent_occurrence WHERE user_id = %d) ORDER BY RAND()', $userId,
+		$result = $db->querySelect('*','randomevent',
+				'weight > 0 AND id NOT IN (SELECT event_id FROM randomevent_occurrence WHERE user_id = %d) ORDER BY RAND()', $userId,
 				100);
 		$events = array();
 		while ($event = $result->fetch_array()) {
@@ -117,7 +117,7 @@ class RandomEventsDataService {
 				'event_id' => $randomEvent['id'],
 				'occurrence_date' => getNowAsTimestamp()
 				),
-				'_randomevent_occurrence');
+				'randomevent_occurrence');
 
 	}
 
@@ -145,7 +145,7 @@ class RandomEventsDataService {
 		} else {
 
 			// select random player from team
-			$result = $db->querySelect('id, vorname, nachname, kunstname, w_frische, w_kondition, w_zufriedenheit','_spieler',
+			$result = $db->querySelect('id, vorname, nachname, kunstname, w_frische, w_kondition, w_zufriedenheit','spieler',
 					'verein_id = %d AND gesperrt = 0 AND verletzt = 0 AND status = \'1\' ORDER BY RAND()', $clubId, 1);
 			$player = $result->fetch_array();
 			$result->free();
@@ -180,7 +180,7 @@ class RandomEventsDataService {
 			if (!isset($columns)) {
 				return;
 			}
-			$db->queryUpdate($columns,'_spieler', 'id = %d', $player['id']);
+			$db->queryUpdate($columns,'spieler', 'id = %d', $player['id']);
 
 			// create notification
 			$playerName = (strlen($player['kunstname'])) ? $player['kunstname'] : $player['vorname'] . ' ' . $player['nachname'];

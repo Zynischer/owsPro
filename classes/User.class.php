@@ -96,7 +96,7 @@ class User {
 			} else if ($websoccer != null && $db != null) {
 
 				// default implementation: get first available club which is not managed as interim manager (user might have several clubs)
-				$fromTable = '_verein';
+				$fromTable = 'verein';
 				$whereCondition = 'status = 1 AND user_id = %d AND nationalteam != \'1\' ORDER BY interimmanager DESC';
 				$columns = 'id';
 				$result = $db->querySelect($columns, $fromTable, $whereCondition, $this->id, 1);
@@ -162,7 +162,7 @@ class User {
 			$websoccer = WebSoccer::getInstance();
 			$db = DbConnection::getInstance();
 
-			$result = $db->querySelect('id','_admin',
+			$result = $db->querySelect('id','admin',
 					'email = \'%s\' AND r_admin = \'1\'', $this->email);
 			if ($result->num_rows) {
 				$this->_isAdmin = TRUE;

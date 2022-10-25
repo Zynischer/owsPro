@@ -429,7 +429,7 @@ function actionSaveUser(){
 	include(CONFIGFILE);
 	$db=DbConnection::getInstance();
 	$db->connect($conf["db_host"],$conf["db_user"],$conf["db_passwort"],$conf["db_name"]);
-	$db->queryInsert($columns,"_admin");
+	$db->queryInsert($columns,"admin");
 	return"printFinalPage";}
 function printFinalPage($messages){
 	include(CONFIGFILE);

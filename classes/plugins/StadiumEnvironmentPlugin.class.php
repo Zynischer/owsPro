@@ -47,7 +47,7 @@ class StadiumEnvironmentPlugin {
 		$bonus = self::getBonusSumFromBuildings($event->websoccer, $event->db, 'effect_youthscouting', $event->teamId);
 
 		if ($bonus != 0) {
-			$playerTable = '_youthplayer';
+			$playerTable = 'youthplayer';
 			$result = $event->db->querySelect('strength', $playerTable, 'id = %d', $event->playerId);
 			$player = $result->fetch_array();
 			$result->free();
@@ -141,7 +141,7 @@ class StadiumEnvironmentPlugin {
 		if ($sumHome > 0 || $sumGuest > 0) {
 
 			// get injured players
-			$playerTable = '_spieler';
+			$playerTable = 'spieler';
 			$result = $event->db->querySelect('id,verein_id AS team_id,verletzt AS injured', $playerTable,
 					'(verein_id = %d OR verein_id = %d) AND verletzt > 0', array($homeTeamId, $guestTeamId));
 			while ($player = $result->fetch_array()) {
@@ -166,7 +166,7 @@ class StadiumEnvironmentPlugin {
 
 	private static function getBonusSumFromBuildings(WebSoccer $websoccer, DbConnection $db, $attributeName, $teamId) {
 
-		$result = $db->querySelect('SUM(' . $attributeName . ') AS attrSum', '_buildings_of_team INNER JOIN _stadiumbuilding ON id = building_id',
+		$result = $db->querySelect('SUM(' . $attributeName . ') AS attrSum', 'buildings_of_team INNER JOIN stadiumbuilding ON id = building_id',
 				'team_id = %d AND construction_deadline < %d', array($teamId,getNowAsTimestamp()));
 		$resArray = $result->fetch_array();
 		$result->free();

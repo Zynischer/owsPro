@@ -112,8 +112,8 @@ class TeamsDataService {
 		if (!$teamId) {
 			return NULL;
 		}
-		$fromTable = '_verein AS C';
-		$fromTable .= ' LEFT JOIN _liga AS L ON C.liga_id = L.id';
+		$fromTable = 'verein AS C';
+		$fromTable .= ' LEFT JOIN liga AS L ON C.liga_id = L.id';
 
 		// where
 		$whereCondition = 'C.status = 1 AND C.id = %d';
@@ -148,14 +148,14 @@ class TeamsDataService {
 	public static function getTeamsOfLeagueOrderedByTableCriteria(WebSoccer $websoccer, DbConnection $db, $leagueId) {
 
 		// get current season
-		$result = $db->querySelect('id','_saison',
+		$result = $db->querySelect('id','saison',
 				'liga_id = %d AND beendet = \'0\' ORDER BY name DESC', $leagueId, 1);
 		$season = $result->fetch_array();
 		$result->free();
 
-		$fromTable = '_verein AS C';
-		$fromTable .= ' LEFT JOIN _user AS U ON C.user_id = U.id';
-		$fromTable .= ' LEFT JOIN _leaguehistory AS PREVDAY ON (PREVDAY.team_id = C.id AND PREVDAY.matchday = (C.sa_spiele - 1)';
+		$fromTable = 'verein AS C';
+		$fromTable .= ' LEFT JOIN user AS U ON C.user_id = U.id';
+		$fromTable .= ' LEFT JOIN leaguehistory AS PREVDAY ON (PREVDAY.team_id = C.id AND PREVDAY.matchday = (C.sa_spiele - 1)';
 		if ($season) {
 			$fromTable .= ' AND PREVDAY.season_id = ' . $season['id'];
 		}
@@ -228,9 +228,9 @@ class TeamsDataService {
 	 * @return array array of teams, ordered by table criteria.
 	 */
 	public static function getTeamsOfSeasonOrderedByTableCriteria(WebSoccer $websoccer, DbConnection $db, $seasonId, $type) {
-		$fromTable = '_team_league_statistics AS S';
-		$fromTable .= ' INNER JOIN _verein AS C ON C.id = S.team_id';
-		$fromTable .= ' LEFT JOIN _user AS U ON C.user_id = U.id';
+		$fromTable = 'team_league_statistics AS S';
+		$fromTable .= ' INNER JOIN verein AS C ON C.id = S.team_id';
+		$fromTable .= ' LEFT JOIN user AS U ON C.user_id = U.id';
 
 		$whereCondition = 'S.season_id = %d';
 		$parameters = $seasonId;
@@ -283,10 +283,10 @@ class TeamsDataService {
 	 * @return array array of teams, ordered by table criteria.
 	 */
 	public static function getTeamsOfLeagueOrderedByAlltimeTableCriteria(WebSoccer $websoccer, DbConnection $db, $leagueId, $type = null) {
-		$fromTable = '_team_league_statistics AS S';
-		$fromTable .= ' INNER JOIN _verein AS C ON C.id = S.team_id';
-		$fromTable .= ' INNER JOIN _saison AS SEASON ON SEASON.id = S.season_id';
-		$fromTable .= ' LEFT JOIN _user AS U ON C.user_id = U.id';
+		$fromTable = 'team_league_statistics AS S';
+		$fromTable .= ' INNER JOIN verein AS C ON C.id = S.team_id';
+		$fromTable .= ' INNER JOIN saison AS SEASON ON SEASON.id = S.season_id';
+		$fromTable .= ' LEFT JOIN user AS U ON C.user_id = U.id';
 
 		$whereCondition = 'SEASON.liga_id = %d';
 		$parameters = $leagueId;
@@ -338,7 +338,7 @@ class TeamsDataService {
 	 * @return number team's current table position (rank). 0 if no matches have been played yet.
 	 */
 	public static function getTableRankOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId) {
-		$subQuery = '(SELECT COUNT(*) FROM _verein AS T2 WHERE'
+		$subQuery = '(SELECT COUNT(*) FROM verein AS T2 WHERE'
                 . ' T2.liga_id = T1.liga_id'
 				. ' AND (T2.sa_punkte > T1.sa_punkte'
 				. ' OR T2.sa_punkte = T1.sa_punkte AND (T2.sa_tore - T2.sa_gegentore) > (T1.sa_tore - T1.sa_gegentore)'
@@ -346,7 +346,7 @@ class TeamsDataService {
 				. ' OR T2.sa_punkte = T1.sa_punkte AND (T2.sa_tore - T2.sa_gegentore) = (T1.sa_tore - T1.sa_gegentore) AND T2.sa_siege = T1.sa_siege AND T2.sa_tore > T1.sa_tore))';
 
 		$columns = $subQuery . ' + 1 AS RNK';
-		$fromTable = '_verein AS T1';
+		$fromTable = 'verein AS T1';
 		$whereCondition = 'T1.id = %d';
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $teamId);
@@ -367,9 +367,9 @@ class TeamsDataService {
 	 * @return array array of teams which do not have a manager or only an interims manager assigned.
 	 */
 	public static function getTeamsWithoutUser(WebSoccer $websoccer, DbConnection $db) {
-		$fromTable = '_verein AS C';
-		$fromTable .= ' INNER JOIN _liga AS L ON C.liga_id = L.id';
-		$fromTable .= ' LEFT JOIN _stadion AS S ON C.stadion_id = S.id';
+		$fromTable = 'verein AS C';
+		$fromTable .= ' INNER JOIN liga AS L ON C.liga_id = L.id';
+		$fromTable .= ' LEFT JOIN stadion AS S ON C.stadion_id = S.id';
 
 		$whereCondition = 'nationalteam != \'1\' AND (C.user_id = 0 OR C.user_id IS NULL OR C.interimmanager = \'1\') AND C.status = 1';
 
@@ -409,7 +409,7 @@ class TeamsDataService {
 	 * @return int total number of teams without manager.
 	 */
 	public static function countTeamsWithoutManager(WebSoccer $websoccer, DbConnection $db) {
-		$result = $db->querySelect('COUNT(*) AS hits','_verein',
+		$result = $db->querySelect('COUNT(*) AS hits','verein',
 				'(user_id = 0 OR user_id IS NULL) AND status = 1');
 		$teams = $result->fetch_array();
 		$result->free();
@@ -430,7 +430,7 @@ class TeamsDataService {
 	 */
 	public static function findTeamNames(WebSoccer $websoccer, DbConnection $db, $query) {
 		$columns = 'name';
-		$fromTable = '_verein';
+		$fromTable = 'verein';
 		$whereCondition = 'UPPER(name) LIKE \'%s%%\' AND status = 1';
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, strtoupper($query), 10);
@@ -455,7 +455,7 @@ class TeamsDataService {
 	public static function getTeamSize(WebSoccer $websoccer, DbConnection $db, $clubId) {
 		$columns = 'COUNT(*) AS number';
 
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 		$whereCondition = 'verein_id = %d AND status = \'1\' AND transfermarkt != \'1\' AND lending_fee = 0';
 		$parameters = $clubId;
 
@@ -477,7 +477,7 @@ class TeamsDataService {
 	public static function getTotalPlayersSalariesOfTeam(WebSoccer $websoccer, DbConnection $db, $clubId) {
 		$columns = 'SUM(vertrag_gehalt) AS salary';
 
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 		$whereCondition = 'verein_id = %d AND status = \'1\'';
 		$parameters = $clubId;
 
@@ -498,7 +498,7 @@ class TeamsDataService {
 	 * @return int ID of team captain. 0 if no captain available.
 	 */
 	public static function getTeamCaptainIdOfTeam(WebSoccer $websoccer, DbConnection $db, $clubId) {
-		$result = $db->querySelect('captain_id','_verein', 'id = %d', $clubId);
+		$result = $db->querySelect('captain_id','verein', 'id = %d', $clubId);
 		$team = $result->fetch_array();
 		$result->free();
 
@@ -518,7 +518,7 @@ class TeamsDataService {
 	public static function validateWhetherTeamHasEnoughBudgetForSalaryBid(WebSoccer $websoccer, DbConnection $db, I18n $i18n, $clubId, $salary) {
 
 		// get salary sum of all players
-		$result = $db->querySelect('SUM(vertrag_gehalt) AS salary_sum _spieler', 'verein_id = %d', $clubId);
+		$result = $db->querySelect('SUM(vertrag_gehalt) AS salary_sum spieler', 'verein_id = %d', $clubId);
 		$players = $result->fetch_array();
 		$result->free();
 
@@ -531,11 +531,11 @@ class TeamsDataService {
 	}
 
 	private static function _getFromPart(WebSoccer $websoccer) {
-		$fromTable = '_verein AS C';
-		$fromTable .= ' LEFT JOIN _liga AS L ON C.liga_id = L.id';
-		$fromTable .= ' LEFT JOIN _sponsor AS SPON ON C.sponsor_id = SPON.id';
-		$fromTable .= ' LEFT JOIN _user AS U ON C.user_id = U.id';
-		$fromTable .= ' LEFT JOIN _user AS DEPUTY ON C.user_id_actual = DEPUTY.id';
+		$fromTable = 'verein AS C';
+		$fromTable .= ' LEFT JOIN liga AS L ON C.liga_id = L.id';
+		$fromTable .= ' LEFT JOIN sponsor AS SPON ON C.sponsor_id = SPON.id';
+		$fromTable .= ' LEFT JOIN user AS U ON C.user_id = U.id';
+		$fromTable .= ' LEFT JOIN user AS DEPUTY ON C.user_id_actual = DEPUTY.id';
 		return $fromTable;
 	}
 

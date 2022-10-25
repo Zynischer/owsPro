@@ -35,7 +35,7 @@ class UserActivationController implements IActionController {
 		$key = $parameters["key"];
 		$userid = $parameters["userid"];
 
-		$fromTable = "_user";
+		$fromTable = "user";
 
 		// get user
 		$columns = "id";

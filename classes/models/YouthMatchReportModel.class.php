@@ -47,7 +47,7 @@ class YouthMatchReportModel implements IModel {
 		$players = array();
 		$statistics = array();
 
-		$result = $this->_db->querySelect("*","_youthmatch_player",
+		$result = $this->_db->querySelect("*","youthmatch_player",
 				"match_id = %d AND minutes_played > 0 ORDER BY playernumber ASC", $match["id"]);
 		while ($playerinfo = $result->fetch_array()) {
 

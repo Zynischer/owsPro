@@ -43,7 +43,7 @@ class SessionBasedUserAuthentication implements IUserAuthentication {
 	public function verifyAndUpdateCurrentUser(User $currentUser) {
 
 		$db = DbConnection::getInstance();
-		$fromTable = '_user';
+		$fromTable = 'user';
 
 		if (!isset($_SESSION[SESSION_PARAM_USERID]) || !$_SESSION[SESSION_PARAM_USERID]) {
 

@@ -46,7 +46,7 @@ class DirectTransferAcceptController implements IActionController {
 		$clubId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 
 		// get offer information
-		$result = $this->_db->querySelect("*","_transfer_offer", "id = %d AND rejected_date = 0 AND admin_approval_pending = '0'",
+		$result = $this->_db->querySelect("*","transfer_offer", "id = %d AND rejected_date = 0 AND admin_approval_pending = '0'",
 				$parameters["id"]);
 		$offer = $result->fetch_array();
 		$result->free();
@@ -78,7 +78,7 @@ class DirectTransferAcceptController implements IActionController {
 
 		// mark offer as pending
 		if (getConfig("transferoffers_adminapproval_required")) {
-			$this->_db->queryUpdate(array("admin_approval_pending" => "1"),"_transfer_offer",
+			$this->_db->queryUpdate(array("admin_approval_pending" => "1"),"transfer_offer",
 					"id = %d", $parameters["id"]);
 
 			$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,

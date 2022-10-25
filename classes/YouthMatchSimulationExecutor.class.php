@@ -57,7 +57,7 @@ class YouthMatchSimulationExecutor {
 		$simulator->getSimulationStrategy()->attachObserver(new YouthMatchReportSimulationObserver($websoccer, $db));
 
 		// get matches to simulate
-		$result = $db->querySelect('*','_youthmatch',
+		$result = $db->querySelect('*','youthmatch',
 				'simulated != \'1\' AND matchdate <= %d ORDER BY matchdate ASC',getNowAsTimestamp(), $maxMatchesToSimulate);
 		while ($matchinfo = $result->fetch_array()) {
 			$match = self::_createMatch($websoccer, $db, $matchinfo);
@@ -111,8 +111,8 @@ class YouthMatchSimulationExecutor {
 	private static function _addPlayers(WebSoccer $websoccer, DbConnection $db, SimulationMatch $match, SimulationTeam $team) {
 
 		// query set players
-		$fromTable = '_youthmatch_player AS MP';
-		$fromTable .= ' INNER JOIN _youthplayer AS P ON P.id = MP.player_id';
+		$fromTable = 'youthmatch_player AS MP';
+		$fromTable .= ' INNER JOIN youthplayer AS P ON P.id = MP.player_id';
 
 		// ensure that player still is in team in WHERE condition.
 		$whereCondition = 'MP.match_id = %d AND MP.team_id = %d AND P.team_id = %d ORDER BY playernumber ASC';
@@ -193,7 +193,7 @@ class YouthMatchSimulationExecutor {
 	 */
 	private static function _createRandomFormation(WebSoccer $websoccer, DbConnection $db, SimulationMatch $match, SimulationTeam $team) {
 		// better delete possible previous formation with too few players
-		$db->queryDelete('_youthmatch_player', 'match_id = %d AND team_id = %d', array($match->id, $team->id));
+		$db->queryDelete('youthmatch_player', 'match_id = %d AND team_id = %d', array($match->id, $team->id));
 
 		// define the exact default formation
 		$formationPositions = array('T', 'LV', 'IV', 'IV', 'RV', 'LM', 'ZM', 'ZM', 'RM', 'LS', 'RS');
@@ -227,7 +227,7 @@ class YouthMatchSimulationExecutor {
 						'position_main' => $player->mainPosition,
 						'name' => $player->name
 						);
-				$db->queryInsert($columns, '_youthmatch_player');
+				$db->queryInsert($columns, 'youthmatch_player');
 
 				$team->positionsAndPlayers[$player->position][] = $player;
 			} catch (Exception $e) {

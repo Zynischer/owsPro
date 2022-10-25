@@ -68,7 +68,7 @@ class CreateYouthMatchRequestController implements IActionController {
 		}
 
 		// check maximum number of open requests
-		$fromTable = "_youthmatch_request";
+		$fromTable = "youthmatch_request";
 
 		$result = $this->_db->querySelect("COUNT(*) AS hits", $fromTable, "team_id = %d", $clubId);
 		$requests = $result->fetch_array();

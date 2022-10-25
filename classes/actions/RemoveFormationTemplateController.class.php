@@ -41,7 +41,7 @@ class RemoveFormationTemplateController implements IActionController {
 	public function executeAction($parameters) {
 		$teamId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 
-		$dbTable = '_aufstellung';
+		$dbTable = 'aufstellung';
 
 		// verify that it is own template
 		$result = $this->_db->querySelect('verein_id', $dbTable, 'id = %d', $parameters['templateid']);

@@ -36,7 +36,7 @@ class PremiumDataService {
 	public static function countAccountStatementsOfUser(WebSoccer $websoccer, DbConnection $db, $userId) {
 		$columns = 'COUNT(*) AS hits';
 
-		$fromTable = '_premiumstatement';
+		$fromTable = 'premiumstatement';
 
 		$whereCondition = 'user_id = %d';
 
@@ -65,7 +65,7 @@ class PremiumDataService {
 
 		$limit = $startIndex .','. $entries_per_page;
 
-		$fromTable = '_premiumstatement';
+		$fromTable = 'premiumstatement';
 
 		$whereCondition = 'user_id = %d ORDER BY created_date DESC';
 
@@ -149,7 +149,7 @@ class PremiumDataService {
 	private static function createTransaction(WebSoccer $websoccer, DbConnection $db, $user, $userId, $amount, $subject, $data) {
 
 		// create transaction
-		$fromTable = '_premiumstatement';
+		$fromTable = 'premiumstatement';
 		$columns = array(
 				'user_id' => $userId,
 				'action_id' => $subject,
@@ -162,7 +162,7 @@ class PremiumDataService {
 		// update user budget
 		$newBudget = $user['premium_balance'] + $amount;
 		$updateColumns = array('premium_balance' => $newBudget);
-		$fromTable = '_user';
+		$fromTable = 'user';
 		$whereCondition = 'id = %d';
 		$parameters = $userId;
 		$db->queryUpdate($updateColumns, $fromTable, $whereCondition, $parameters);
@@ -196,7 +196,7 @@ class PremiumDataService {
 				'user_id' => $userId,
 				'amount' => $realAmount,
 				'created_date' => getNowAsTimestamp()
-				),'_premiumpayment');
+				),'premiumpayment');
 
 		// get premium amount to credit
 		$priceOptions = explode(',',getConfig('premium_price_options'));
@@ -231,7 +231,7 @@ class PremiumDataService {
 	 */
 	public static function getPaymentsOfUser(WebSoccer $websoccer, DbConnection $db, $userId, $limit) {
 
-		$fromTable = '_premiumpayment';
+		$fromTable = 'premiumpayment';
 		$whereCondition = 'user_id = %d ORDER BY created_date DESC';
 
 		$result = $db->querySelect('*', $fromTable, $whereCondition, $userId, $limit);

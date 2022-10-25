@@ -43,7 +43,7 @@ class AlltimeTableModel implements IModel {
 		// pre-select user's league in case no other league selected
 		$clubId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 		if ($this->_leagueId == 0 && $clubId > 0) {
-			$result = $db->querySelect("liga_id","_verein",
+			$result = $db->querySelect("liga_id","verein",
 					"id = %d", $clubId, 1);
 			$club = $result->fetch_array();
 			$result->free();

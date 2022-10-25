@@ -37,7 +37,7 @@ class YouthPlayersDataService {
 	 * @return array assoc. array of player data.
 	 */
 	public static function getYouthPlayerById(WebSoccer $websoccer, DbConnection $db, I18n $i18n, $playerId) {
-		$fromTable = "_youthplayer";
+		$fromTable = "youthplayer";
 
 		$players = $db->queryCachedSelect("*", $fromTable, "id = %d", $playerId);
 
@@ -59,7 +59,7 @@ class YouthPlayersDataService {
 	 */
 	public static function getYouthPlayersOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId) {
 
-		$fromTable = "_youthplayer";
+		$fromTable = "youthplayer";
 		$whereCondition = "team_id = %d ORDER BY position ASC, lastname ASC, firstname ASC";
 
 		$players = $db->queryCachedSelect("*", $fromTable, $whereCondition, $teamId);
@@ -76,7 +76,7 @@ class YouthPlayersDataService {
 	 * @return int number of youth players who belong to the specified team.
 	 */
 	public static function countYouthPlayersOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId) {
-		$fromTable = "_youthplayer";
+		$fromTable = "youthplayer";
 
 
 		$result = $db->querySelect("COUNT(*) AS hits", $fromTable, "team_id = %d", $teamId);
@@ -99,7 +99,7 @@ class YouthPlayersDataService {
 	 * @return int total sum of players salary
 	 */
 	public static function computeSalarySumOfYouthPlayersOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId) {
-		$fromTable = "_youthplayer";
+		$fromTable = "youthplayer";
 
 
 		$result = $db->querySelect("SUM(strength) AS strengthsum", $fromTable, "team_id = %d", $teamId);
@@ -124,7 +124,7 @@ class YouthPlayersDataService {
 	 */
 	public static function getYouthPlayersOfTeamByPosition(WebSoccer $websoccer, DbConnection $db, $clubId, $positionSort = "ASC") {
 		$columns = "*";
-		$fromTable = "_youthplayer";
+		$fromTable = "youthplayer";
 		$whereCondition = "team_id = %d ORDER BY position ". $positionSort . ", lastname ASC, firstname ASC";
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $clubId, 50);
 
@@ -149,7 +149,7 @@ class YouthPlayersDataService {
 	 * @return int number of tranferabl youth players.
 	 */
 	public static function countTransferableYouthPlayers(WebSoccer $websoccer, DbConnection $db, $positionFilter = NULL) {
-		$fromTable = "_youthplayer";
+		$fromTable = "youthplayer";
 
 		$parameters = "";
 		$whereCondition = "transfer_fee > 0";
@@ -207,9 +207,9 @@ class YouthPlayersDataService {
 				"U.picture" => "user_picture"
 				);
 
-		$fromTable = "_youthplayer AS P";
-		$fromTable .= " INNER JOIN _verein AS C ON C.id = P.team_id";
-		$fromTable .= " LEFT JOIN _user AS U ON U.id = C.user_id";
+		$fromTable = "youthplayer AS P";
+		$fromTable .= " INNER JOIN verein AS C ON C.id = P.team_id";
+		$fromTable .= " LEFT JOIN user AS U ON U.id = C.user_id";
 
 		$parameters = "";
 		$whereCondition = "P.transfer_fee > 0";
@@ -244,7 +244,7 @@ class YouthPlayersDataService {
 	 * @return array array of scouts or empty array if no scouts available.
 	 */
 	public static function getScouts(WebSoccer $websoccer, DbConnection $db, $sortColumns = "expertise DESC, name ASC") {
-		$result = $db->querySelect("*","_youthscout", "1=1 ORDER BY " . $sortColumns);
+		$result = $db->querySelect("*","youthscout", "1=1 ORDER BY " . $sortColumns);
 
 		$scouts = array();
 		while ($scout = $result->fetch_array()) {
@@ -286,7 +286,7 @@ class YouthPlayersDataService {
 	 * @return number UNIX timestamp of last scouting. 0 if never executed before.
 	 */
 	public static function getLastScoutingExecutionTime(WebSoccer $websoccer, DbConnection $db, $teamId) {
-		$result = $db->querySelect("scouting_last_execution","_verein",
+		$result = $db->querySelect("scouting_last_execution","verein",
 				"id = %d", $teamId);
 		$scouted = $result->fetch_array();
 		$result->free();
@@ -327,7 +327,7 @@ class YouthPlayersDataService {
 	 * @return int total number of open requests.
 	 */
 	public static function countMatchRequests(WebSoccer $websoccer, DbConnection $db) {
-		$fromTable = "_youthmatch_request";
+		$fromTable = "youthmatch_request";
 
 
 		$result = $db->querySelect("COUNT(*) AS hits", $fromTable, "1=1");
@@ -364,9 +364,9 @@ class YouthPlayersDataService {
 				"U.picture" => "user_picture"
 		);
 
-		$fromTable = "_youthmatch_request AS R";
-		$fromTable .= " INNER JOIN _verein AS C ON C.id = R.team_id";
-		$fromTable .= " INNER JOIN _user AS U ON U.id = C.user_id";
+		$fromTable = "youthmatch_request AS R";
+		$fromTable .= " INNER JOIN verein AS C ON C.id = R.team_id";
+		$fromTable .= " INNER JOIN user AS U ON U.id = C.user_id";
 
 		$whereCondition = "1=1 ORDER BY R.matchdate ASC";
 

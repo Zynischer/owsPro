@@ -54,7 +54,7 @@ class UnmarkLendableController implements IActionController {
 
 		$columns = array("lending_fee" => 0);
 
-		$fromTable = "_spieler";
+		$fromTable = "spieler";
 		$whereCondition = "id = %d";
 		$parameters = $parameters["id"];
 

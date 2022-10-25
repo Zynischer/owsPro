@@ -50,8 +50,8 @@ elseif ($action == "update") {
 		throw new Exception(getMessage("validationerror_no_changes_as_demo"));
 	}
 
-	$updateTable = "_spiel_berechnung";
-	$matchUpdateTable = "_spiel";
+	$updateTable = "spiel_berechnung";
+	$matchUpdateTable = "spiel";
 	foreach ($teamPrefixes as $teamPrefix) {
 		if (!isset($_REQUEST[$teamPrefix . "_players"])) {
 			continue;
@@ -113,7 +113,7 @@ elseif ($action == "create") {
 				"position_main" => $position,
 				"note" => 3.0,
 				"name" => $playerName
-				),"_spiel_berechnung");
+				),"spiel_berechnung");
 	}
 }
 // ******** action: generate player records out of current formation
@@ -150,7 +150,7 @@ elseif ($action == "generate") {
 		$formationcolumns["w" . $subNo . "_minute"] = $teamPrefix . "_sub" . $subNo . "_minute";
 		$formationcolumns["w" . $subNo . "_condition"] = $teamPrefix . "_sub" . $subNo . "_condition";
 	}
-	$result = $db->querySelect($formationcolumns,"_aufstellung", "verein_id = %d", $team->id, 1);
+	$result = $db->querySelect($formationcolumns,"aufstellung", "verein_id = %d", $team->id, 1);
 	$formation = $result->fetch_array();
 	$result->free();
 	if (!$formation) {
@@ -177,7 +177,7 @@ elseif ($action == "generate") {
 		$matchColumns[$columnsPrefix . "_w". $subNo . "_condition"] = $formation[$teamPrefix . "_sub". $subNo . "_condition"];
 	}
 
-	$db->queryUpdate($matchColumns,"_spiel", "id = %d", array($matchId));
+	$db->queryUpdate($matchColumns,"spiel", "id = %d", array($matchId));
 
 	// create player records
 	MatchSimulationExecutor::addPlayers($website, $db, $team, $formation, $teamPrefix);
@@ -251,8 +251,8 @@ foreach ($teamPrefixes as $teamPrefix) {
 	echo "</div>";
 
 	// get existing players
-	$playerTable = "_spiel_berechnung SB";
-	$playerTable .= " INNER JOIN _spieler S ON S.id = SB.spieler_id";
+	$playerTable = "spiel_berechnung SB";
+	$playerTable .= " INNER JOIN spieler S ON S.id = SB.spieler_id";
 
 	$result = $db->querySelect("SB.*", $playerTable, "spiel_id = %d AND team_id = %d ORDER BY feld ASC, field(SB.position_main, 'T', 'LV', 'IV', 'RV', 'DM', 'LM', 'ZM', 'RM', 'OM', 'LS', 'MS', 'RS')", array($matchId, $match["match_". $teamPrefix . "_id"]));
 	$playersCount = $result->num_rows;
@@ -262,7 +262,7 @@ foreach ($teamPrefixes as $teamPrefix) {
 		echo createInfoMessage("", getMessage("match_manage_playerstatistics_noitems"));
 
 		// check if any formation is available
-		$fresult = $db->querySelect("COUNT(*) AS hits","_aufstellung", "verein_id = %d", $match["match_". $teamPrefix . "_id"]);
+		$fresult = $db->querySelect("COUNT(*) AS hits","aufstellung", "verein_id = %d", $match["match_". $teamPrefix . "_id"]);
 		$formationCount = $fresult->fetch_array();
 		$fresult->free();
 		if ($formationCount && $formationCount["hits"]) {

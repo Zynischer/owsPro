@@ -102,7 +102,7 @@ class UploadProfilePictureController implements IActionController {
 		}
 
 		// delete old picture
-		$fromTable = "_user";
+		$fromTable = "user";
 		$whereCondition = "id = %d";
 		$result = $this->_db->querySelect("picture", $fromTable, $whereCondition, $userId);
 		$userinfo = $result->fetch_array();

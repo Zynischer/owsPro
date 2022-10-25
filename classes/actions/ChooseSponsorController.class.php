@@ -69,7 +69,7 @@ class ChooseSponsorController implements IActionController {
 		// update team
 		$columns["sponsor_id"] = $parameters["id"];
 		$columns["sponsor_spiele"] = getConfig("sponsor_matches");
-		$fromTable = "_verein";
+		$fromTable = "verein";
 		$whereCondition = "id = %d";
 		$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $teamId);
 

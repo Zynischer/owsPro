@@ -51,7 +51,7 @@ class SofortComPaymentNotificationController implements IActionController {
 
 		// verify user
 		$userId = $parameters['u'];
-		$result = $this->_db->querySelect("id","_user", "id = %d", $userId);
+		$result = $this->_db->querySelect("id","user", "id = %d", $userId);
 		$user = $result->fetch_array();
 		$result->free();
 		if (!$user) {

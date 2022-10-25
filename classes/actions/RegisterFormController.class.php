@@ -78,7 +78,7 @@ class RegisterFormController implements IActionController {
 		}
 
 		$columns = "COUNT(*) AS hits";
-		$fromTable = "_user";
+		$fromTable = "user";
 
 		// check maximum number of users
 		$maxNumUsers = (int)getConfig("max_number_of_users");

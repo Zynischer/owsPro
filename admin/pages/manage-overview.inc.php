@@ -140,7 +140,7 @@ $fromTable = $mainTable;
 
 $joins = $overviewConfig[0]->xpath("join");
 foreach ($joins as $join) {
-	$fromTable .= " " . $join->attributes()->type . " JOIN " . $join->attributes()->jointable . " ON " . $join->attributes()->joincondition;
+	$fromTable .= " " . $join->attributes()->type . " JOIN " . $tablePrefix . $join->attributes()->jointable . " ON " . $join->attributes()->joincondition;
 }
 
 // WHERE condition

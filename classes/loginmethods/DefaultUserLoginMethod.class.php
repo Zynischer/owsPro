@@ -57,7 +57,7 @@ class DefaultUserLoginMethod implements IUserLoginMethod {
 	}
 
 	private function authenticate($column, $loginstr, $password) {
-		$fromTable = '_user';
+		$fromTable = 'user';
 
 		// get user data
 		$columns = 'id, passwort, passwort_neu, passwort_salt';

@@ -60,7 +60,7 @@ class MoneyTransactionConverter implements IConverter {
 			// get current team budget
 			$db = DbConnection::getInstance();
 			$columns = 'finanz_budget';
-			$fromTable = '_verein';
+			$fromTable = 'verein';
 			$whereCondition = 'id = %d';
 			$result = $db->querySelect($columns, $fromTable, $whereCondition, $_POST['verein_id'], 1);
 			$team = $result->fetch_array();

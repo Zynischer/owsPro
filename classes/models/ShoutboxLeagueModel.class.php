@@ -52,13 +52,13 @@ class ShoutboxLeagueModel implements IModel {
 		$messages = array();
 
 		// query latest shoutbox messages from the same competition
-		$fromTable = '_shoutmessage AS MESSAGE';
-		$fromTable .= ' INNER JOIN _user AS U ON U.id = MESSAGE.user_id';
-		$fromTable .= ' INNER JOIN _spiel AS M ON M.id = MESSAGE.match_id';
-		$fromTable .= ' INNER JOIN _verein AS HOME ON HOME.id = M.home_verein';
-		$fromTable .= ' INNER JOIN _verein AS GUEST ON GUEST.id = M.gast_verein';
-		$fromTable .= ' INNER JOIN _saison AS SEASON ON (M.saison_id = SEASON.id)';
-		$fromTable .= ' INNER JOIN _liga AS L ON (L.id = SEASON.liga_id)';
+		$fromTable = 'shoutmessage AS MESSAGE';
+		$fromTable .= ' INNER JOIN user AS U ON U.id = MESSAGE.user_id';
+		$fromTable .= ' INNER JOIN spiel AS M ON M.id = MESSAGE.match_id';
+		$fromTable .= ' INNER JOIN verein AS HOME ON HOME.id = M.home_verein';
+		$fromTable .= ' INNER JOIN verein AS GUEST ON GUEST.id = M.gast_verein';
+		$fromTable .= ' INNER JOIN saison AS SEASON ON (M.saison_id = SEASON.id)';
+		$fromTable .= ' INNER JOIN liga AS L ON (L.id = SEASON.liga_id)';
 
 		$whereCondition = 'L.id = %d ORDER BY MESSAGE.created_date DESC';
 

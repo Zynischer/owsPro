@@ -2,8 +2,8 @@ SET NAMES utf8;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
-DROP TABLE IF EXISTS `_achievement`;
-CREATE TABLE `_achievement` (
+DROP TABLE IF EXISTS `achievement`;
+CREATE TABLE `achievement` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) DEFAULT NULL,
   `team_id` int(10) DEFAULT NULL,
@@ -16,13 +16,13 @@ CREATE TABLE `_achievement` (
   KEY `team_id` (`team_id`),
   KEY `season_id` (`season_id`),
   KEY `cup_round_id` (`cup_round_id`),
-  CONSTRAINT `_achievement_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_achievement_ibfk_2` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_achievement_ibfk_3` FOREIGN KEY (`season_id`) REFERENCES `_saison` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_achievement_ibfk_4` FOREIGN KEY (`cup_round_id`) REFERENCES `_cup_round` (`id`) ON DELETE CASCADE
+  CONSTRAINT `achievement_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `achievement_ibfk_2` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `achievement_ibfk_3` FOREIGN KEY (`season_id`) REFERENCES `saison` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `achievement_ibfk_4` FOREIGN KEY (`cup_round_id`) REFERENCES `cup_round` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_admin`;
-CREATE TABLE `_admin` (
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE `admin` (
   `id` smallint(5) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) DEFAULT NULL,
   `passwort` varchar(64) DEFAULT NULL,
@@ -46,8 +46,8 @@ CREATE TABLE `_admin` (
   `r_demo` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_aufstellung`;
-CREATE TABLE `_aufstellung` (
+DROP TABLE IF EXISTS `aufstellung`;
+CREATE TABLE `aufstellung` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `verein_id` int(10) DEFAULT NULL,
   `datum` int(11) DEFAULT NULL,
@@ -102,12 +102,12 @@ CREATE TABLE `_aufstellung` (
   `templatename` varchar(24) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `match_id` (`match_id`),
-  KEY `_aufstellung_verein_id_fk` (`verein_id`),
-  CONSTRAINT `_aufstellung_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `_spiel` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_aufstellung_verein_id_fk` FOREIGN KEY (`verein_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `aufstellung_verein_id_fk` (`verein_id`),
+  CONSTRAINT `aufstellung_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `spiel` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `aufstellung_verein_id_fk` FOREIGN KEY (`verein_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_badge`;
-CREATE TABLE `_badge` (
+DROP TABLE IF EXISTS `badge`;
+CREATE TABLE `badge` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -116,18 +116,18 @@ CREATE TABLE `_badge` (
   `event_benchmark` int(10) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_badge_user`;
-CREATE TABLE `_badge_user` (
+DROP TABLE IF EXISTS `badge_user`;
+CREATE TABLE `badge_user` (
   `user_id` int(10) NOT NULL,
   `badge_id` int(10) NOT NULL,
   `date_rewarded` int(10) DEFAULT NULL,
   PRIMARY KEY (`user_id`,`badge_id`),
   KEY `badge_id` (`badge_id`),
-  CONSTRAINT `_badge_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_badge_user_ibfk_2` FOREIGN KEY (`badge_id`) REFERENCES `_badge` (`id`) ON DELETE CASCADE
+  CONSTRAINT `badge_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `badge_user_ibfk_2` FOREIGN KEY (`badge_id`) REFERENCES `badge` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_briefe`;
-CREATE TABLE `_briefe` (
+DROP TABLE IF EXISTS `briefe`;
+CREATE TABLE `briefe` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `empfaenger_id` int(10) DEFAULT NULL,
   `absender_id` int(10) DEFAULT NULL,
@@ -138,21 +138,21 @@ CREATE TABLE `_briefe` (
   `gelesen` enum('1','0') DEFAULT '0',
   `typ` enum('eingang','ausgang') DEFAULT 'eingang',
   PRIMARY KEY (`id`),
-  KEY `_briefe_user_id_fk` (`absender_id`),
-  CONSTRAINT `_briefe_user_id_fk` FOREIGN KEY (`absender_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE
+  KEY `briefe_user_id_fk` (`absender_id`),
+  CONSTRAINT `briefe_user_id_fk` FOREIGN KEY (`absender_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_buildings_of_team`;
-CREATE TABLE `_buildings_of_team` (
+DROP TABLE IF EXISTS `buildings_of_team`;
+CREATE TABLE `buildings_of_team` (
   `building_id` int(10) NOT NULL,
   `team_id` int(10) NOT NULL,
   `construction_deadline` int(11) DEFAULT NULL,
   PRIMARY KEY (`building_id`,`team_id`),
   KEY `team_id` (`team_id`),
-  CONSTRAINT `_buildings_of_team_ibfk_1` FOREIGN KEY (`building_id`) REFERENCES `_stadiumbuilding` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_buildings_of_team_ibfk_2` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  CONSTRAINT `buildings_of_team_ibfk_1` FOREIGN KEY (`building_id`) REFERENCES `stadiumbuilding` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `buildings_of_team_ibfk_2` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_cup`;
-CREATE TABLE `_cup` (
+DROP TABLE IF EXISTS `cup`;
+CREATE TABLE `cup` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) DEFAULT NULL,
   `winner_id` int(10) DEFAULT NULL,
@@ -163,11 +163,11 @@ CREATE TABLE `_cup` (
   `archived` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `_cup_winner_id_fk` (`winner_id`),
-  CONSTRAINT `_cup_winner_id_fk` FOREIGN KEY (`winner_id`) REFERENCES `_verein` (`id`) ON DELETE SET NULL
+  KEY `cup_winner_id_fk` (`winner_id`),
+  CONSTRAINT `cup_winner_id_fk` FOREIGN KEY (`winner_id`) REFERENCES `verein` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_cup_round`;
-CREATE TABLE `_cup_round` (
+DROP TABLE IF EXISTS `cup_round`;
+CREATE TABLE `cup_round` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `cup_id` int(10) DEFAULT NULL,
   `name` varchar(64) DEFAULT NULL,
@@ -178,15 +178,15 @@ CREATE TABLE `_cup_round` (
   `finalround` enum('1','0') DEFAULT '0',
   `groupmatches` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `_cupround_cup_id_fk` (`cup_id`),
-  KEY `_cupround_fromwinners_id_fk` (`from_winners_round_id`),
-  KEY `_cupround_fromloosers_id_fk` (`from_loosers_round_id`),
-  CONSTRAINT `_cupround_cup_id_fk` FOREIGN KEY (`cup_id`) REFERENCES `_cup` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_cupround_fromloosers_id_fk` FOREIGN KEY (`from_loosers_round_id`) REFERENCES `_cup_round` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_cupround_fromwinners_id_fk` FOREIGN KEY (`from_winners_round_id`) REFERENCES `_cup_round` (`id`) ON DELETE CASCADE
+  KEY `cupround_cup_id_fk` (`cup_id`),
+  KEY `cupround_fromwinners_id_fk` (`from_winners_round_id`),
+  KEY `cupround_fromloosers_id_fk` (`from_loosers_round_id`),
+  CONSTRAINT `cupround_cup_id_fk` FOREIGN KEY (`cup_id`) REFERENCES `cup` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `cupround_fromloosers_id_fk` FOREIGN KEY (`from_loosers_round_id`) REFERENCES `cup_round` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `cupround_fromwinners_id_fk` FOREIGN KEY (`from_winners_round_id`) REFERENCES `cup_round` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_cup_round_group`;
-CREATE TABLE `_cup_round_group` (
+DROP TABLE IF EXISTS `cup_round_group`;
+CREATE TABLE `cup_round_group` (
   `cup_round_id` int(10) NOT NULL,
   `team_id` int(10) NOT NULL,
   `name` varchar(64) DEFAULT NULL,
@@ -197,31 +197,31 @@ CREATE TABLE `_cup_round_group` (
   `tab_draws` int(4) DEFAULT 0,
   `tab_losses` int(4) DEFAULT 0,
   PRIMARY KEY (`cup_round_id`,`team_id`),
-  KEY `_cupgroup_team_id_fk` (`team_id`),
-  CONSTRAINT `_cupgroup_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `cupgroup_team_id_fk` (`team_id`),
+  CONSTRAINT `cupgroup_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_cup_round_group_next`;
-CREATE TABLE `_cup_round_group_next` (
+DROP TABLE IF EXISTS `cup_round_group_next`;
+CREATE TABLE `cup_round_group_next` (
   `cup_round_id` int(10) NOT NULL,
   `groupname` varchar(64) NOT NULL,
   `rank` int(4) NOT NULL DEFAULT 0,
   `target_cup_round_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`cup_round_id`,`groupname`,`rank`),
-  KEY `_groupnext_tagetround_fk` (`target_cup_round_id`),
-  CONSTRAINT `_groupnext_round_fk` FOREIGN KEY (`cup_round_id`) REFERENCES `_cup_round` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_groupnext_tagetround_fk` FOREIGN KEY (`target_cup_round_id`) REFERENCES `_cup_round` (`id`) ON DELETE CASCADE
+  KEY `groupnext_tagetround_fk` (`target_cup_round_id`),
+  CONSTRAINT `groupnext_round_fk` FOREIGN KEY (`cup_round_id`) REFERENCES `cup_round` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `groupnext_tagetround_fk` FOREIGN KEY (`target_cup_round_id`) REFERENCES `cup_round` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_cup_round_pending`;
-CREATE TABLE `_cup_round_pending` (
+DROP TABLE IF EXISTS `cup_round_pending`;
+CREATE TABLE `cup_round_pending` (
   `team_id` int(10) NOT NULL,
   `cup_round_id` int(10) NOT NULL,
   PRIMARY KEY (`team_id`,`cup_round_id`),
-  KEY `_cuproundpending_round_fk` (`cup_round_id`),
-  CONSTRAINT `_cuproundpending_round_fk` FOREIGN KEY (`cup_round_id`) REFERENCES `_cup_round` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_cuproundpending_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `cuproundpending_round_fk` (`cup_round_id`),
+  CONSTRAINT `cuproundpending_round_fk` FOREIGN KEY (`cup_round_id`) REFERENCES `cup_round` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `cuproundpending_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_konto`;
-CREATE TABLE `_konto` (
+DROP TABLE IF EXISTS `konto`;
+CREATE TABLE `konto` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `verein_id` int(10) DEFAULT NULL,
   `absender` varchar(150) DEFAULT NULL,
@@ -229,11 +229,11 @@ CREATE TABLE `_konto` (
   `datum` int(11) DEFAULT NULL,
   `verwendung` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `_konto_verein_id_fk` (`verein_id`),
-  CONSTRAINT `_konto_verein_id_fk` FOREIGN KEY (`verein_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `konto_verein_id_fk` (`verein_id`),
+  CONSTRAINT `konto_verein_id_fk` FOREIGN KEY (`verein_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_leaguehistory`;
-CREATE TABLE `_leaguehistory` (
+DROP TABLE IF EXISTS `leaguehistory`;
+CREATE TABLE `leaguehistory` (
   `team_id` int(10) NOT NULL,
   `season_id` int(10) NOT NULL,
   `user_id` int(10) DEFAULT NULL,
@@ -242,12 +242,12 @@ CREATE TABLE `_leaguehistory` (
   PRIMARY KEY (`team_id`,`season_id`,`matchday`),
   KEY `season_id` (`season_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `_leaguehistory_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_leaguehistory_ibfk_2` FOREIGN KEY (`season_id`) REFERENCES `_saison` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_leaguehistory_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE SET NULL
+  CONSTRAINT `leaguehistory_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `leaguehistory_ibfk_2` FOREIGN KEY (`season_id`) REFERENCES `saison` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `leaguehistory_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_liga`;
-CREATE TABLE `_liga` (
+DROP TABLE IF EXISTS `liga`;
+CREATE TABLE `liga` (
   `id` smallint(5) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `kurz` varchar(5) DEFAULT NULL,
@@ -263,8 +263,8 @@ CREATE TABLE `_liga` (
   `admin_id` smallint(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_matchreport`;
-CREATE TABLE `_matchreport` (
+DROP TABLE IF EXISTS `matchreport`;
+CREATE TABLE `matchreport` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `match_id` int(10) DEFAULT NULL,
   `message_id` int(10) DEFAULT NULL,
@@ -273,22 +273,22 @@ CREATE TABLE `_matchreport` (
   `playernames` varchar(128) DEFAULT NULL,
   `active_home` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `_matchreport_spiel_id_fk` (`match_id`),
-  KEY `_matchreport_message_id_fk` (`message_id`),
-  CONSTRAINT `_matchreport_message_id_fk` FOREIGN KEY (`message_id`) REFERENCES `_spiel_text` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_matchreport_spiel_id_fk` FOREIGN KEY (`match_id`) REFERENCES `_spiel` (`id`) ON DELETE CASCADE
+  KEY `matchreport_spiel_id_fk` (`match_id`),
+  KEY `matchreport_message_id_fk` (`message_id`),
+  CONSTRAINT `matchreport_message_id_fk` FOREIGN KEY (`message_id`) REFERENCES `spiel_text` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `matchreport_spiel_id_fk` FOREIGN KEY (`match_id`) REFERENCES `spiel` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_nationalplayer`;
-CREATE TABLE `_nationalplayer` (
+DROP TABLE IF EXISTS `nationalplayer`;
+CREATE TABLE `nationalplayer` (
   `team_id` int(10) NOT NULL,
   `player_id` int(10) NOT NULL,
   PRIMARY KEY (`team_id`,`player_id`),
-  KEY `_nationalp_player_id_fk` (`player_id`),
-  CONSTRAINT `_nationalp_player_id_fk` FOREIGN KEY (`player_id`) REFERENCES `_spieler` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_nationalp_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `nationalp_player_id_fk` (`player_id`),
+  CONSTRAINT `nationalp_player_id_fk` FOREIGN KEY (`player_id`) REFERENCES `spieler` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `nationalp_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_news`;
-CREATE TABLE `_news` (
+DROP TABLE IF EXISTS `news`;
+CREATE TABLE `news` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `datum` int(10) DEFAULT NULL,
   `autor_id` smallint(5) DEFAULT NULL,
@@ -307,8 +307,8 @@ CREATE TABLE `_news` (
   `status` enum('1','2','0') DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_notification`;
-CREATE TABLE `_notification` (
+DROP TABLE IF EXISTS `notification`;
+CREATE TABLE `notification` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) DEFAULT NULL,
   `eventdate` int(11) DEFAULT NULL,
@@ -321,22 +321,22 @@ CREATE TABLE `_notification` (
   `team_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `team_id` (`team_id`),
-  KEY `_notification_user_id_fk` (`user_id`),
-  CONSTRAINT `_notification_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_notification_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE
+  KEY `notification_user_id_fk` (`user_id`),
+  CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `notification_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_premiumpayment`;
-CREATE TABLE `_premiumpayment` (
+DROP TABLE IF EXISTS `premiumpayment`;
+CREATE TABLE `premiumpayment` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) DEFAULT NULL,
   `amount` int(10) DEFAULT NULL,
   `created_date` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `_premiumpayment_user_id_fk` (`user_id`),
-  CONSTRAINT `_premiumpayment_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE
+  KEY `premiumpayment_user_id_fk` (`user_id`),
+  CONSTRAINT `premiumpayment_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_premiumstatement`;
-CREATE TABLE `_premiumstatement` (
+DROP TABLE IF EXISTS `premiumstatement`;
+CREATE TABLE `premiumstatement` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) DEFAULT NULL,
   `action_id` varchar(255) DEFAULT NULL,
@@ -344,11 +344,11 @@ CREATE TABLE `_premiumstatement` (
   `created_date` int(11) DEFAULT NULL,
   `subject_data` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `_premium_user_id_fk` (`user_id`),
-  CONSTRAINT `_premium_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE
+  KEY `premium_user_id_fk` (`user_id`),
+  CONSTRAINT `premium_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_randomevent`;
-CREATE TABLE `_randomevent` (
+DROP TABLE IF EXISTS `randomevent`;
+CREATE TABLE `randomevent` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `message` varchar(255) DEFAULT NULL,
   `effect` enum('money','player_injured','player_blocked','player_happiness','player_fitness','player_stamina') DEFAULT NULL,
@@ -358,8 +358,8 @@ CREATE TABLE `_randomevent` (
   `weight` tinyint(3) DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_randomevent_occurrence`;
-CREATE TABLE `_randomevent_occurrence` (
+DROP TABLE IF EXISTS `randomevent_occurrence`;
+CREATE TABLE `randomevent_occurrence` (
   `user_id` int(10) NOT NULL,
   `team_id` int(10) NOT NULL,
   `event_id` int(10) DEFAULT NULL,
@@ -367,12 +367,12 @@ CREATE TABLE `_randomevent_occurrence` (
   PRIMARY KEY (`user_id`,`team_id`,`occurrence_date`),
   KEY `team_id` (`team_id`),
   KEY `event_id` (`event_id`),
-  CONSTRAINT `_randomevent_occurrence_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_randomevent_occurrence_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_randomevent_occurrence_ibfk_3` FOREIGN KEY (`event_id`) REFERENCES `_randomevent` (`id`) ON DELETE CASCADE
+  CONSTRAINT `randomevent_occurrence_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `randomevent_occurrence_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `randomevent_occurrence_ibfk_3` FOREIGN KEY (`event_id`) REFERENCES `randomevent` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_saison`;
-CREATE TABLE `_saison` (
+DROP TABLE IF EXISTS `saison`;
+CREATE TABLE `saison` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) DEFAULT NULL,
   `liga_id` smallint(5) DEFAULT NULL,
@@ -384,15 +384,15 @@ CREATE TABLE `_saison` (
   `beendet` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_session`;
-CREATE TABLE `_session` (
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE `session` (
   `session_id` char(32) NOT NULL,
   `session_data` text DEFAULT NULL,
   `expires` int(11) DEFAULT NULL,
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_shoutmessage`;
-CREATE TABLE `_shoutmessage` (
+DROP TABLE IF EXISTS `shoutmessage`;
+CREATE TABLE `shoutmessage` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) DEFAULT NULL,
   `message` varchar(255) DEFAULT NULL,
@@ -401,11 +401,11 @@ CREATE TABLE `_shoutmessage` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `match_id` (`match_id`),
-  CONSTRAINT `_shoutmessage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_shoutmessage_ibfk_2` FOREIGN KEY (`match_id`) REFERENCES `_spiel` (`id`) ON DELETE CASCADE
+  CONSTRAINT `shoutmessage_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `shoutmessage_ibfk_2` FOREIGN KEY (`match_id`) REFERENCES `spiel` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_spiel`;
-CREATE TABLE `_spiel` (
+DROP TABLE IF EXISTS `spiel`;
+CREATE TABLE `spiel` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `spieltyp` enum('Ligaspiel','Pokalspiel','Freundschaft') NOT NULL DEFAULT 'Ligaspiel',
   `elfmeter` enum('1','0') NOT NULL DEFAULT '0',
@@ -510,19 +510,19 @@ CREATE TABLE `_spiel` (
   `gast_w3_position` varchar(4) DEFAULT NULL,
   `blocked` enum('1','0') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `_spiel_saison_id_fk` (`saison_id`),
-  KEY `_spiel_home_id_fk` (`home_verein`),
-  KEY `_spiel_gast_id_fk` (`gast_verein`),
-  KEY `_match_home_user_id_fk` (`home_user_id`),
-  KEY `_match_guest_user_id_fk` (`gast_user_id`),
-  CONSTRAINT `_match_guest_user_id_fk` FOREIGN KEY (`gast_user_id`) REFERENCES `_user` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `_match_home_user_id_fk` FOREIGN KEY (`home_user_id`) REFERENCES `_user` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `_spiel_gast_id_fk` FOREIGN KEY (`gast_verein`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_spiel_home_id_fk` FOREIGN KEY (`home_verein`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_spiel_saison_id_fk` FOREIGN KEY (`saison_id`) REFERENCES `_saison` (`id`) ON DELETE CASCADE
+  KEY `spiel_saison_id_fk` (`saison_id`),
+  KEY `spiel_home_id_fk` (`home_verein`),
+  KEY `spiel_gast_id_fk` (`gast_verein`),
+  KEY `match_home_user_id_fk` (`home_user_id`),
+  KEY `match_guest_user_id_fk` (`gast_user_id`),
+  CONSTRAINT `match_guest_user_id_fk` FOREIGN KEY (`gast_user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `match_home_user_id_fk` FOREIGN KEY (`home_user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `spiel_gast_id_fk` FOREIGN KEY (`gast_verein`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `spiel_home_id_fk` FOREIGN KEY (`home_verein`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `spiel_saison_id_fk` FOREIGN KEY (`saison_id`) REFERENCES `saison` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_spieler`;
-CREATE TABLE `_spieler` (
+DROP TABLE IF EXISTS `spieler`;
+CREATE TABLE `spieler` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `vorname` varchar(30) DEFAULT NULL,
   `nachname` varchar(30) DEFAULT NULL,
@@ -574,11 +574,11 @@ CREATE TABLE `_spieler` (
   `age` tinyint(3) DEFAULT NULL,
   `status` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `_spieler_verein_id_fk` (`verein_id`),
-  CONSTRAINT `_spieler_verein_id_fk` FOREIGN KEY (`verein_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `spieler_verein_id_fk` (`verein_id`),
+  CONSTRAINT `spieler_verein_id_fk` FOREIGN KEY (`verein_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_spiel_berechnung`;
-CREATE TABLE `_spiel_berechnung` (
+DROP TABLE IF EXISTS `spiel_berechnung`;
+CREATE TABLE `spiel_berechnung` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `spiel_id` int(10) NOT NULL,
   `spieler_id` int(10) NOT NULL,
@@ -608,20 +608,20 @@ CREATE TABLE `_spiel_berechnung` (
   `name` varchar(128) DEFAULT NULL,
   `losttackles` tinyint(3) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `_berechnung_spiel_id_fk` (`spiel_id`),
-  KEY `_berechnung_spieler_id_fk` (`spieler_id`),
-  CONSTRAINT `_berechnung_spiel_id_fk` FOREIGN KEY (`spiel_id`) REFERENCES `_spiel` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_berechnung_spieler_id_fk` FOREIGN KEY (`spieler_id`) REFERENCES `_spieler` (`id`) ON DELETE CASCADE
+  KEY `berechnung_spiel_id_fk` (`spiel_id`),
+  KEY `berechnung_spieler_id_fk` (`spieler_id`),
+  CONSTRAINT `berechnung_spiel_id_fk` FOREIGN KEY (`spiel_id`) REFERENCES `spiel` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `berechnung_spieler_id_fk` FOREIGN KEY (`spieler_id`) REFERENCES `spieler` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_spiel_text`;
-CREATE TABLE `_spiel_text` (
+DROP TABLE IF EXISTS `spiel_text`;
+CREATE TABLE `spiel_text` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `aktion` enum('Tor','Auswechslung','Zweikampf_gewonnen','Zweikampf_verloren','Pass_daneben','Torschuss_daneben','Torschuss_auf_Tor','Karte_gelb','Karte_rot','Karte_gelb_rot','Verletzung','Elfmeter_erfolg','Elfmeter_verschossen','Taktikaenderung','Ecke','Freistoss_daneben','Freistoss_treffer','Tor_mit_vorlage') DEFAULT NULL,
   `nachricht` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_sponsor`;
-CREATE TABLE `_sponsor` (
+DROP TABLE IF EXISTS `sponsor`;
+CREATE TABLE `sponsor` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) DEFAULT NULL,
   `bild` varchar(100) DEFAULT NULL,
@@ -634,8 +634,8 @@ CREATE TABLE `_sponsor` (
   `min_platz` tinyint(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_stadion`;
-CREATE TABLE `_stadion` (
+DROP TABLE IF EXISTS `stadion`;
+CREATE TABLE `stadion` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) DEFAULT NULL,
   `stadt` varchar(30) DEFAULT NULL,
@@ -656,8 +656,8 @@ CREATE TABLE `_stadion` (
   `picture` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_stadiumbuilding`;
-CREATE TABLE `_stadiumbuilding` (
+DROP TABLE IF EXISTS `stadiumbuilding`;
+CREATE TABLE `stadiumbuilding` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -674,10 +674,10 @@ CREATE TABLE `_stadiumbuilding` (
   `effect_income` int(10) DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `required_building_id` (`required_building_id`),
-  CONSTRAINT `_stadiumbuilding_ibfk_1` FOREIGN KEY (`required_building_id`) REFERENCES `_stadiumbuilding` (`id`) ON DELETE SET NULL
+  CONSTRAINT `stadiumbuilding_ibfk_1` FOREIGN KEY (`required_building_id`) REFERENCES `stadiumbuilding` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_stadium_builder`;
-CREATE TABLE `_stadium_builder` (
+DROP TABLE IF EXISTS `stadium_builder`;
+CREATE TABLE `stadium_builder` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) DEFAULT NULL,
   `picture` varchar(128) DEFAULT NULL,
@@ -691,8 +691,8 @@ CREATE TABLE `_stadium_builder` (
   `premiumfee` int(10) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_stadium_construction`;
-CREATE TABLE `_stadium_construction` (
+DROP TABLE IF EXISTS `stadium_construction`;
+CREATE TABLE `stadium_construction` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `team_id` int(10) DEFAULT NULL,
   `builder_id` int(10) DEFAULT NULL,
@@ -704,14 +704,14 @@ CREATE TABLE `_stadium_construction` (
   `p_haupt_sitz` int(6) DEFAULT 0,
   `p_vip` int(6) DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `_construction_team_id_fk` (`team_id`),
-  KEY `_construction_builder_id_fk` (`builder_id`),
-  CONSTRAINT `_construction_builder_id_fk` FOREIGN KEY (`builder_id`) REFERENCES `_stadium_builder` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_construction_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_stadium_construction_ibfk_1` FOREIGN KEY (`builder_id`) REFERENCES `_stadium_builder` (`id`)
+  KEY `construction_team_id_fk` (`team_id`),
+  KEY `construction_builder_id_fk` (`builder_id`),
+  CONSTRAINT `construction_builder_id_fk` FOREIGN KEY (`builder_id`) REFERENCES `stadium_builder` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `construction_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `stadium_construction_ibfk_1` FOREIGN KEY (`builder_id`) REFERENCES `stadium_builder` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_tabelle_markierung`;
-CREATE TABLE `_tabelle_markierung` (
+DROP TABLE IF EXISTS `tabelle_markierung`;
+CREATE TABLE `tabelle_markierung` (
   `id` smallint(5) NOT NULL AUTO_INCREMENT,
   `liga_id` smallint(5) DEFAULT NULL,
   `bezeichnung` varchar(50) DEFAULT NULL,
@@ -721,8 +721,8 @@ CREATE TABLE `_tabelle_markierung` (
   `target_league_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_teamoftheday`;
-CREATE TABLE `_teamoftheday` (
+DROP TABLE IF EXISTS `teamoftheday`;
+CREATE TABLE `teamoftheday` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `season_id` int(10) DEFAULT NULL,
   `matchday` tinyint(3) DEFAULT NULL,
@@ -730,13 +730,13 @@ CREATE TABLE `_teamoftheday` (
   `player_id` int(10) DEFAULT NULL,
   `position_main` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `_teamofday_season_id_fk` (`season_id`),
-  KEY `_teamofday_player_id_fk` (`player_id`),
-  CONSTRAINT `_teamofday_player_id_fk` FOREIGN KEY (`player_id`) REFERENCES `_spieler` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_teamofday_season_id_fk` FOREIGN KEY (`season_id`) REFERENCES `_saison` (`id`) ON DELETE CASCADE
+  KEY `teamofday_season_id_fk` (`season_id`),
+  KEY `teamofday_player_id_fk` (`player_id`),
+  CONSTRAINT `teamofday_player_id_fk` FOREIGN KEY (`player_id`) REFERENCES `spieler` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `teamofday_season_id_fk` FOREIGN KEY (`season_id`) REFERENCES `saison` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_team_league_statistics`;
-CREATE TABLE `_team_league_statistics` (
+DROP TABLE IF EXISTS `team_league_statistics`;
+CREATE TABLE `team_league_statistics` (
   `team_id` int(10) NOT NULL,
   `season_id` int(10) NOT NULL,
   `total_points` int(6) DEFAULT 0,
@@ -761,12 +761,12 @@ CREATE TABLE `_team_league_statistics` (
   `guest_draws` int(6) DEFAULT 0,
   `guest_losses` int(6) DEFAULT 0,
   PRIMARY KEY (`team_id`,`season_id`),
-  KEY `_statistics_season_id_fk` (`season_id`),
-  CONSTRAINT `_statistics_season_id_fk` FOREIGN KEY (`season_id`) REFERENCES `_saison` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_statistics_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `statistics_season_id_fk` (`season_id`),
+  CONSTRAINT `statistics_season_id_fk` FOREIGN KEY (`season_id`) REFERENCES `saison` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `statistics_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_trainer`;
-CREATE TABLE `_trainer` (
+DROP TABLE IF EXISTS `trainer`;
+CREATE TABLE `trainer` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) DEFAULT NULL,
   `salary` int(10) DEFAULT NULL,
@@ -775,8 +775,8 @@ CREATE TABLE `_trainer` (
   `premiumfee` int(10) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_training`;
-CREATE TABLE `_training` (
+DROP TABLE IF EXISTS `training`;
+CREATE TABLE `training` (
   `id` smallint(5) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) DEFAULT NULL,
   `w_staerke` tinyint(3) DEFAULT NULL,
@@ -786,8 +786,8 @@ CREATE TABLE `_training` (
   `w_zufriedenheit` tinyint(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_trainingslager`;
-CREATE TABLE `_trainingslager` (
+DROP TABLE IF EXISTS `trainingslager`;
+CREATE TABLE `trainingslager` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
   `land` varchar(30) DEFAULT NULL,
@@ -800,21 +800,21 @@ CREATE TABLE `_trainingslager` (
   `p_zufriedenheit` tinyint(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_trainingslager_belegung`;
-CREATE TABLE `_trainingslager_belegung` (
+DROP TABLE IF EXISTS `trainingslager_belegung`;
+CREATE TABLE `trainingslager_belegung` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `verein_id` int(10) DEFAULT NULL,
   `lager_id` int(10) DEFAULT NULL,
   `datum_start` int(10) DEFAULT NULL,
   `datum_ende` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `_trainingslager_belegung_fk` (`lager_id`),
-  KEY `_trainingslager_verein_fk` (`verein_id`),
-  CONSTRAINT `_trainingslager_belegung_fk` FOREIGN KEY (`lager_id`) REFERENCES `_trainingslager` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_trainingslager_verein_fk` FOREIGN KEY (`verein_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `trainingslager_belegung_fk` (`lager_id`),
+  KEY `trainingslager_verein_fk` (`verein_id`),
+  CONSTRAINT `trainingslager_belegung_fk` FOREIGN KEY (`lager_id`) REFERENCES `trainingslager` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `trainingslager_verein_fk` FOREIGN KEY (`verein_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_training_unit`;
-CREATE TABLE `_training_unit` (
+DROP TABLE IF EXISTS `training_unit`;
+CREATE TABLE `training_unit` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `team_id` int(10) DEFAULT NULL,
   `trainer_id` int(10) DEFAULT NULL,
@@ -822,11 +822,11 @@ CREATE TABLE `_training_unit` (
   `intensity` tinyint(3) DEFAULT 50,
   `date_executed` int(10) DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `_training_verein_id_fk` (`team_id`),
-  CONSTRAINT `_training_verein_id_fk` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `training_verein_id_fk` (`team_id`),
+  CONSTRAINT `training_verein_id_fk` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_transfer`;
-CREATE TABLE `_transfer` (
+DROP TABLE IF EXISTS `transfer`;
+CREATE TABLE `transfer` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `spieler_id` int(10) DEFAULT NULL,
   `seller_user_id` int(10) DEFAULT NULL,
@@ -839,19 +839,19 @@ CREATE TABLE `_transfer` (
   `directtransfer_player1` int(10) DEFAULT 0,
   `directtransfer_player2` int(10) DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `_transfer_spieler_id_fk` (`spieler_id`),
-  KEY `_transfer_selleruser_fk` (`seller_user_id`),
-  KEY `_transfer_sellerclub_fk` (`seller_club_id`),
-  KEY `_transfer_buyeruser_fk` (`buyer_user_id`),
-  KEY `_transfer_buyerclub_fk` (`buyer_club_id`),
-  CONSTRAINT `_transfer_buyerclub_fk` FOREIGN KEY (`buyer_club_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_transfer_buyeruser_fk` FOREIGN KEY (`buyer_user_id`) REFERENCES `_user` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `_transfer_sellerclub_fk` FOREIGN KEY (`seller_club_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_transfer_selleruser_fk` FOREIGN KEY (`seller_user_id`) REFERENCES `_user` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `_transfer_spieler_id_fk` FOREIGN KEY (`spieler_id`) REFERENCES `_spieler` (`id`) ON DELETE CASCADE
+  KEY `transfer_spieler_id_fk` (`spieler_id`),
+  KEY `transfer_selleruser_fk` (`seller_user_id`),
+  KEY `transfer_sellerclub_fk` (`seller_club_id`),
+  KEY `transfer_buyeruser_fk` (`buyer_user_id`),
+  KEY `transfer_buyerclub_fk` (`buyer_club_id`),
+  CONSTRAINT `transfer_buyerclub_fk` FOREIGN KEY (`buyer_club_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `transfer_buyeruser_fk` FOREIGN KEY (`buyer_user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `transfer_sellerclub_fk` FOREIGN KEY (`seller_club_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `transfer_selleruser_fk` FOREIGN KEY (`seller_user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `transfer_spieler_id_fk` FOREIGN KEY (`spieler_id`) REFERENCES `spieler` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_transfer_angebot`;
-CREATE TABLE `_transfer_angebot` (
+DROP TABLE IF EXISTS `transfer_angebot`;
+CREATE TABLE `transfer_angebot` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `spieler_id` int(10) DEFAULT NULL,
   `verein_id` int(10) DEFAULT NULL,
@@ -864,11 +864,11 @@ CREATE TABLE `_transfer_angebot` (
   `vertrag_torpraemie` smallint(5) DEFAULT 0,
   `ishighest` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `_transfer_angebot_user_id_fk` (`user_id`),
-  CONSTRAINT `_transfer_angebot_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE
+  KEY `transfer_angebot_user_id_fk` (`user_id`),
+  CONSTRAINT `transfer_angebot_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_transfer_offer`;
-CREATE TABLE `_transfer_offer` (
+DROP TABLE IF EXISTS `transfer_offer`;
+CREATE TABLE `transfer_offer` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `player_id` int(10) DEFAULT NULL,
   `sender_user_id` int(10) DEFAULT NULL,
@@ -884,17 +884,17 @@ CREATE TABLE `_transfer_offer` (
   `rejected_allow_alternative` enum('1','0') DEFAULT '0',
   `admin_approval_pending` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `_toffer_spieler_id_fk` (`player_id`),
-  KEY `_toffer_selleruser_fk` (`sender_user_id`),
-  KEY `_toffer_sellerclub_fk` (`sender_club_id`),
-  KEY `_toffer_buyerclub_fk` (`receiver_club_id`),
-  CONSTRAINT `_toffer_buyerclub_fk` FOREIGN KEY (`receiver_club_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_toffer_sellerclub_fk` FOREIGN KEY (`sender_club_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_toffer_selleruser_fk` FOREIGN KEY (`sender_user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_toffer_spieler_id_fk` FOREIGN KEY (`player_id`) REFERENCES `_spieler` (`id`) ON DELETE CASCADE
+  KEY `toffer_spieler_id_fk` (`player_id`),
+  KEY `toffer_selleruser_fk` (`sender_user_id`),
+  KEY `toffer_sellerclub_fk` (`sender_club_id`),
+  KEY `toffer_buyerclub_fk` (`receiver_club_id`),
+  CONSTRAINT `toffer_buyerclub_fk` FOREIGN KEY (`receiver_club_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `toffer_sellerclub_fk` FOREIGN KEY (`sender_club_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `toffer_selleruser_fk` FOREIGN KEY (`sender_user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `toffer_spieler_id_fk` FOREIGN KEY (`player_id`) REFERENCES `spieler` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_user`;
-CREATE TABLE `_user` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `nick` varchar(50) DEFAULT NULL,
   `passwort` varchar(64) DEFAULT NULL,
@@ -935,8 +935,8 @@ CREATE TABLE `_user` (
   `status` enum('1','2','0') DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_userabsence`;
-CREATE TABLE `_userabsence` (
+DROP TABLE IF EXISTS `userabsence`;
+CREATE TABLE `userabsence` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) DEFAULT NULL,
   `deputy_id` int(10) DEFAULT NULL,
@@ -945,21 +945,21 @@ CREATE TABLE `_userabsence` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `deputy_id` (`deputy_id`),
-  CONSTRAINT `_userabsence_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_userabsence_ibfk_2` FOREIGN KEY (`deputy_id`) REFERENCES `_user` (`id`) ON DELETE SET NULL
+  CONSTRAINT `userabsence_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `userabsence_ibfk_2` FOREIGN KEY (`deputy_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_useractionlog`;
-CREATE TABLE `_useractionlog` (
+DROP TABLE IF EXISTS `useractionlog`;
+CREATE TABLE `useractionlog` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) DEFAULT NULL,
   `action_id` varchar(255) DEFAULT NULL,
   `created_date` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `_useractionlog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE
+  CONSTRAINT `useractionlog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_user_inactivity`;
-CREATE TABLE `_user_inactivity` (
+DROP TABLE IF EXISTS `user_inactivity`;
+CREATE TABLE `user_inactivity` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) DEFAULT NULL,
   `login` tinyint(3) DEFAULT 0,
@@ -970,11 +970,11 @@ CREATE TABLE `_user_inactivity` (
   `transfer_check` int(11) DEFAULT NULL,
   `vertragsauslauf` tinyint(3) DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `_user_inactivity_user_id_fk` (`user_id`),
-  CONSTRAINT `_user_inactivity_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE CASCADE
+  KEY `user_inactivity_user_id_fk` (`user_id`),
+  CONSTRAINT `user_inactivity_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_verein`;
-CREATE TABLE `_verein` (
+DROP TABLE IF EXISTS `verein`;
+CREATE TABLE `verein` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `kurz` varchar(5) DEFAULT NULL,
@@ -1022,19 +1022,19 @@ CREATE TABLE `_verein` (
   `interimmanager` enum('1','0') DEFAULT '0',
   `status` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `_verein_user_id_fk` (`user_id`),
-  KEY `_verein_stadion_id_fk` (`stadion_id`),
-  KEY `_verein_sponsor_id_fk` (`sponsor_id`),
-  KEY `_verein_liga_id_fk` (`liga_id`),
-  KEY `_verein_original_user_id_fk` (`user_id_actual`),
-  CONSTRAINT `_verein_liga_id_fk` FOREIGN KEY (`liga_id`) REFERENCES `_liga` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_verein_original_user_id_fk` FOREIGN KEY (`user_id_actual`) REFERENCES `_user` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `_verein_sponsor_id_fk` FOREIGN KEY (`sponsor_id`) REFERENCES `_sponsor` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `_verein_stadion_id_fk` FOREIGN KEY (`stadion_id`) REFERENCES `_stadion` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `_verein_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `_user` (`id`) ON DELETE SET NULL
+  KEY `verein_user_id_fk` (`user_id`),
+  KEY `verein_stadion_id_fk` (`stadion_id`),
+  KEY `verein_sponsor_id_fk` (`sponsor_id`),
+  KEY `verein_liga_id_fk` (`liga_id`),
+  KEY `verein_original_user_id_fk` (`user_id_actual`),
+  CONSTRAINT `verein_liga_id_fk` FOREIGN KEY (`liga_id`) REFERENCES `liga` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `verein_original_user_id_fk` FOREIGN KEY (`user_id_actual`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `verein_sponsor_id_fk` FOREIGN KEY (`sponsor_id`) REFERENCES `sponsor` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `verein_stadion_id_fk` FOREIGN KEY (`stadion_id`) REFERENCES `stadion` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `verein_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_youthmatch`;
-CREATE TABLE `_youthmatch` (
+DROP TABLE IF EXISTS `youthmatch`;
+CREATE TABLE `youthmatch` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `matchdate` int(11) DEFAULT NULL,
   `home_team_id` int(10) DEFAULT NULL,
@@ -1075,13 +1075,13 @@ CREATE TABLE `_youthmatch` (
   `guest_goals` tinyint(2) DEFAULT NULL,
   `simulated` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `_youthmatch_home_id_fk` (`home_team_id`),
-  KEY `_youthmatch_guest_id_fk` (`guest_team_id`),
-  CONSTRAINT `_youthmatch_guest_id_fk` FOREIGN KEY (`guest_team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_youthmatch_home_id_fk` FOREIGN KEY (`home_team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `youthmatch_home_id_fk` (`home_team_id`),
+  KEY `youthmatch_guest_id_fk` (`guest_team_id`),
+  CONSTRAINT `youthmatch_guest_id_fk` FOREIGN KEY (`guest_team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `youthmatch_home_id_fk` FOREIGN KEY (`home_team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_youthmatch_player`;
-CREATE TABLE `_youthmatch_player` (
+DROP TABLE IF EXISTS `youthmatch_player`;
+CREATE TABLE `youthmatch_player` (
   `match_id` int(10) NOT NULL,
   `team_id` int(10) DEFAULT NULL,
   `player_id` int(10) NOT NULL,
@@ -1103,15 +1103,15 @@ CREATE TABLE `_youthmatch_player` (
   `assists` tinyint(3) DEFAULT 0,
   `name` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`match_id`,`player_id`),
-  KEY `_ymatchplayer_team_id_fk` (`team_id`),
-  KEY `_ymatchplayer_player_id_fk` (`player_id`),
-  CONSTRAINT `_ymatchplayer_match_id_fk` FOREIGN KEY (`match_id`) REFERENCES `_youthmatch` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_ymatchplayer_player_id_fk` FOREIGN KEY (`player_id`) REFERENCES `_youthplayer` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_ymatchplayer_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_youthmatch_player_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `_youthmatch` (`id`) ON DELETE CASCADE
+  KEY `ymatchplayer_team_id_fk` (`team_id`),
+  KEY `ymatchplayer_player_id_fk` (`player_id`),
+  CONSTRAINT `ymatchplayer_match_id_fk` FOREIGN KEY (`match_id`) REFERENCES `youthmatch` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ymatchplayer_player_id_fk` FOREIGN KEY (`player_id`) REFERENCES `youthplayer` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ymatchplayer_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `youthmatch_player_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `youthmatch` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_youthmatch_reportitem`;
-CREATE TABLE `_youthmatch_reportitem` (
+DROP TABLE IF EXISTS `youthmatch_reportitem`;
+CREATE TABLE `youthmatch_reportitem` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `match_id` int(10) DEFAULT NULL,
   `minute` tinyint(3) DEFAULT NULL,
@@ -1119,22 +1119,22 @@ CREATE TABLE `_youthmatch_reportitem` (
   `message_data` varchar(255) DEFAULT NULL,
   `home_on_ball` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `_ymatchreport_match_id_fk` (`match_id`),
-  CONSTRAINT `_ymatchreport_match_id_fk` FOREIGN KEY (`match_id`) REFERENCES `_youthmatch` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `_youthmatch_reportitem_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `_youthmatch` (`id`) ON DELETE CASCADE
+  KEY `ymatchreport_match_id_fk` (`match_id`),
+  CONSTRAINT `ymatchreport_match_id_fk` FOREIGN KEY (`match_id`) REFERENCES `youthmatch` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `youthmatch_reportitem_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `youthmatch` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_youthmatch_request`;
-CREATE TABLE `_youthmatch_request` (
+DROP TABLE IF EXISTS `youthmatch_request`;
+CREATE TABLE `youthmatch_request` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `team_id` int(10) DEFAULT NULL,
   `matchdate` int(11) DEFAULT NULL,
   `reward` int(10) DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `_youthrequest_team_id_fk` (`team_id`),
-  CONSTRAINT `_youthrequest_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `youthrequest_team_id_fk` (`team_id`),
+  CONSTRAINT `youthrequest_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_youthplayer`;
-CREATE TABLE `_youthplayer` (
+DROP TABLE IF EXISTS `youthplayer`;
+CREATE TABLE `youthplayer` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `team_id` int(10) DEFAULT NULL,
   `firstname` varchar(32) DEFAULT NULL,
@@ -1152,11 +1152,11 @@ CREATE TABLE `_youthplayer` (
   `st_cards_red` smallint(5) DEFAULT 0,
   `transfer_fee` int(10) DEFAULT 0,
   PRIMARY KEY (`id`),
-  KEY `_youthplayer_team_id_fk` (`team_id`),
-  CONSTRAINT `_youthplayer_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `_verein` (`id`) ON DELETE CASCADE
+  KEY `youthplayer_team_id_fk` (`team_id`),
+  CONSTRAINT `youthplayer_team_id_fk` FOREIGN KEY (`team_id`) REFERENCES `verein` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `_youthscout`;
-CREATE TABLE `_youthscout` (
+DROP TABLE IF EXISTS `youthscout`;
+CREATE TABLE `youthscout` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) DEFAULT NULL,
   `expertise` tinyint(3) DEFAULT NULL,

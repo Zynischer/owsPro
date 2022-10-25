@@ -45,7 +45,7 @@ class CancelYouthMatchRequestController implements IActionController {
 		$clubId = $user->getClubId($this->_websoccer, $this->_db);
 
 		// get request info
-		$fromTable = "_youthmatch_request";
+		$fromTable = "youthmatch_request";
 		$result = $this->_db->querySelect("*", $fromTable, "id = %d", $parameters["id"]);
 		$request = $result->fetch_array();
 		$result->free();

@@ -43,9 +43,9 @@ if (!$show) {
   $columns['S.name'] = 'name';
   $columns['L.name'] = 'league_name';
 
-  $fromTable = '_saison AS S INNER JOIN _liga AS L ON L.id = S.liga_id';
+  $fromTable = 'saison AS S INNER JOIN liga AS L ON L.id = S.liga_id';
 
-  $whereCondition = 'S.beendet = \'0\' AND 0 = (SELECT COUNT(*) FROM _spiel AS M WHERE M.berechnet = \'0\' AND M.saison_id = S.id) ORDER BY L.name ASC, S.name ASC';
+  $whereCondition = 'S.beendet = \'0\' AND 0 = (SELECT COUNT(*) FROM spiel AS M WHERE M.berechnet = \'0\' AND M.saison_id = S.id) ORDER BY L.name ASC, S.name ASC';
   $result = $db->querySelect($columns, $fromTable, $whereCondition);
   if (!$result->num_rows) {
 	echo '<p><strong>' . getMessage('season_complete_noseasons') . '</strong></p>';
@@ -83,7 +83,7 @@ if (!$show) {
 elseif ($show == 'select') {
 	$columns = '*';
 	$whereCondition = 'id = %d';
-	$result = $db->querySelect($columns, '_saison', $whereCondition, $id, 1);
+	$result = $db->querySelect($columns, 'saison', $whereCondition, $id, 1);
 	$season = $result->fetch_array();
 	if (!$season) {
 		throw new Exception('Invalid URL - Item does not exist.');
@@ -132,7 +132,7 @@ elseif ($show == 'select') {
 
 		$columns = '*';
 		$whereCondition = 'id = %d AND beendet = \'0\'';
-		$result = $db->querySelect($columns, '_saison', $whereCondition, $id, 1);
+		$result = $db->querySelect($columns, 'saison', $whereCondition, $id, 1);
 		$season = $result->fetch_array();
 		if (!$season) {
 			throw new Exception('Invalid request - Item does not exist.');
@@ -143,7 +143,7 @@ elseif ($show == 'select') {
 		$seasoncolumns['beendet'] = '1';
 
 		// reset players statistics
-		$playersSql = 'UPDATE _spieler AS P INNER JOIN _verein AS T ON T.id = P.verein_id';
+		$playersSql = 'UPDATE spieler AS P INNER JOIN verein AS T ON T.id = P.verein_id';
 		$playersSql .= ' SET ';
 		$playerResetColumns = array('P.sa_tore', 'P.sa_spiele', 'P.sa_karten_gelb', 'P.sa_karten_gelb_rot', 'P.sa_karten_rot', 'P.sa_assists');
 		foreach ($playerResetColumns as $playerResetColumn) {
@@ -154,7 +154,7 @@ elseif ($show == 'select') {
 		$db->executeQuery($playersSql);
 
 		// rset statistics of players without team
-		$playersSql = 'UPDATE _spieler AS P';
+		$playersSql = 'UPDATE spieler AS P';
 		$playersSql .= ' SET ';
 		$firstColumn = TRUE;
 		foreach ($playerResetColumns as $playerResetColumn) {
@@ -180,11 +180,11 @@ elseif ($show == 'select') {
 			$retiredcolumns['P.status'] = '0';
 			$retiredcolumns['P.verein_id'] = '';
 			$whereCondition = 'T.liga_id = %d AND ' . $retirementAge . ' <= ' . $ageColumn;
-			$db->queryUpdate($retiredcolumns, '_spieler AS P INNER JOIN _verein AS T ON T.id = P.verein_id', $whereCondition, $season['liga_id']);
+			$db->queryUpdate($retiredcolumns, 'spieler AS P INNER JOIN verein AS T ON T.id = P.verein_id', $whereCondition, $season['liga_id']);
 		}
 
 		// get configurations for league changes
-		$result = $db->querySelect('target_league_id,platz_von AS rank_from,platz_bis AS rank_to','_tabelle_markierung', 'liga_id = %d AND target_league_id IS NOT NULL AND target_league_id > 0', $season['liga_id']);
+		$result = $db->querySelect('target_league_id,platz_von AS rank_from,platz_bis AS rank_to','tabelle_markierung', 'liga_id = %d AND target_league_id IS NOT NULL AND target_league_id > 0', $season['liga_id']);
 		$moveConfigs = array();
 		while ($moveConfig = $result->fetch_array()) {
 			$moveConfigs[] = $moveConfig;
@@ -193,7 +193,7 @@ elseif ($show == 'select') {
 
 		// get teams in their ranking order
 		$columns = 'id, sponsor_id, min_target_rank, user_id';
-		$fromTable = '_verein';
+		$fromTable = 'verein';
 		$whereCondition = 'liga_id = %d AND sa_spiele > 0 ORDER BY sa_punkte DESC, (sa_tore - sa_gegentore) DESC, sa_siege DESC, sa_unentschieden DESC, sa_tore DESC';
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $season['liga_id']);
 
@@ -208,7 +208,7 @@ elseif ($show == 'select') {
 
 				// pay sponsor premium
 				if ($rank === 1 && $team['sponsor_id']) {
-					$sponsorres = $db->querySelect('name, b_meisterschaft', '_sponsor', 'id = %d', $team['sponsor_id']);
+					$sponsorres = $db->querySelect('name, b_meisterschaft', 'sponsor', 'id = %d', $team['sponsor_id']);
 					$sponsor = $sponsorres->fetch_array();
 					if ($sponsor) {
 						BankAccountDataService::creditAmount($website, $db, $team['id'], $sponsor['b_meisterschaft'],
@@ -230,7 +230,7 @@ elseif ($show == 'select') {
 					$teamcolumns['sa_niederlagen'] = 0;
 					$teamcolumns['sa_unentschieden'] = 0;
 					$teamcolumns['sa_punkte'] = 0;
-					$db->queryUpdate($teamcolumns, '_verein', 'id = %d', $team['id']);
+					$db->queryUpdate($teamcolumns, 'verein', 'id = %d', $team['id']);
 
 					break;
 				}
@@ -240,8 +240,8 @@ elseif ($show == 'select') {
 			if ($team['user_id'] > 0) {
 
 				// assign badge if applicable
-				$res = $db->querySelect('id', '_badge',
-						'event = \'completed_season_at_x\' AND event_benchmark = ' . $rank . ' AND id NOT IN (SELECT badge_id FROM _badge_user WHERE user_id = ' . $team['user_id'] . ')',
+				$res = $db->querySelect('id', 'badge',
+						'event = \'completed_season_at_x\' AND event_benchmark = ' . $rank . ' AND id NOT IN (SELECT badge_id FROM badge_user WHERE user_id = ' . $team['user_id'] . ')',
 						null, 1);
 				$badge = $res->fetch_array();
 				$res->free();
@@ -256,23 +256,23 @@ elseif ($show == 'select') {
 					'season_id' => $season['id'],
 					'rank' => $rank,
 					'date_recorded' => getNowAsTimestamp()
-				), '_achievement');
+				), 'achievement');
 
 				// check season target
 				if ($team['min_target_rank'] > 0 && $team['min_target_rank'] < $rank) {
 
 					// fire manager
 					if (isset($_POST['target_missed_firemanager']) && $_POST['target_missed_firemanager']) {
-						$db->queryUpdate(array('user_id' => ''), '_verein', 'id = %d', $team['id']);
+						$db->queryUpdate(array('user_id' => ''), 'verein', 'id = %d', $team['id']);
 					}
 
 					// reduce popularity
 					if ($_POST['target_missed_popularityreduction'] > 0) {
-						$userres = $db->querySelect('fanbeliebtheit', '_user', 'id = %d', $team['user_id']);
+						$userres = $db->querySelect('fanbeliebtheit', 'user', 'id = %d', $team['user_id']);
 						$manager = $userres->fetch_array();
 						if ($manager) {
 							$popularity = max(1, $manager['fanbeliebtheit'] - $_POST['target_missed_popularityreduction']);
-							$db->queryUpdate(array('fanbeliebtheit' => $popularity), '_user', 'id = %d', $team['user_id']);
+							$db->queryUpdate(array('fanbeliebtheit' => $popularity), 'user', 'id = %d', $team['user_id']);
 						}
 						$userres->free();
 					}
@@ -291,17 +291,17 @@ elseif ($show == 'select') {
 			}
 
 			// increase age of youth players
-			$youthresult = $db->querySelect('id,age', '_youthplayer', 'team_id = %d', $team['id']);
+			$youthresult = $db->querySelect('id,age', 'youthplayer', 'team_id = %d', $team['id']);
 			while ($youthplayer = $youthresult->fetch_array()) {
 				$playerage = $youthplayer['age'] + 1;
 
 				// delete youth player
 				if ($maxYouthAge > 0 && $maxYouthAge <= $playerage) {
-					$db->queryDelete('_youthplayer', 'id = %d', $youthplayer['id']);
+					$db->queryDelete('youthplayer', 'id = %d', $youthplayer['id']);
 
 					// update youth player
 				} else {
-					$db->queryUpdate(array('age' => $playerage), '_youthplayer', 'id = %d', $youthplayer['id']);
+					$db->queryUpdate(array('age' => $playerage), 'youthplayer', 'id = %d', $youthplayer['id']);
 				}
 			}
 			$youthresult->free();
@@ -324,10 +324,10 @@ elseif ($show == 'select') {
 		$teamcolumns['sa_niederlagen'] = 0;
 		$teamcolumns['sa_unentschieden'] = 0;
 		$teamcolumns['sa_punkte'] = 0;
-		$db->queryUpdate($teamcolumns, '_verein', 'liga_id = %d', $season['liga_id']);
+		$db->queryUpdate($teamcolumns, 'verein', 'liga_id = %d', $season['liga_id']);
 
 		// update season
-		$db->queryUpdate($seasoncolumns, '_saison', 'id = %d', $season['id']);
+		$db->queryUpdate($seasoncolumns, 'saison', 'id = %d', $season['id']);
 
 		echo createSuccessMessage(getMessage('alert_save_success'), '');
 

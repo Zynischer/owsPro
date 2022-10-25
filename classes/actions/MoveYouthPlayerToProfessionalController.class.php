@@ -115,7 +115,7 @@ class MoveYouthPlayerToProfessionalController implements IActionController {
 				"status" => "1"
 				);
 
-		$this->_db->queryInsert($columns,"_spieler");
+		$this->_db->queryInsert($columns,"spieler");
 
 		// delete youth player
 		$this->_db->queryDelete("_youthplayer", "id = %d", $player["id"]);

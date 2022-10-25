@@ -58,11 +58,11 @@ class MatchSimulationExecutor {
 		}
 
 		// find and execute open matches
-		$fromTable = '_spiel AS M';
-		$fromTable .= ' INNER JOIN _verein AS HOME_T ON HOME_T.id = M.home_verein';
-		$fromTable .= ' INNER JOIN _verein AS GUEST_T ON GUEST_T.id = M.gast_verein';
-		$fromTable .= ' LEFT JOIN _aufstellung AS HOME_F ON HOME_F.match_id = M.id AND HOME_F.verein_id = M.home_verein';
-		$fromTable .= ' LEFT JOIN _aufstellung AS GUEST_F ON GUEST_F.match_id = M.id AND GUEST_F.verein_id = M.gast_verein';
+		$fromTable = 'spiel AS M';
+		$fromTable .= ' INNER JOIN verein AS HOME_T ON HOME_T.id = M.home_verein';
+		$fromTable .= ' INNER JOIN verein AS GUEST_T ON GUEST_T.id = M.gast_verein';
+		$fromTable .= ' LEFT JOIN aufstellung AS HOME_F ON HOME_F.match_id = M.id AND HOME_F.verein_id = M.home_verein';
+		$fromTable .= ' LEFT JOIN aufstellung AS GUEST_F ON GUEST_F.match_id = M.id AND GUEST_F.verein_id = M.gast_verein';
 
 		$columns['M.id'] = 'match_id';
 		$columns['M.spieltyp'] = 'type';
@@ -170,7 +170,7 @@ class MatchSimulationExecutor {
 		$matchesSimulated = 0;
 		$lockArray = array('blocked' => '1');
 		$unlockArray = array('blocked' => '0');
-		$matchTable = '_spiel';
+		$matchTable = 'spiel';
 		while ($matchinfo = $result->fetch_array()) {
 
 			// lock record
@@ -243,8 +243,8 @@ class MatchSimulationExecutor {
 	private static function createInitialMatchData(WebSoccer $websoccer, DbConnection $db, $matchinfo) {
 
 		// delete any match report items, in case a previous initial simulation failed in between.
-		$db->queryDelete('_spiel_berechnung', 'spiel_id = %d', $matchinfo['match_id']);
-		$db->queryDelete('_matchreport', 'match_id = %d', $matchinfo['match_id']);
+		$db->queryDelete('spiel_berechnung', 'spiel_id = %d', $matchinfo['match_id']);
+		$db->queryDelete('matchreport', 'match_id = %d', $matchinfo['match_id']);
 
 		// create model
 		$homeOffensive = ($matchinfo['home_formation_offensive'] > 0) ? $matchinfo['home_formation_offensive'] : getConfig('sim_createformation_without_manager_offensive');
@@ -300,7 +300,7 @@ class MatchSimulationExecutor {
 
 	public static function addPlayers(WebSoccer $websoccer, DbConnection $db, SimulationTeam $team, $matchinfo, $columnPrefix) {
 
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 
 		$columns['verein_id'] = 'team_id';
 		$columns['nation'] = 'nation';
@@ -399,7 +399,7 @@ class MatchSimulationExecutor {
 				&& getConfig('sim_createformation_on_invalidsubmission')) {
 
 			// delete existing invalid formation
-			$db->queryDelete('_spiel_berechnung', 'spiel_id = %d AND team_id = %d', array($matchinfo['match_id'], $team->id));
+			$db->queryDelete('spiel_berechnung', 'spiel_id = %d AND team_id = %d', array($matchinfo['match_id'], $team->id));
 			$team->positionsAndPlayers = array();
 
 			// generate a new one
@@ -479,7 +479,7 @@ class MatchSimulationExecutor {
 	private static function teamHasNoManager(WebSoccer $websoccer, DbConnection $db, $teamId) {
 		// query user id
 		$columns = 'user_id';
-		$fromTable = '_verein';
+		$fromTable = 'verein';
 		$whereCondition = 'id = %d';
 		$parameters = $teamId;
 

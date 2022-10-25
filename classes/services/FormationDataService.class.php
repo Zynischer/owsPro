@@ -57,7 +57,7 @@ class FormationDataService {
 	}
 
 	private static function _getFormationByCondition(WebSoccer $websoccer, DbConnection $db, $whereCondition, $parameters) {
-		$fromTable = '_aufstellung';
+		$fromTable = 'aufstellung';
 
 		// select
 		$columns['id'] = 'id';
@@ -118,15 +118,15 @@ class FormationDataService {
 		$columns = 'id,position,position_main,position_second';
 
 		if (!$isNationalteam) {
-			$fromTable = '_spieler';
+			$fromTable = 'spieler';
 			$whereCondition = 'verein_id = %d AND gesperrt';
 			if ($isCupMatch) {
-				$whereCondition .= '_cups';
+				$whereCondition .= 'cups';
 			}
 			$whereCondition .= ' = 0 AND verletzt = 0 AND status = 1';
 		} else {
-			$fromTable = '_spieler AS P';
-			$fromTable .= ' INNER JOIN _nationalplayer AS NP ON NP.player_id = P.id';
+			$fromTable = 'spieler AS P';
+			$fromTable .= ' INNER JOIN nationalplayer AS NP ON NP.player_id = P.id';
 			$whereCondition = 'NP.team_id = %d AND gesperrt_nationalteam = 0 AND verletzt = 0 AND status = 1';
 		}
 

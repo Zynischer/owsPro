@@ -90,7 +90,7 @@ class LendPlayerController implements IActionController {
 
 		$columns = array("lending_fee" => $fee);
 
-		$fromTable = "_spieler";
+		$fromTable = "spieler";
 		$whereCondition = "id = %d";
 		$parameters = $playerId;
 

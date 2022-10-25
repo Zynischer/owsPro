@@ -151,7 +151,7 @@ class SaveFormationController implements IActionController {
 	}
 
 	private function saveFormation($teamId, $matchId, $parameters, $validSubstitutions) {
-		$fromTable = '_aufstellung';
+		$fromTable = 'aufstellung';
 
 		$columns['verein_id'] = $teamId;
 		$columns['datum'] = getNowAsTimestamp();

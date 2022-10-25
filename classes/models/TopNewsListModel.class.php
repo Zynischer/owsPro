@@ -40,7 +40,7 @@ class TopNewsListModel implements IModel {
 	}
 
 	public function getTemplateParameters() {
-		$fromTable = "_news";
+		$fromTable = "news";
 
 		// select
 		$columns = "id, titel, datum";

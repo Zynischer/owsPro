@@ -47,7 +47,7 @@ class ProfileModel implements IModel {
 	 * @see IModel::getTemplateParameters()
 	 */
 	public function getTemplateParameters() {
-		$fromTable = "_user";
+		$fromTable = "user";
 
 		$user = $this->_websoccer->getUser();
 

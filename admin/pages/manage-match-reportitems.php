@@ -65,7 +65,7 @@ elseif ($action == "create") {
 				"minute" => $minute,
 				"goals" => $goals,
 				"playernames" => $playerNames
-				),"_matchreport");
+				),"matchreport");
 	}
 }
 

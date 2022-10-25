@@ -107,7 +107,7 @@ class UploadClubPictureController implements IActionController {
 		}
 
 		// delete old picture
-		$fromTable = "_verein";
+		$fromTable = "verein";
 		$whereCondition = "id = %d";
 		$result = $this->_db->querySelect("bild", $fromTable, $whereCondition, $clubId);
 		$clubinfo = $result->fetch_array();

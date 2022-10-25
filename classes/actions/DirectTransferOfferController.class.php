@@ -133,7 +133,7 @@ class DirectTransferOfferController implements IActionController {
 			return;
 		}
 
-		$result = $this->_db->querySelect("COUNT(*) AS hits","_transfer_offer",
+		$result = $this->_db->querySelect("COUNT(*) AS hits","transfer_offer",
 				"rejected_date = 0 AND sender_user_id = %d AND receiver_club_id = %d",
 				array($this->_websoccer->getUser()->id, $teamId));
 		$count = $result->fetch_array();
@@ -145,7 +145,7 @@ class DirectTransferOfferController implements IActionController {
 	}
 
 	private function checkIfUserIsAllowedToSendAlternativeOffers($playerId) {
-		$result = $this->_db->querySelect("COUNT(*) AS hits","_transfer_offer",
+		$result = $this->_db->querySelect("COUNT(*) AS hits","transfer_offer",
 				"rejected_date > 0 AND rejected_allow_alternative = '0' AND player_id = %d AND sender_user_id = %d",
 				array($playerId, $this->_websoccer->getUser()->id));
 		$count = $result->fetch_array();
@@ -165,7 +165,7 @@ class DirectTransferOfferController implements IActionController {
 
 		$transferBoundary = getNowAsTimestamp() - 24 * 3600 * getConfig("transferoffers_transfer_stop_days");
 
-		$result = $this->_db->querySelect("COUNT(*) AS hits","_transfer",
+		$result = $this->_db->querySelect("COUNT(*) AS hits","transfer",
 				"spieler_id = %d AND datum > %d",
 				array($playerId, $transferBoundary));
 		$count = $result->fetch_array();
@@ -186,7 +186,7 @@ class DirectTransferOfferController implements IActionController {
 		}
 
 		// Players must not be included in any other open transfer offer
-		$result = $this->_db->querySelect("COUNT(*) AS hits","_transfer_offer",
+		$result = $this->_db->querySelect("COUNT(*) AS hits","transfer_offer",
 				"rejected_date = 0 AND (offer_player1 = %d OR offer_player2 = %d)",
 				array($playerId, $playerId, $playerId));
 		$count = $result->fetch_array();
@@ -206,7 +206,7 @@ class DirectTransferOfferController implements IActionController {
 	}
 
 	private function getSumOfAllOpenOffers() {
-		$result = $this->_db->querySelect("SUM(offer_amount) AS amount","_transfer_offer",
+		$result = $this->_db->querySelect("SUM(offer_amount) AS amount","transfer_offer",
 				"rejected_date = 0 AND sender_user_id = %d",
 				$this->_websoccer->getUser()->id);
 		$sum = $result->fetch_array();

@@ -100,7 +100,7 @@ class BookCampController implements IActionController {
 		$columns["lager_id"] = $camp["id"];
 		$columns["datum_start"] = $startDateTimestamp;
 		$columns["datum_ende"] = $endDateTimestamp;
-		$this->_db->queryInsert($columns,"_trainingslager_belegung");
+		$this->_db->queryInsert($columns,"trainingslager_belegung");
 
 		// success message
 		$this->_websoccer->addFrontMessage(new FrontMessage(MESSAGE_TYPE_SUCCESS,

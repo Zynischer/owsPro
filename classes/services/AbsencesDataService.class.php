@@ -35,7 +35,7 @@ class AbsencesDataService {
 	 */
 	public static function getCurrentAbsenceOfUser(WebSoccer $websoccer, DbConnection $db, $userId) {
 
-		$result = $db->querySelect('*','_userabsence',
+		$result = $db->querySelect('*','userabsence',
 				'user_id = %d ORDER BY from_date DESC', $userId, 1);
 		$absence = $result->fetch_array();
 		$result->free();
@@ -62,13 +62,13 @@ class AbsencesDataService {
 				'deputy_id' => $deputyId,
 				'from_date' => $fromDate,
 				'to_date' => $toDate
-		),'_userabsence');
+		),'userabsence');
 
 		// update manager reference of managed teams
 		$db->queryUpdate(array(
 				'user_id' => $deputyId,
 				'user_id_actual' => $userId
-				),'_verein', 'user_id = %d', $userId);
+				),'verein', 'user_id = %d', $userId);
 
 		// create notification for deputy
 		$user = UsersDataService::getUserById($websoccer, $db, $userId);
@@ -96,10 +96,10 @@ class AbsencesDataService {
 		$db->queryUpdate(array(
 				'user_id' => $userId,
 				'user_id_actual' => NULL
-		),'_verein', 'user_id_actual = %d', $userId);
+		),'verein', 'user_id_actual = %d', $userId);
 
 		// delete absence(s)
-		$db->queryDelete('_userabsence', 'user_id', $userId);
+		$db->queryDelete('userabsence', 'user_id', $userId);
 
 		// notify deputy
 		if ($absence['deputy_id']) {

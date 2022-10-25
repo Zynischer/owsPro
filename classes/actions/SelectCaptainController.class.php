@@ -68,7 +68,7 @@ class SelectCaptainController implements IActionController {
 
 				$newSatisfaction = round($oldPlayer["player_strength_satisfaction"] * 0.6);
 				$this->_db->queryUpdate(array("w_zufriedenheit" => $newSatisfaction),
-						"_spieler", "id = %d", $oldPlayer["player_id"]);
+						"spieler", "id = %d", $oldPlayer["player_id"]);
 
 				$playername = (strlen($oldPlayer["player_pseudonym"])) ? $oldPlayer["player_pseudonym"] : $oldPlayer["player_firstname"] . " " . $oldPlayer["player_lastname"];
 

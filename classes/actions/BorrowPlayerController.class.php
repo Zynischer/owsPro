@@ -116,7 +116,7 @@ class BorrowPlayerController implements IActionController {
 
 		$columns = array("lending_matches" => $matches, "lending_owner_id" => $ownerId, "verein_id" => $clubId);
 
-		$fromTable = "_spieler";
+		$fromTable = "spieler";
 		$whereCondition = "id = %d";
 
 		$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $playerId);

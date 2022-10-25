@@ -56,7 +56,7 @@ class NationalPlayersModel implements IModel {
 			throw new Exception(getMessage("nationalteams_user_requires_team"));
 		}
 
-		$result = $this->_db->querySelect("name","_verein", "id = %d", $teamId);
+		$result = $this->_db->querySelect("name","verein", "id = %d", $teamId);
 		$team = $result->fetch_array();
 		$result->free();
 

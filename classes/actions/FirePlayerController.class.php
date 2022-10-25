@@ -90,7 +90,7 @@ class FirePlayerController implements IActionController {
 		$columns["verein_id"] = "";
 		$columns["vertrag_spiele"] = 0;
 
-		$fromTable = "_spieler";
+		$fromTable = "spieler";
 		$whereCondition = "id = %d";
 		$parameters = $playerId;
 
@@ -100,7 +100,7 @@ class FirePlayerController implements IActionController {
 	private function getTeamSize($clubId) {
 		$columns = "COUNT(*) AS number";
 
-		$fromTable = "_spieler";
+		$fromTable = "spieler";
 		$whereCondition = "verein_id = %d AND status = 1 AND transfermarkt != 1";
 		$parameters = $clubId;
 

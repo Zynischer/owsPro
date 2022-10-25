@@ -37,9 +37,9 @@ class YouthMatchesDataService {
 	 */
 	public static function getYouthMatchinfoById(WebSoccer $websoccer, DbConnection $db, I18n $i18n, $matchId) {
 		$columns = "M.*, HOME.name AS home_team_name, GUEST.name AS guest_team_name";
-		$fromTable = "_youthmatch AS M";
-		$fromTable .= " INNER JOIN _verein AS HOME ON HOME.id = M.home_team_id";
-		$fromTable .= " INNER JOIN _verein AS GUEST ON GUEST.id = M.guest_team_id";
+		$fromTable = "youthmatch AS M";
+		$fromTable .= " INNER JOIN verein AS HOME ON HOME.id = M.home_team_id";
+		$fromTable .= " INNER JOIN verein AS GUEST ON GUEST.id = M.guest_team_id";
 
 		$result = $db->querySelect($columns, $fromTable, "M.id = %d", $matchId);
 		$match = $result->fetch_array();
@@ -63,7 +63,7 @@ class YouthMatchesDataService {
 	 * @return int number of actual matches on the same day of the specified timestamp.
 	 */
 	public static function countMatchesOfTeamOnSameDay(WebSoccer $websoccer, DbConnection $db, $teamId, $timestamp) {
-		$fromTable = "_youthmatch";
+		$fromTable = "youthmatch";
 
 		$dateObj = new DateTime();
 		$dateObj->setTimestamp($timestamp);
@@ -96,7 +96,7 @@ class YouthMatchesDataService {
 	 * @return int number of matches.
 	 */
 	public static function countMatchesOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId) {
-		$fromTable = "_youthmatch";
+		$fromTable = "youthmatch";
 
 		$result = $db->querySelect("COUNT(*) AS hits", $fromTable,
 				"(home_team_id = %d OR guest_team_id = %d)",
@@ -122,11 +122,11 @@ class YouthMatchesDataService {
 	 * @return array list of matches or empty array if no matches found.
 	 */
 	public static function getMatchesOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId, $startIndex, $entries_per_page) {
-		$fromTable = "_youthmatch AS M";
-		$fromTable .= " INNER JOIN _verein AS HOME ON M.home_team_id = HOME.id";
-		$fromTable .= " INNER JOIN _verein AS GUEST ON M.guest_team_id = GUEST.id";
-		$fromTable .= " LEFT JOIN _user AS HOMEUSER ON HOME.user_id = HOMEUSER.id";
-		$fromTable .= " LEFT JOIN _user AS GUESTUSER ON GUEST.user_id = GUESTUSER.id";
+		$fromTable = "youthmatch AS M";
+		$fromTable .= " INNER JOIN verein AS HOME ON M.home_team_id = HOME.id";
+		$fromTable .= " INNER JOIN verein AS GUEST ON M.guest_team_id = GUEST.id";
+		$fromTable .= " LEFT JOIN user AS HOMEUSER ON HOME.user_id = HOMEUSER.id";
+		$fromTable .= " LEFT JOIN user AS GUESTUSER ON GUEST.user_id = GUESTUSER.id";
 
 		// select
 		$columns["M.id"] = "match_id";
@@ -188,7 +188,7 @@ class YouthMatchesDataService {
 				"message_data" => $messageDataStr,
 				"home_on_ball" => ($isHomeTeamWithBall) ? "1" : "0"
 				);
-		$db->queryInsert($columns,"_youthmatch_reportitem");
+		$db->queryInsert($columns,"youthmatch_reportitem");
 	}
 
 	/**
@@ -202,7 +202,7 @@ class YouthMatchesDataService {
 	 */
 	public static function getMatchReportItems(WebSoccer $websoccer, DbConnection $db, I18n $i18n, $matchId) {
 		// query
-		$result = $db->querySelect("*","_youthmatch_reportitem",
+		$result = $db->querySelect("*","youthmatch_reportitem",
 				"match_id = %d ORDER BY minute ASC", $matchId);
 
 		// create formatted items

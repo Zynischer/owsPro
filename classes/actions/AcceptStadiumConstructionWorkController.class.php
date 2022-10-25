@@ -59,7 +59,7 @@ class AcceptStadiumConstructionWorkController implements IActionController {
 		if ($constructionResult == "notcompleted") {
 
 			$newDeadline = getNowAsTimestamp() + getConfig("stadium_construction_delay") * 24 * 3600;
-			$this->_db->queryUpdate(array("deadline" => $newDeadline),"_stadium_construction",
+			$this->_db->queryUpdate(array("deadline" => $newDeadline),"stadium_construction",
 					"id = %d", $construction["id"]);
 
 			// show warning alert
@@ -78,7 +78,7 @@ class AcceptStadiumConstructionWorkController implements IActionController {
 			$columns["p_haupt_steh"] = $stadium["places_stands_grand"] + $construction["p_haupt_steh"];
 			$columns["p_haupt_sitz"] = $stadium["places_seats_grand"] + $construction["p_haupt_sitz"];
 			$columns["p_vip"] = $stadium["places_vip"] + $construction["p_vip"];
-			$this->_db->queryUpdate($columns,"_stadion", "id = %d",
+			$this->_db->queryUpdate($columns,"stadion", "id = %d",
 					$stadium["stadium_id"]);
 
 			// delete order

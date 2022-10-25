@@ -47,7 +47,7 @@ class OrderBuildingController implements IActionController {
 			throw new Exception(getMessage("feature_requires_team"));
 		}
 
-		$result = $this->_db->querySelect('*','_stadiumbuilding', 'id = %d', $buildingId);
+		$result = $this->_db->querySelect('*','stadiumbuilding', 'id = %d', $buildingId);
 		$building = $result->fetch_array();
 		$result->free();
 
@@ -63,7 +63,7 @@ class OrderBuildingController implements IActionController {
 		}
 
 		// check if already exists in team
-		$result = $this->_db->querySelect('*', '_buildings_of_team', 'team_id = %d AND building_id = %d', array($teamId, $buildingId));
+		$result = $this->_db->querySelect('*', 'buildings_of_team', 'team_id = %d AND building_id = %d', array($teamId, $buildingId));
 		$buildingExists = $result->fetch_array();
 		$result->free();
 		if ($buildingExists) {
@@ -72,7 +72,7 @@ class OrderBuildingController implements IActionController {
 
 		// check required building
 		if ($building['required_building_id']) {
-			$result = $this->_db->querySelect('*', '_buildings_of_team', 'team_id = %d AND building_id = %d', array($teamId, $building['required_building_id']));
+			$result = $this->_db->querySelect('*', 'buildings_of_team', 'team_id = %d AND building_id = %d', array($teamId, $building['required_building_id']));
 			$requiredBuildingExists = $result->fetch_array();
 			$result->free();
 
@@ -96,7 +96,7 @@ class OrderBuildingController implements IActionController {
 				'building_id' => $buildingId,
 				'team_id' => $teamId,
 				'construction_deadline' => $constructionDeadline
-				), '_buildings_of_team');
+				), 'buildings_of_team');
 
 		// withdraw premium fee
 		if ($building['premiumfee']) {
@@ -105,12 +105,12 @@ class OrderBuildingController implements IActionController {
 
 		// credit fan popularity change
 		if ($building['effect_fanpopularity'] != 0) {
-			$result = $this->_db->querySelect('fanbeliebtheit', '_user', 'id = %d', $user->id, 1);
+			$result = $this->_db->querySelect('fanbeliebtheit', 'user', 'id = %d', $user->id, 1);
 			$userinfo = $result->fetch_array();
 			$result->free();
 
 			$popularity = min(100, max(1, $building['effect_fanpopularity'] + $userinfo['fanbeliebtheit']));
-			$this->_db->queryUpdate(array('fanbeliebtheit' => $popularity), '_user', 'id = %d', $user->id);
+			$this->_db->queryUpdate(array('fanbeliebtheit' => $popularity), 'user', 'id = %d', $user->id);
 		}
 
 		// success message

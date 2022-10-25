@@ -58,7 +58,7 @@ class BuyYouthPlayerController implements IActionController {
 		}
 
 		// player must not be tranfered from one of user's other teams
-		$result = $this->_db->querySelect("user_id","_verein", "id = %d", $player["team_id"]);
+		$result = $this->_db->querySelect("user_id","verein", "id = %d", $player["team_id"]);
 		$playerteam = $result->fetch_array();
 		$result->free_result();
 		if ($playerteam["user_id"] == $user->id) {
@@ -79,7 +79,7 @@ class BuyYouthPlayerController implements IActionController {
 			$team["team_name"]);
 
 		// update player
-		$this->_db->queryUpdate(array("team_id" => $clubId, "transfer_fee" => 0),"_youthplayer", "id = %d", $parameters["id"]);
+		$this->_db->queryUpdate(array("team_id" => $clubId, "transfer_fee" => 0),"youthplayer", "id = %d", $parameters["id"]);
 
 		// create notification
 		NotificationsDataService::createNotification($this->_websoccer, $this->_db, $prevTeam["user_id"], "youthteam_transfer_notification",

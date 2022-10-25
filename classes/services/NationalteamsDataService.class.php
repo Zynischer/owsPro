@@ -34,7 +34,7 @@ class NationalteamsDataService {
 	 */
 	public static function getNationalTeamManagedByCurrentUser(WebSoccer $websoccer, DbConnection $db) {
 
-		$result = $db->queryCachedSelect("id","_verein",
+		$result = $db->queryCachedSelect("id","verein",
 				"user_id = %d AND nationalteam = '1'", $websoccer->getUser()->id, 1);
 		if (count($result)) {
 			return $result[0]["id"];
@@ -88,9 +88,9 @@ class NationalteamsDataService {
 		}
 		$columns[$ageColumn] = 'age';
 
-		$fromTable = "_spieler AS P";
-		$fromTable .= " INNER JOIN _nationalplayer AS NP ON NP.player_id = P.id";
-		$fromTable .= " LEFT JOIN _verein AS C ON C.id = P.verein_id";
+		$fromTable = "spieler AS P";
+		$fromTable .= " INNER JOIN nationalplayer AS NP ON NP.player_id = P.id";
+		$fromTable .= " LEFT JOIN verein AS C ON C.id = P.verein_id";
 		$whereCondition = "P.status = 1 AND NP.team_id = %d ORDER BY position ". $positionSort . ", position_main ASC, nachname ASC, vorname ASC";
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $clubId, 50);
 
@@ -187,7 +187,7 @@ class NationalteamsDataService {
 
 	private static function executeFindQuery(WebSoccer $websoccer, DbConnection $db, $columns, $limit,
 			$nationality, $teamId, $firstName, $lastName, $position, $mainPosition) {
-		$whereCondition = "P.status = 1 AND P.nation = '%s' AND P.verletzt = 0 AND P.id NOT IN (SELECT player_id FROM _nationalplayer WHERE team_id = %d)";
+		$whereCondition = "P.status = 1 AND P.nation = '%s' AND P.verletzt = 0 AND P.id NOT IN (SELECT player_id FROM nationalplayer WHERE team_id = %d)";
 
 		$parameters = array();
 		$parameters[] = $nationality;
@@ -219,8 +219,8 @@ class NationalteamsDataService {
 
 		$whereCondition .= " ORDER BY w_staerke DESC, w_technik DESC";
 
-		$fromTable = "_spieler AS P";
-		$fromTable .= " LEFT JOIN _verein AS C ON C.id = P.verein_id";
+		$fromTable = "spieler AS P";
+		$fromTable .= " LEFT JOIN verein AS C ON C.id = P.verein_id";
 
 		return $db->querySelect($columns, $fromTable, $whereCondition, $parameters, $limit);
 	}
@@ -235,7 +235,7 @@ class NationalteamsDataService {
 	 */
 	public static function countNextMatches(WebSoccer $websoccer, DbConnection $db, $teamId) {
 		$columns = "COUNT(*) AS hits";
-		$fromTable = "_spiel";
+		$fromTable = "spiel";
 
 		$result = $db->querySelect($columns, $fromTable, "(home_verein = %d OR gast_verein = %d) AND datum > %d", array($teamId, $teamId,getNowAsTimestamp()));
 		$matches = $result->fetch_array();
@@ -274,7 +274,7 @@ class NationalteamsDataService {
 	 */
 	public static function countSimulatedMatches(WebSoccer $websoccer, DbConnection $db, $teamId) {
 		$columns = "COUNT(*) AS hits";
-		$fromTable = "_spiel";
+		$fromTable = "spiel";
 
 		$result = $db->querySelect($columns, $fromTable, "(home_verein = %d OR gast_verein = %d) AND berechnet = '1'", array($teamId, $teamId));
 		$matches = $result->fetch_array();

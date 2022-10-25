@@ -35,9 +35,9 @@ class CupsDataService {
 	 * @return array Array of teams with standings related statistics.
 	 */
 	public static function getTeamsOfCupGroupInRankingOrder(WebSoccer $websoccer, DbConnection $db, $roundId, $groupName) {
-		$fromTable = "_cup_round_group AS G";
-		$fromTable .= " INNER JOIN _verein AS T ON T.id = G.team_id";
-		$fromTable .= " LEFT JOIN _user AS U ON U.id = T.user_id";
+		$fromTable = "cup_round_group AS G";
+		$fromTable .= " INNER JOIN verein AS T ON T.id = G.team_id";
+		$fromTable .= " LEFT JOIN user AS U ON U.id = T.user_id";
 
 		// where
 		$whereCondition = "G.cup_round_id = %d AND G.name = '%s'";

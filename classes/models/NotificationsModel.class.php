@@ -54,7 +54,7 @@ class NotificationsModel implements IModel {
 				$user->id, $user->getClubId($this->_websoccer, $this->_db),getConfig("notifications_max"));
 
 		// mark notifications as seen after retrieval
-		$this->_db->queryUpdate(array("seen" => "1"),"_notification",
+		$this->_db->queryUpdate(array("seen" => "1"),"notification",
 				"user_id = %d", $this->_websoccer->getUser()->id);
 
 		return array("notifications" => $notifications);

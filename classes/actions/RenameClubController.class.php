@@ -57,11 +57,11 @@ class RenameClubController implements IActionController {
 		// rename club
 		$short = strtoupper($parameters['kurz']);
 		$this->_db->queryUpdate(array('name' => $parameters['name'], 'kurz' => $short),
-				'_verein','id = %d', $clubId);
+				'verein','id = %d', $clubId);
 
 		// rename stadium
 		$this->_db->queryUpdate(array('S.name' => $parameters['stadium']),
-				'_verein AS C INNER JOIN _stadion AS S ON S.id = C.stadion_id',
+				'verein AS C INNER JOIN stadion AS S ON S.id = C.stadion_id',
 				'C.id = %d', $clubId);
 
 		// success message

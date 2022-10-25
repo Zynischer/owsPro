@@ -51,8 +51,8 @@ class SeasonsOfLeagueModel implements IModel {
 	public function getTemplateParameters() {
 
 		// get seasons
-		$fromTable = "_saison AS S";
-		$fromTable .= " INNER JOIN _liga AS L ON L.id = S.liga_id";
+		$fromTable = "saison AS S";
+		$fromTable .= " INNER JOIN liga AS L ON L.id = S.liga_id";
 		$whereCondition = "S.liga_id = %d ORDER BY beendet DESC, name ASC";
 
 		$seasons = array();
@@ -74,7 +74,7 @@ class SeasonsOfLeagueModel implements IModel {
 
 		if ($this->_websoccer->getRequestParameter("seasonid") != null) {
 			$seasonId = $this->_websoccer->getRequestParameter("seasonid");
-			$fromTable = "_spiel";
+			$fromTable = "spiel";
 			$condition = "saison_id = %d";
 
 			$result = $this->_db->querySelect("MAX(spieltag) AS maxMatchday", $fromTable, $condition, $seasonId);

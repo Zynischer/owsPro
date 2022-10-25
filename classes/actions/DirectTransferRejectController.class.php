@@ -47,7 +47,7 @@ class DirectTransferRejectController implements IActionController {
 
 
 		// get offer information
-		$result = $this->_db->querySelect("*","_transfer_offer",
+		$result = $this->_db->querySelect("*","transfer_offer",
 				"id = %d AND receiver_club_id = %d",
 				array($parameters["id"], $clubId));
 		$offer = $result->fetch_array();
@@ -61,7 +61,7 @@ class DirectTransferRejectController implements IActionController {
 					"rejected_date" => getNowAsTimestamp(),
 					"rejected_message" => $parameters["comment"],
 					"rejected_allow_alternative" => ($parameters["allow_alternative"]) ? 1 : 0
-				),"_transfer_offer", "id = %d", $offer["id"]);
+				),"transfer_offer", "id = %d", $offer["id"]);
 
 		// get player name for notification
 		$player = PlayersDataService::getPlayerById($this->_websoccer, $this->_db, $offer["player_id"]);

@@ -55,7 +55,7 @@ class StadiumEnvironmentModel implements IModel {
 
 		// get existing buildings
 		$existingBuildings = array();
-		$result = $this->_db->querySelect('*', '_buildings_of_team INNER JOIN _stadiumbuilding ON id = building_id',
+		$result = $this->_db->querySelect('*', 'buildings_of_team INNER JOIN stadiumbuilding ON id = building_id',
 				'team_id = %d ORDER BY construction_deadline DESC', $teamId);
 		$now = getNowAsTimestamp();
 		while ($building = $result->fetch_array()) {
@@ -67,8 +67,8 @@ class StadiumEnvironmentModel implements IModel {
 		// get available buildings
 		$availableBuildings = array();
 		$result = $this->_db->querySelect('*', _stadiumbuilding',
-				'id NOT IN (SELECT building_id FROM _buildings_of_team WHERE team_id = %d) ' .
-				' AND (required_building_id IS NULL OR required_building_id IN (SELECT building_id FROM _buildings_of_team WHERE team_id = %d AND construction_deadline < %d))' .
+				'id NOT IN (SELECT building_id FROM buildings_of_team WHERE team_id = %d) ' .
+				' AND (required_building_id IS NULL OR required_building_id IN (SELECT building_id FROM buildings_of_team WHERE team_id = %d AND construction_deadline < %d))' .
 				' ORDER BY name ASC', array($teamId, $teamId, $now));
 		while ($building = $result->fetch_array()) {
 

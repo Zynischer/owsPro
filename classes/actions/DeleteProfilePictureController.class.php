@@ -48,7 +48,7 @@ class DeleteProfilePictureController implements IActionController {
 		$userId = $this->_websoccer->getUser()->id;
 
 		// delete old picture
-		$fromTable = "_user";
+		$fromTable = "user";
 		$whereCondition = "id = %d";
 		$result = $this->_db->querySelect("picture", $fromTable, $whereCondition, $userId);
 		$userinfo = $result->fetch_array();

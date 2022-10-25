@@ -52,7 +52,7 @@ class SimulationAudienceCalculator {
 		} else if ($match->type == 'Ligaspiel') {
 			// consider difference between points
 			$tcolumns = 'sa_punkte';
-			$fromTable = '_verein';
+			$fromTable = 'verein';
 			$whereCondition = 'id = %d';
 
 			$result = $db->querySelect($tcolumns, $fromTable, $whereCondition, $match->homeTeam->id);
@@ -131,13 +131,13 @@ class SimulationAudienceCalculator {
 		$columns['last_haupt_steh'] = $tickets_stands_grand;
 		$columns['last_haupt_sitz'] = $tickets_seats_grand;
 		$columns['last_vip'] = $tickets_vip;
-		$fromTable = '_verein';
+		$fromTable = 'verein';
 		$whereCondition = 'id = %d';
 		$db->queryUpdate($columns, $fromTable, $whereCondition, $match->homeTeam->id);
 
 		// update match field
 		$mcolumns['zuschauer'] = $tickets_stands + $tickets_seats + $tickets_stands_grand + $tickets_seats_grand + $tickets_vip;
-		$fromTable = '_spiel';
+		$fromTable = 'spiel';
 		$db->queryUpdate($mcolumns, $fromTable, $whereCondition, $match->id);
 
 		// compute and credit income
@@ -157,10 +157,10 @@ class SimulationAudienceCalculator {
 	}
 
 	private static function getHomeInfo($websoccer, $db, $teamId) {
-		$fromTable = '_verein AS T';
-		$fromTable .= ' INNER JOIN _stadion AS S ON S.id = T.stadion_id';
-		$fromTable .= ' INNER JOIN _liga AS L ON L.id = T.liga_id';
-		$fromTable .= ' LEFT JOIN _user AS U ON U.id = T.user_id';
+		$fromTable = 'verein AS T';
+		$fromTable .= ' INNER JOIN stadion AS S ON S.id = T.stadion_id';
+		$fromTable .= ' INNER JOIN liga AS L ON L.id = T.liga_id';
+		$fromTable .= ' LEFT JOIN user AS U ON U.id = T.user_id';
 		$whereCondition = 'T.id = %d';
 
 		$columns['S.id'] = 'stadium_id';
@@ -247,7 +247,7 @@ class SimulationAudienceCalculator {
 			}
 		}
 
-		$db->queryUpdate($columns,'_stadion', 'id = %d', $homeInfo['stadium_id']);
+		$db->queryUpdate($columns,'stadion', 'id = %d', $homeInfo['stadium_id']);
 	}
 
 	private static function weakenPlayersDueToGrassQuality(WebSoccer $websoccer, $homeInfo, SimulationMatch $match) {

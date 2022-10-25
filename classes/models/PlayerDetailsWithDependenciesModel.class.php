@@ -60,7 +60,7 @@ class PlayerDetailsWithDependenciesModel implements IModel {
 	private function _getGrades($playerId) {
 		$grades = array();
 
-		$fromTable = "_spiel_berechnung";
+		$fromTable = "spiel_berechnung";
 
 		$columns = "note AS grade";
 

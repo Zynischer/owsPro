@@ -57,7 +57,7 @@ class UserPasswordConverter implements IConverter {
 		if (isset($_POST['id']) && $_POST['id']) {
 			$db = DbConnection::getInstance();
 			$columns = 'passwort, passwort_salt';
-			$fromTable = '_user';
+			$fromTable = 'user';
 			$whereCondition = 'id = %d';
 			$result = $db->querySelect($columns, $fromTable, $whereCondition, $_POST['id'], 1);
 			$user = $result->fetch_array();

@@ -59,7 +59,7 @@ class TeamOfTheDayModel implements IModel {
 		if (!$leagueId) {
 			$clubId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 			if ($clubId > 0) {
-				$result = $this->_db->querySelect("liga_id","_verein",
+				$result = $this->_db->querySelect("liga_id","verein",
 						"id = %d", $clubId, 1);
 				$club = $result->fetch_array();
 				$result->free();
@@ -72,7 +72,7 @@ class TeamOfTheDayModel implements IModel {
 		$seasons = array();
 		$seasonId = $this->_websoccer->getRequestParameter("seasonid");
 		if ($leagueId) {
-			$fromTable = "_saison";
+			$fromTable = "saison";
 			$whereCondition = "liga_id = %d ORDER BY name ASC";
 			$result = $this->_db->querySelect("id, name, beendet", $fromTable, $whereCondition, $leagueId);
 			while ($season = $result->fetch_array()) {
@@ -156,15 +156,15 @@ class TeamOfTheDayModel implements IModel {
 				"S.assists" => "assists",
 				"T.name" => "team_name",
 				"T.bild" => "team_picture",
-				"(SELECT COUNT(*) FROM _teamoftheday AS STAT WHERE STAT.season_id = $seasonId AND STAT.player_id = S.spieler_id)" => "memberoftopteam"
+				"(SELECT COUNT(*) FROM teamoftheday AS STAT WHERE STAT.season_id = $seasonId AND STAT.player_id = S.spieler_id)" => "memberoftopteam"
 		);
 
 		// concrete matchday: get from cache
-		$fromTable = "_teamoftheday AS C";
-		$fromTable .= " INNER JOIN _spiel_berechnung AS S ON S.id = C.statistic_id";
-		$fromTable .= " INNER JOIN _spiel AS M ON M.id = S.spiel_id";
-		$fromTable .= " INNER JOIN _verein AS T ON T.id = S.team_id";
-		$fromTable .= " LEFT JOIN _spieler AS P ON P.id = S.spieler_id";
+		$fromTable = "teamoftheday AS C";
+		$fromTable .= " INNER JOIN spiel_berechnung AS S ON S.id = C.statistic_id";
+		$fromTable .= " INNER JOIN spiel AS M ON M.id = S.spiel_id";
+		$fromTable .= " INNER JOIN verein AS T ON T.id = S.team_id";
+		$fromTable .= " LEFT JOIN spieler AS P ON P.id = S.spieler_id";
 		$result = $this->_db->querySelect($columns, $fromTable, "C.season_id = %d AND C.matchday = %d", array($seasonId, $matchday));
 		while ($player = $result->fetch_array()) {
 			$players[] = $player;
@@ -186,10 +186,10 @@ class TeamOfTheDayModel implements IModel {
 
 	private function findPlayers($columns, $seasonId, $matchday, $mainPositions, $limit, &$players) {
 
-		$fromTable = "_spiel_berechnung AS S";
-		$fromTable .= " INNER JOIN _spiel AS M ON M.id = S.spiel_id";
-		$fromTable .= " INNER JOIN _verein AS T ON T.id = S.team_id";
-		$fromTable .= " LEFT JOIN _spieler AS P ON P.id = S.spieler_id";
+		$fromTable = "spiel_berechnung AS S";
+		$fromTable .= " INNER JOIN spiel AS M ON M.id = S.spiel_id";
+		$fromTable .= " INNER JOIN verein AS T ON T.id = S.team_id";
+		$fromTable .= " LEFT JOIN spieler AS P ON P.id = S.spieler_id";
 
 		$whereCondition = "M.saison_id = %d AND M.spieltag = %d AND (S.position_main = '";
 		$whereCondition .= implode("' OR S.position_main = '", $mainPositions);
@@ -206,7 +206,7 @@ class TeamOfTheDayModel implements IModel {
 					"position_main" => $player["position_main"],
 					"statistic_id" => $player["statistic_id"],
 					"player_id" => $player["player_id"]
-					),"_teamoftheday");
+					),"teamoftheday");
 		}
 		$result->free();
 	}
@@ -222,12 +222,12 @@ class TeamOfTheDayModel implements IModel {
 				"C.position_main" => "position_main",
 				"T.name" => "team_name",
 				"T.bild" => "team_picture",
-				"(SELECT COUNT(*) FROM _teamoftheday AS STAT WHERE STAT.season_id = $seasonId AND STAT.player_id = P.id)" => "memberoftopteam"
+				"(SELECT COUNT(*) FROM teamoftheday AS STAT WHERE STAT.season_id = $seasonId AND STAT.player_id = P.id)" => "memberoftopteam"
 		);
 
-		$fromTable = "_teamoftheday AS C";
-		$fromTable .= " INNER JOIN _spieler AS P ON P.id = C.player_id";
-		$fromTable .= " LEFT JOIN _verein AS T ON T.id = P.verein_id";
+		$fromTable = "teamoftheday AS C";
+		$fromTable .= " INNER JOIN spieler AS P ON P.id = C.player_id";
+		$fromTable .= " LEFT JOIN verein AS T ON T.id = P.verein_id";
 
 		$whereCondition = "C.season_id = %d AND (C.position_main = '";
 		$whereCondition .= implode("' OR C.position_main = '", $mainPositions);

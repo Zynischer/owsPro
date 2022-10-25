@@ -45,7 +45,7 @@ class UnmarkUnsellableController implements IActionController {
 
 		$columns["unsellable"] = 0;
 
-		$fromTable = "_spieler";
+		$fromTable = "spieler";
 		$whereCondition = "id = %d";
 		$parameters = $parameters["id"];
 

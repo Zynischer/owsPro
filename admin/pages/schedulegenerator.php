@@ -90,7 +90,7 @@ elseif ($show == "generate") {
   else {
 
 	// get teams
-  	$result = $db->querySelect("id","_verein", "liga_id = %d", $_POST['league']);
+  	$result = $db->querySelect("id","verein", "liga_id = %d", $_POST['league']);
 	if (!$result->num_rows) {
 		throw new Exception(getMessage("schedulegenerator_err__noteams"));
 	}
@@ -124,7 +124,7 @@ elseif ($show == "generate") {
 	// create season
 	$seasoncolumns["name"] = $_POST["seasonname"];
 	$seasoncolumns["liga_id"] = $_POST["league"];
-	$db->queryInsert($seasoncolumns,"_saison");
+	$db->queryInsert($seasoncolumns,"saison");
 	$saisonId = $db->getLastInsertedId();
 
 	// create matches
@@ -133,7 +133,7 @@ elseif ($show == "generate") {
 	$matchTimestamp = $dateObj->getTimestamp();
 	$timeBreakSeconds = 3600 * 24 * $_POST['timebreak'];
 
-	$matchTable = "_spiel";
+	$matchTable = "spiel";
 
 	foreach($schedule as $matchDay => $matches) {
 		// creates matches of match day

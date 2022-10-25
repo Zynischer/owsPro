@@ -44,8 +44,8 @@ class CupGroupDetailsModel implements IModel {
 		$cupGroup = $this->_websoccer->getRequestParameter("group");
 
 		$columns = "C.name AS cup_name, R.name AS round_name";
-		$fromTable = "_cup_round AS R";
-		$fromTable .= " INNER JOIN _cup AS C ON C.id = R.cup_id";
+		$fromTable = "cup_round AS R";
+		$fromTable .= " INNER JOIN cup AS C ON C.id = R.cup_id";
 
 		$result = $this->_db->querySelect($columns, $fromTable, "R.id = %d", $cupRoundId);
 		$round = $result->fetch_array();

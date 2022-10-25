@@ -40,9 +40,9 @@ class TransfermarketDataService {
 		$columns['U.id'] = 'user_id';
 		$columns['U.nick'] = 'user_name';
 
-		$fromTable = '_transfer_angebot AS B';
-		$fromTable .= ' INNER JOIN _verein AS C ON C.id = B.verein_id';
-		$fromTable .= ' INNER JOIN _user AS U ON U.id = B.user_id';
+		$fromTable = 'transfer_angebot AS B';
+		$fromTable .= ' INNER JOIN verein AS C ON C.id = B.verein_id';
+		$fromTable .= ' INNER JOIN user AS U ON U.id = B.user_id';
 
 		$whereCondition = 'B.spieler_id = %d AND B.datum >= %d AND B.datum <= %d ORDER BY B.datum DESC';
 		$parameters = array($playerId, $transferStart, $transferEnd);
@@ -69,9 +69,9 @@ class TransfermarketDataService {
 		$columns['P.kunstname'] = 'player_pseudonym';
 		$columns['P.transfer_ende'] = 'auction_end';
 
-		$fromTable = '_transfer_angebot AS B';
-		$fromTable .= ' INNER JOIN _verein AS C ON C.id = B.verein_id';
-		$fromTable .= ' INNER JOIN _spieler AS P ON P.id = B.spieler_id';
+		$fromTable = 'transfer_angebot AS B';
+		$fromTable .= ' INNER JOIN verein AS C ON C.id = B.verein_id';
+		$fromTable .= ' INNER JOIN spieler AS P ON P.id = B.spieler_id';
 
 		$whereCondition = 'C.id = %d AND P.transfer_ende >= %d ORDER BY B.datum DESC, P.transfer_ende ASC';
 		$parameters = array($teamId,getNowAsTimestamp());
@@ -101,8 +101,8 @@ class TransfermarketDataService {
 		$columns['P.nachname'] = 'player_lastname';
 		$columns['P.transfer_ende'] = 'auction_end';
 
-		$fromTable = '_transfer_angebot AS B';
-		$fromTable .= ' INNER JOIN _spieler AS P ON P.id = B.spieler_id';
+		$fromTable = 'transfer_angebot AS B';
+		$fromTable .= ' INNER JOIN spieler AS P ON P.id = B.spieler_id';
 
 		$whereCondition = 'B.user_id = %d ORDER BY B.datum DESC';
 		$parameters = $userId;
@@ -172,12 +172,12 @@ class TransfermarketDataService {
 		$columns['EP2.vorname'] = 'exchangeplayer2_firstname';
 		$columns['EP2.nachname'] = 'exchangeplayer2_lastname';
 
-		$fromTable = '_transfer AS T';
-		$fromTable .= ' INNER JOIN _spieler AS P ON P.id = T.spieler_id';
-		$fromTable .= ' INNER JOIN _verein AS BUYER ON BUYER.id = T.buyer_club_id';
-		$fromTable .= ' LEFT JOIN _verein AS SELLER ON SELLER.id = T.seller_club_id';
-		$fromTable .= ' LEFT JOIN _spieler AS EP1 ON EP1.id = T.directtransfer_player1';
-		$fromTable .= ' LEFT JOIN _spieler AS EP2 ON EP2.id = T.directtransfer_player2';
+		$fromTable = 'transfer AS T';
+		$fromTable .= ' INNER JOIN spieler AS P ON P.id = T.spieler_id';
+		$fromTable .= ' INNER JOIN verein AS BUYER ON BUYER.id = T.buyer_club_id';
+		$fromTable .= ' LEFT JOIN verein AS SELLER ON SELLER.id = T.seller_club_id';
+		$fromTable .= ' LEFT JOIN spieler AS EP1 ON EP1.id = T.directtransfer_player1';
+		$fromTable .= ' LEFT JOIN spieler AS EP2 ON EP2.id = T.directtransfer_player2';
 
 
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $parameters, 20);
@@ -199,7 +199,7 @@ class TransfermarketDataService {
 		$columns['lending_owner_id'] = 0;
 		$columns['lending_matches'] = 0;
 
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 
 		// select players:
 		// 1) any player who has no contract any more and are not on the market yet
@@ -253,8 +253,8 @@ class TransfermarketDataService {
 		$columns['C.name'] = 'team_name';
 		$columns['C.user_id'] = 'team_user_id';
 
-		$fromTable = '_spieler AS P';
-		$fromTable .= ' LEFT JOIN _verein AS C ON C.id = P.verein_id';
+		$fromTable = 'spieler AS P';
+		$fromTable .= ' LEFT JOIN verein AS C ON C.id = P.verein_id';
 
 		$whereCondition = 'P.transfermarkt = \'1\' AND P.status = \'1\' AND P.transfer_ende < %d';
 		$parameters = getNowAsTimestamp();
@@ -277,7 +277,7 @@ class TransfermarketDataService {
 
 	public static function getTransactionsBetweenUsers(WebSoccer $websoccer, DbConnection $db, $user1, $user2) {
 		$columns = 'COUNT(*) AS number';
-		$fromTable = '_transfer';
+		$fromTable = 'transfer';
 		$whereCondition = 'datum >= %d AND (seller_user_id = %d AND buyer_user_id = %d OR seller_user_id = %d AND buyer_user_id = %d)';
 
 		$parameters = array(getNowAsTimestamp() - 30 * 3600 * 24, $user1, $user2, $user2, $user1);
@@ -296,7 +296,7 @@ class TransfermarketDataService {
 	public static function awardUserForTrades(WebSoccer $websoccer, DbConnection $db, $userId) {
 
 		// count transactions of users
-		$result = $db->querySelect('COUNT(*) AS hits','_transfer',
+		$result = $db->querySelect('COUNT(*) AS hits','transfer',
 				'buyer_user_id = %d OR seller_user_id = %d', array($userId, $userId));
 		$transactions = $result->fetch_array();
 		$result->free();
@@ -309,7 +309,7 @@ class TransfermarketDataService {
 	}
 
 	private function extendDuration($websoccer, $db, $playerId) {
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 
 		$columns['transfer_ende'] = getNowAsTimestamp() + 24 * 3600 * getConfig('transfermarket_duration_days');
 
@@ -345,7 +345,7 @@ class TransfermarketDataService {
 				$bid['team_name']);
 		}
 
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 
 		// move and update player
 		$columns['transfermarkt'] = 0;
@@ -369,7 +369,7 @@ class TransfermarketDataService {
 		$logcolumns['datum'] = getNowAsTimestamp();
 		$logcolumns['directtransfer_amount'] = $bid['amount'];
 
-		$logTable = '_transfer';
+		$logTable = 'transfer';
 
 		$db->queryInsert($logcolumns, $logTable);
 
@@ -378,7 +378,7 @@ class TransfermarketDataService {
 			'transfer_bid_notification_transfered', array('player' => $playerName), 'transfermarket', 'player', 'id=' . $player['player_id']);
 
 		// delete old bids
-		$db->queryDelete('_transfer_angebot', 'spieler_id = %d', $player['player_id']);
+		$db->queryDelete('transfer_angebot', 'spieler_id = %d', $player['player_id']);
 
 		// award badges
 		self::awardUserForTrades($websoccer, $db, $bid['user_id']);

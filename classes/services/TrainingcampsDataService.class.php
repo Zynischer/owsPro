@@ -26,7 +26,7 @@
 class TrainingcampsDataService {
 
 	public static function getCamps(WebSoccer $websoccer, DbConnection $db) {
-		$fromTable = "_trainingslager";
+		$fromTable = "trainingslager";
 
 		// where
 		$whereCondition = "1=1 ORDER BY name ASC";
@@ -42,8 +42,8 @@ class TrainingcampsDataService {
 	}
 
 	public static function getCampBookingsByTeam(WebSoccer $websoccer, DbConnection $db, $teamId) {
-		$fromTable = "_trainingslager_belegung AS B";
-		$fromTable .= " INNER JOIN _trainingslager AS C ON C.id = B.lager_id";
+		$fromTable = "trainingslager_belegung AS B";
+		$fromTable .= " INNER JOIN trainingslager AS C ON C.id = B.lager_id";
 
 		$columns["B.id"] = "id";
 		$columns["B.datum_start"] = "date_start";
@@ -71,7 +71,7 @@ class TrainingcampsDataService {
 	}
 
 	public static function getCampById(WebSoccer $websoccer, DbConnection $db, $campId) {
-		$fromTable = "_trainingslager";
+		$fromTable = "trainingslager";
 
 		// where
 		$whereCondition = "id = %d";
@@ -88,7 +88,7 @@ class TrainingcampsDataService {
 		$players = PlayersDataService::getPlayersOfTeamById($websoccer, $db, $teamId);
 		if (count($players)) {
 
-			$playerTable = "_spieler";
+			$playerTable = "spieler";
 			$updateCondition = "id = %d";
 			$duration = round(($bookingInfo["date_end"] - $bookingInfo["date_start"]) / (24 * 3600));
 

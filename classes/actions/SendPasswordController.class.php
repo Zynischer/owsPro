@@ -54,7 +54,7 @@ class SendPasswordController implements IActionController {
 
 		$email = $parameters["useremail"];
 
-		$fromTable = "_user";
+		$fromTable = "user";
 
 		// get user
 		$columns = "id, passwort_salt, passwort_neu_angefordert";

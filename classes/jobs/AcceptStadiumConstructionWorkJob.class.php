@@ -58,7 +58,7 @@ class AcceptStadiumConstructionWorkJob extends AbstractJob {
 			// not completed: postpone deadline
 			if ($constructionResult == 'notcompleted') {
 
-				$this->_db->queryUpdate(array('deadline' => $newDeadline),'_stadium_construction',
+				$this->_db->queryUpdate(array('deadline' => $newDeadline),'stadium_construction',
 						'id = %d', $construction['id']);
 
 				// send notification
@@ -78,11 +78,11 @@ class AcceptStadiumConstructionWorkJob extends AbstractJob {
 				$columns['p_haupt_steh'] = $stadium['places_stands_grand'] + $construction['p_haupt_steh'];
 				$columns['p_haupt_sitz'] = $stadium['places_seats_grand'] + $construction['p_haupt_sitz'];
 				$columns['p_vip'] = $stadium['places_vip'] + $construction['p_vip'];
-				$this->_db->queryUpdate($columns,'_stadion', 'id = %d',
+				$this->_db->queryUpdate($columns,'stadion', 'id = %d',
 						$stadium['stadium_id']);
 
 				// delete order
-				$this->_db->queryDelete('_stadium_construction',
+				$this->_db->queryDelete('stadium_construction',
 						'id = %d', $construction['id']);
 
 				// send notification
@@ -96,8 +96,8 @@ class AcceptStadiumConstructionWorkJob extends AbstractJob {
 
 	private function checkTrainingCamps() {
 
-		$fromTable = '_trainingslager_belegung AS B';
-		$fromTable .= ' INNER JOIN _trainingslager AS C ON C.id = B.lager_id';
+		$fromTable = 'trainingslager_belegung AS B';
+		$fromTable .= ' INNER JOIN trainingslager AS C ON C.id = B.lager_id';
 
 		$columns['B.id'] = 'id';
 		$columns['B.datum_start'] = 'date_start';

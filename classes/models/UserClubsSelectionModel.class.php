@@ -50,7 +50,7 @@ class UserClubsSelectionModel implements IModel {
 
 		// select general information
 		$whereCondition = "id = %d";
-		$result = $this->_db->querySelect("id,name","_verein",
+		$result = $this->_db->querySelect("id,name","verein",
 				"user_id = %d AND status = '1' AND nationalteam != '1' ORDER BY name ASC",
 				$this->_websoccer->getUser()->id);
 		$teams = array();

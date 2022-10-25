@@ -52,8 +52,8 @@ class StadiumsDataService {
 		$columns["S.level_seatsquality"] = "level_seatsquality";
 		$columns["S.level_vipquality"] = "level_vipquality";
 
-		$fromTable = "_stadion AS S";
-		$fromTable .= " INNER JOIN _verein AS T ON T.stadion_id = S.id";
+		$fromTable = "stadion AS S";
+		$fromTable .= " INNER JOIN verein AS T ON T.stadion_id = S.id";
 		$whereCondition = "T.id = %d";
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $clubId, 1);
 		$stadium = $result->fetch_array();
@@ -89,7 +89,7 @@ class StadiumsDataService {
 		$existingCapacity = $stadium["places_stands"] + $stadium["places_seats"] + $stadium["places_stands_grand"] + $stadium["places_seats_grand"] + $stadium["places_vip"];
 
 		// query builders and calculate offers
-		$result = $db->querySelect("*","_stadium_builder",
+		$result = $db->querySelect("*","stadium_builder",
 				"min_stadium_size <= %d AND (max_stadium_size = 0 OR max_stadium_size >= %d)",
 				array($existingCapacity, $existingCapacity));
 		while ($builder = $result->fetch_array()) {
@@ -137,8 +137,8 @@ class StadiumsDataService {
 	 * @return array|NULL the current on-going stadium construction order of a team or NULL of no construction is on-going
 	 */
 	public static function getCurrentConstructionOrderOfTeam(WebSoccer $websoccer, DbConnection $db, $clubId) {
-		$fromTable = "_stadium_construction AS C";
-		$fromTable .= " INNER JOIN _stadium_builder AS B ON B.id = C.builder_id";
+		$fromTable = "stadium_construction AS C";
+		$fromTable .= " INNER JOIN stadium_builder AS B ON B.id = C.builder_id";
 
 		$result = $db->querySelect("C.*, B.name AS builder_name, B.reliability AS builder_reliability", $fromTable, "C.team_id = %d", $clubId);
 		$order = $result->fetch_array();
@@ -159,9 +159,9 @@ class StadiumsDataService {
 	 * @return array list of construction orders incl. builder's reliability and user ID.
 	 */
 	public static function getDueConstructionOrders(WebSoccer $websoccer, DbConnection $db) {
-		$fromTable = "_stadium_construction AS C";
-		$fromTable .= " INNER JOIN _stadium_builder AS B ON B.id = C.builder_id";
-		$fromTable .= " INNER JOIN _verein AS T ON T.id = C.team_id";
+		$fromTable = "stadium_construction AS C";
+		$fromTable .= " INNER JOIN stadium_builder AS B ON B.id = C.builder_id";
+		$fromTable .= " INNER JOIN verein AS T ON T.id = C.team_id";
 
 		$result = $db->querySelect("C.*, T.user_id AS user_id, B.reliability AS builder_reliability", $fromTable, "C.deadline <= %d",getNowAsTimestamp());
 

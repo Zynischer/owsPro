@@ -62,7 +62,7 @@ class MatchPlayersModel implements IModel {
 
 		// check if any player is member of team of the day
 		if ($match["match_simulated"]) {
-			$result = $this->_db->querySelect("player_id","_teamoftheday",
+			$result = $this->_db->querySelect("player_id","teamoftheday",
 					"season_id = %d AND matchday = %d", array($match["match_season_id"], $match["match_matchday"]));
 			$topPlayerIds = array();
 			while ($topmember = $result->fetch_array()) {

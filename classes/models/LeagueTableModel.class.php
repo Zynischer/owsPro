@@ -45,7 +45,7 @@ class LeagueTableModel implements IModel {
 		// pre-select user's league in case no other league selected
 		$clubId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 		if ($this->_leagueId == 0 && $clubId > 0) {
-			$result = $db->querySelect("liga_id","_verein",
+			$result = $db->querySelect("liga_id","verein",
 					"id = %d", $clubId, 1);
 			$club = $result->fetch_array();
 			$result->free();
@@ -68,7 +68,7 @@ class LeagueTableModel implements IModel {
 			$teams = TeamsDataService::getTeamsOfLeagueOrderedByTableCriteria($this->_websoccer, $this->_db, $this->_leagueId);
 
 			// get table markers
-			$fromTable = "_tabelle_markierung";
+			$fromTable = "tabelle_markierung";
 
 			$columns["bezeichnung"] = "name";
 			$columns["farbe"] = "color";
@@ -90,7 +90,7 @@ class LeagueTableModel implements IModel {
 
 			// no season selected, so select current one
 			if ($this->_seasonId == null) {
-				$result = $this->_db->querySelect("id","_saison",
+				$result = $this->_db->querySelect("id","saison",
 				"liga_id = %d AND beendet = '0' ORDER BY name DESC", $this->_leagueId, 1);
 				$season = $result->fetch_array();
 				$result->free();
@@ -109,7 +109,7 @@ class LeagueTableModel implements IModel {
 
 		// get completed seasons
 		$seasons = array();
-		$result = $this->_db->querySelect("id,name","_saison",
+		$result = $this->_db->querySelect("id,name","saison",
 				"liga_id = %d AND beendet = '1' ORDER BY name DESC", $this->_leagueId);
 		while ($season = $result->fetch_array()) {
 			$seasons[] = $season;

@@ -53,7 +53,7 @@ class AbsenceModel implements IModel {
 
 		$deputyName = "";
 		if ($absence && $absence['deputy_id']) {
-			$result = $this->_db->querySelect('nick','_user',
+			$result = $this->_db->querySelect('nick','user',
 					'id = %d', $absence['deputy_id']);
 			$deputy = $result->fetch_array();
 			$result->free();

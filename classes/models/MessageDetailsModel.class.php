@@ -46,7 +46,7 @@ class MessageDetailsModel implements IModel {
 		// update "seen" state
 		if ($message && !$message["seen"]) {
 			$columns["gelesen"] = "1";
-			$fromTable = "_briefe";
+			$fromTable = "briefe";
 			$whereCondition = "id = %d";
 
 			$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $id);

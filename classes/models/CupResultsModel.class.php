@@ -61,10 +61,10 @@ class CupResultsModel implements IModel {
 		$columns['PREVWINNERS.name'] = 'prev_round_winners';
 		$columns['PREVLOOSERS.name'] = 'prev_round_loosers';
 
-		$fromTable = '_cup_round AS R';
-		$fromTable .= ' INNER JOIN _cup AS C ON C.id = R.cup_id';
-		$fromTable .= ' LEFT JOIN _cup_round AS PREVWINNERS ON PREVWINNERS.id = R.from_winners_round_id';
-		$fromTable .= ' LEFT JOIN _cup_round AS PREVLOOSERS ON PREVLOOSERS.id = R.from_loosers_round_id';
+		$fromTable = 'cup_round AS R';
+		$fromTable .= ' INNER JOIN cup AS C ON C.id = R.cup_id';
+		$fromTable .= ' LEFT JOIN cup_round AS PREVWINNERS ON PREVWINNERS.id = R.from_winners_round_id';
+		$fromTable .= ' LEFT JOIN cup_round AS PREVLOOSERS ON PREVLOOSERS.id = R.from_loosers_round_id';
 
 		$result = $this->_db->querySelect($columns, $fromTable,
 				'C.name = \'%s\' AND R.name = \'%s\'', array($cupName, $cupRound), 1);
@@ -77,7 +77,7 @@ class CupResultsModel implements IModel {
 
 			$userTeamId = $this->_websoccer->getUser()->getClubId($this->_websoccer, $this->_db);
 
-			$result = $this->_db->querySelect('name,team_id','_cup_round_group',
+			$result = $this->_db->querySelect('name,team_id','cup_round_group',
 					'cup_round_id = %d ORDER BY name ASC', array($round['round_id']));
 			while ($group = $result->fetch_array()) {
 				if (!isset($groups[$group['name']])) {

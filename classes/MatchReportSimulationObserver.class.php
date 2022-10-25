@@ -42,7 +42,7 @@ class MatchReportSimulationObserver implements ISimulationObserver {
 		$this->_db = $db;
 
 		// get available text messages
-		$fromTable = '_spiel_text';
+		$fromTable = 'spiel_text';
 		$columns = 'id, aktion AS actiontype';
 		$result = $db->querySelect($columns, $fromTable, '1=1');
 		while ($text = $result->fetch_array()) {
@@ -185,7 +185,7 @@ class MatchReportSimulationObserver implements ISimulationObserver {
 			$players = implode(';', $playerNames);
 		}
 
-		$fromTable = '_matchreport';
+		$fromTable = 'matchreport';
 		$columns['match_id'] = $match->id;
 		$columns['minute'] = $match->minute;
 		$columns['message_id'] = $messageId;

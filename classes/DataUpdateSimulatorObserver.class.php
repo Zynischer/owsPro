@@ -56,7 +56,7 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 		}
 
 		// update user ids
-		$clubTable = '_verein';
+		$clubTable = 'verein';
 		$updateColumns = array();
 
 		$result = $this->_db->querySelect('user_id', $clubTable, 'id = %d AND user_id > 0', $match->homeTeam->id);
@@ -74,7 +74,7 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 		}
 
 		if (count($updateColumns)) {
-			$this->_db->queryUpdate($updateColumns,'_spiel',
+			$this->_db->queryUpdate($updateColumns,'spiel',
 					'id = %d', $match->id);
 		}
 	}
@@ -117,7 +117,7 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 		}
 
 		// delete formations
-		$this->_db->queryDelete('_aufstellung', 'match_id = %d', $match->id);
+		$this->_db->queryDelete('aufstellung', 'match_id = %d', $match->id);
 	}
 
 	/**
@@ -163,7 +163,7 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 
 		// update if any changes
 		if (count($columns)) {
-			$fromTable = '_spieler';
+			$fromTable = 'spieler';
 			$this->_db->queryUpdate($columns, $fromTable, 'id = %d', $player->id);
 		}
 	}
@@ -187,10 +187,10 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 		$totalSalary = 0;
 
 		$pcolumns = 'id,vorname,nachname,kunstname,verein_id,vertrag_spiele,vertrag_gehalt,vertrag_torpraemie,w_zufriedenheit,w_frische,verletzt,gesperrt,gesperrt_cups,gesperrt_nationalteam,lending_fee,lending_matches,lending_owner_id';
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 
 		if ($team->isNationalTeam) {
-			$fromTable .= ' INNER JOIN _nationalplayer AS NP ON NP.player_id = id';
+			$fromTable .= ' INNER JOIN nationalplayer AS NP ON NP.player_id = id';
 			$whereCondition = 'NP.team_id = %d AND status = 1';
 		} else {
 			$whereCondition = 'verein_id = %d AND status = 1';
@@ -229,7 +229,7 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 	}
 
 	private function updatePlayer(SimulationMatch $match, SimulationPlayer $player, $isTeamWinner, $isTie) {
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 		$whereCondition = 'id = %d';
 		$parameters = $player->id;
 
@@ -328,7 +328,7 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 	}
 
 	private function updatePlayerWhoDidNotPlay(SimulationMatch $match, $isNationalTeam, $playerinfo) {
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 		$whereCondition = 'id = %d';
 		$parameters = $playerinfo['id'];
 		$satisfactionChange = (int)getConfig('sim_strengthchange_satisfaction');
@@ -371,7 +371,7 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 	}
 
 	private function updateTeams(SimulationMatch $match) {
-		$fromTable = '_verein';
+		$fromTable = 'verein';
 		$whereCondition = 'id = %d';
 
 		$tcolumns = 'st_tore,st_gegentore,st_spiele,st_siege,st_niederlagen,st_unentschieden,st_punkte,sa_tore,sa_gegentore,sa_spiele,sa_siege,sa_niederlagen,sa_unentschieden,sa_punkte';
@@ -447,9 +447,9 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 	}
 
 	private function updateTeamsOfCupGroupMatch(SimulationMatch $match) {
-		$fromTable = '_cup_round_group AS G';
-		$fromTable .= ' INNER JOIN _cup_round AS R ON R.id = G.cup_round_id';
-		$fromTable .= ' INNER JOIN _cup AS C ON C.id = R.cup_id';
+		$fromTable = 'cup_round_group AS G';
+		$fromTable .= ' INNER JOIN cup_round AS R ON R.id = G.cup_round_id';
+		$fromTable .= ' INNER JOIN cup AS C ON C.id = R.cup_id';
 
 		$whereCondition = 'C.name = \'%s\' AND R.name = \'%s\' AND G.name = \'%s\' AND G.team_id = %d';
 
@@ -513,8 +513,8 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 	private function creditSponsorPayments(SimulationTeam $team, $isHomeTeam, $teamIsWinner) {
 
 		$columns = 'S.name AS sponsor_name, b_spiel,b_heimzuschlag,b_sieg,T.sponsor_spiele AS sponsor_matches';
-		$fromTable = '_verein AS T';
-		$fromTable .= ' INNER JOIN _sponsor AS S ON S.id = T.sponsor_id';
+		$fromTable = 'verein AS T';
+		$fromTable .= ' INNER JOIN sponsor AS S ON S.id = T.sponsor_id';
 		$whereCondition = 'T.id = %d AND T.sponsor_spiele > 0';
 		$result = $this->_db->querySelect($columns, $fromTable, $whereCondition, $team->id);
 		$sponsor = $result->fetch_array();
@@ -542,7 +542,7 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 				$updatecolums['sponsor_id'] = '';
 			}
 			$whereCondition = 'id = %d';
-			$fromTable = '_verein';
+			$fromTable = 'verein';
 			$this->_db->queryUpdate($updatecolums, $fromTable, $whereCondition, $team->id);
 		}
 
@@ -554,15 +554,15 @@ class DataUpdateSimulatorObserver implements ISimulatorObserver {
 		$highscoreDraw = getConfig('highscore_draw');
 
 		$columns = 'U.id AS u_id, U.highscore AS highscore, U.fanbeliebtheit AS popularity';
-		$fromTable = '_verein AS T';
-		$fromTable .= ' INNER JOIN _user AS U ON U.id = T.user_id';
+		$fromTable = 'verein AS T';
+		$fromTable .= ' INNER JOIN user AS U ON U.id = T.user_id';
 		$whereCondition = 'T.id = %d';
 
 		$result = $this->_db->querySelect($columns, $fromTable, $whereCondition, $match->homeTeam->id);
 		$homeUser = $result->fetch_array();
 		$result->free();
 
-		$updateTable = '_user';
+		$updateTable = 'user';
 		$updateCondition = 'id = %d';
 
 		// make popularity dependent on strength

@@ -60,7 +60,7 @@ class UserDetailsModel implements IModel {
 		}
 
 		// get teams of user
-		$fromTable = '_verein';
+		$fromTable = 'verein';
 		$whereCondition = 'user_id = %d AND status = \'1\' AND nationalteam != \'1\' ORDER BY name ASC';
 		$result = $this->_db->querySelect('id,name', $fromTable, $whereCondition, $userId);
 
@@ -73,7 +73,7 @@ class UserDetailsModel implements IModel {
 		// get national team of user
 		if (getConfig('nationalteams_enabled')) {
 			$columns = 'id,name';
-			$fromTable = '_verein';
+			$fromTable = 'verein';
 			$whereCondition = 'user_id = %d AND nationalteam = \'1\'';
 			$result = $this->_db->querySelect($columns, $fromTable, $whereCondition, $userId, 1);
 			$nationalteam = $result->fetch_array();
@@ -85,7 +85,7 @@ class UserDetailsModel implements IModel {
 
 		// badges
 		$result = $this->_db->querySelect('name, description, level, date_rewarded, event',
-				'_badge INNER JOIN _badge_user ON id = badge_id',
+				'badge INNER JOIN badge_user ON id = badge_id',
 				'user_id = %d ORDER BY level DESC, date_rewarded ASC', $userId);
 		$badges = array();
 		while ($badge = $result->fetch_array()) {

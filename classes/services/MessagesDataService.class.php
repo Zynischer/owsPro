@@ -81,9 +81,9 @@ class MessagesDataService {
 		$columns["S.id"] = "sender_id";
 		$columns["S.nick"] = "sender_name";
 
-		$fromTable = "_briefe AS L";
-		$fromTable .= " INNER JOIN _user AS R ON R.id = L.empfaenger_id";
-		$fromTable .= " LEFT JOIN _user AS S ON S.id = L.absender_id";
+		$fromTable = "briefe AS L";
+		$fromTable .= " INNER JOIN user AS R ON R.id = L.empfaenger_id";
+		$fromTable .= " LEFT JOIN user AS S ON S.id = L.absender_id";
 
 		$limit = $startIndex .",". $entries_per_page;
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $parameters, $limit);
@@ -102,7 +102,7 @@ class MessagesDataService {
 
 		$columns = "COUNT(*) AS hits";
 
-		$fromTable = "_briefe AS L";
+		$fromTable = "briefe AS L";
 
 		$whereCondition = "L.empfaenger_id = %d AND typ = 'eingang'";
 
@@ -122,7 +122,7 @@ class MessagesDataService {
 
 		$columns = "COUNT(*) AS hits";
 
-		$fromTable = "_briefe AS L";
+		$fromTable = "briefe AS L";
 
 		$whereCondition = "L.empfaenger_id = %d AND typ = 'eingang' AND gelesen = '0'";
 
@@ -142,7 +142,7 @@ class MessagesDataService {
 
 		$columns = "COUNT(*) AS hits";
 
-		$fromTable = "_briefe AS L";
+		$fromTable = "briefe AS L";
 
 		$whereCondition = "L.absender_id = %d AND typ = 'ausgang'";
 

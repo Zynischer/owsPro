@@ -46,7 +46,7 @@ class SendShoutBoxMessageController implements IActionController {
 		$matchId = $parameters['id'];
 		$date = getNowAsTimestamp();
 
-		$fromTable = '_shoutmessage';
+		$fromTable = 'shoutmessage';
 		$this->_db->queryInsert(array(
 				'user_id' => $userId,
 				'message' => $message,

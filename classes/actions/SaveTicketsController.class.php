@@ -46,7 +46,7 @@ class SaveTicketsController implements IActionController {
 		$columns["preis_haupt_sitze"] = $parameters["p_seats_grand"];
 		$columns["preis_vip"] = $parameters["p_vip"];
 
-		$fromTable = "_verein";
+		$fromTable = "verein";
 		$whereCondition = "id = %d";
 		$parameters = $clubId;
 

@@ -51,7 +51,7 @@ class DataGeneratorService {
 			$generateStadium, $stadiumNamePattern, $stadiumStands, $stadiumSeats, $stadiumStandsGrand, $stadiumSeatsGrand, $stadiumVip) {
 
 		// get country
-		$result = $db->querySelect('*','_liga', 'id = %d', $leagueId);
+		$result = $db->querySelect('*','liga', 'id = %d', $leagueId);
 		$league = $result->fetch_array();
 		$result->free();
 
@@ -100,8 +100,8 @@ class DataGeneratorService {
 			$country = $nationality;
 		} else {
 			// get country from team
-			$fromTable = '_verein AS T';
-			$fromTable .= ' INNER JOIN _liga AS L ON L.id = T.liga_id';
+			$fromTable = 'verein AS T';
+			$fromTable .= ' INNER JOIN liga AS L ON L.id = T.liga_id';
 			$result = $db->querySelect('L.land AS country', $fromTable, 'T.id = %d', $teamId);
 			$league = $result->fetch_array();
 			$result->free();
@@ -206,7 +206,7 @@ class DataGeneratorService {
 			$stadiumcolumns['p_haupt_sitz'] = $stadiumSeatsGrand;
 			$stadiumcolumns['p_vip'] = $stadiumVip;
 
-			$fromTable = '_stadion';
+			$fromTable = 'stadion';
 
 			$db->queryInsert($stadiumcolumns, $fromTable);
 
@@ -226,7 +226,7 @@ class DataGeneratorService {
 		$teamcolumns['preis_vip'] = $league['preis_vip'];
 		$teamcolumns['status'] = '1';
 
-		$fromTable = '_verein';
+		$fromTable = 'verein';
 		$db->queryInsert($teamcolumns, $fromTable);
 
 		echo '<p>' . $teamName . ' (' . $shortName . ')</p>';
@@ -259,7 +259,7 @@ class DataGeneratorService {
 			$columns['transfer_ende'] = $columns['transfer_start'] + getConfig('transfermarket_duration_days') * 24 * 3600;
 		}
 
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 		$db->queryInsert($columns, $fromTable);
 	}
 

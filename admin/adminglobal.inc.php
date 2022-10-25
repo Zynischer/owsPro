@@ -38,7 +38,7 @@ $action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : null;
 // log in user
 if (SecurityUtil::isAdminLoggedIn()) {
 	$columns = '*';
-	$fromTable = '_admin';
+	$fromTable = 'admin';
 	$whereCondition = 'id = %d';
 	$parameters = $_SESSION['userid'];
 	$result = $db->querySelect($columns, $fromTable, $whereCondition, $parameters);

@@ -130,7 +130,7 @@ class TransferBidController implements IActionController {
 
 		// check if budget is enough for all current highest bids of user.
 		$team = TeamsDataService::getTeamSummaryById($this->_websoccer, $this->_db, $clubId);
-		$result = $this->_db->querySelect('SUM(abloese) + SUM(handgeld) AS bidsamount','_transfer_angebot',
+		$result = $this->_db->querySelect('SUM(abloese) + SUM(handgeld) AS bidsamount','transfer_angebot',
 				'user_id = %d AND ishighest = \'1\'', $user->id);
 		$bids = $result->fetch_array();
 		$result->free();
@@ -143,7 +143,7 @@ class TransferBidController implements IActionController {
 
 		// mark previous highest bid as outbidden
 		if (isset($highestBid['bid_id'])) {
-			$this->_db->queryUpdate(array('ishighest' => '0'),'_transfer_angebot',
+			$this->_db->queryUpdate(array('ishighest' => '0'),'transfer_angebot',
 					'id = %d', $highestBid['bid_id']);
 		}
 
@@ -174,7 +174,7 @@ class TransferBidController implements IActionController {
 		$columns['verein_id'] = $clubId;
 		$columns['ishighest'] = '1';
 
-		$fromTable = '_transfer_angebot';
+		$fromTable = 'transfer_angebot';
 
 		$this->_db->queryInsert($columns, $fromTable);
 

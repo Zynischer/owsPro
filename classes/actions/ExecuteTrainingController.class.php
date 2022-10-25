@@ -92,7 +92,7 @@ class ExecuteTrainingController implements IActionController {
 
 		// update execution time of unit
 		$columns["date_executed"] = $now;
-		$fromTable = "_training_unit";
+		$fromTable = "training_unit";
 		$whereCondition = "id = %d";
 		$this->_db->queryUpdate($columns, $fromTable, $whereCondition, $unit["id"]);
 
@@ -111,7 +111,7 @@ class ExecuteTrainingController implements IActionController {
 		// freshness decrease for stamina and technique training
 		$freshnessDecrease = round(1 + $unit["intensity"] / 100 * 5);
 
-		$fromTable = "_spieler";
+		$fromTable = "spieler";
 		$whereCondition = "id = %d";
 
 		$trainingEffects = array();

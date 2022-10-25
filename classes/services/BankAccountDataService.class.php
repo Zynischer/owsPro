@@ -36,7 +36,7 @@ class BankAccountDataService {
 	public static function countAccountStatementsOfTeam(WebSoccer $websoccer, DbConnection $db, $teamId) {
 		$columns = "COUNT(*) AS hits";
 
-		$fromTable = "_konto";
+		$fromTable = "konto";
 
 		$whereCondition = "verein_id = %d";
 		$parameters = $teamId;
@@ -71,7 +71,7 @@ class BankAccountDataService {
 
 		$limit = $startIndex .",". $entries_per_page;
 
-		$fromTable = "_konto";
+		$fromTable = "konto";
 
 		$whereCondition = "verein_id = %d ORDER BY datum DESC";
 		$parameters = $teamId;
@@ -154,7 +154,7 @@ class BankAccountDataService {
 		}
 
 		// create transaction
-		$fromTable = "_konto";
+		$fromTable = "konto";
 		$columns["verein_id"] = $teamId;
 		$columns["absender"] = $sender;
 		$columns["betrag"] = $amount;
@@ -165,7 +165,7 @@ class BankAccountDataService {
 		// update team budget
 		$newBudget = $team["team_budget"] + $amount;
 		$updateColumns["finanz_budget"] = $newBudget;
-		$fromTable = "_verein";
+		$fromTable = "verein";
 		$whereCondition = "id = %d";
 		$parameters = $teamId;
 		$db->queryUpdate($updateColumns, $fromTable, $whereCondition, $parameters);

@@ -26,7 +26,7 @@
 class TrainingDataService {
 
 	public static function countTrainers(WebSoccer $websoccer, DbConnection $db) {
-		$fromTable = "_trainer";
+		$fromTable = "trainer";
 
 		// where
 		$whereCondition = "1=1";
@@ -42,7 +42,7 @@ class TrainingDataService {
 	}
 
 	public static function getTrainers(WebSoccer $websoccer, DbConnection $db, $startIndex, $entries_per_page) {
-		$fromTable = "_trainer";
+		$fromTable = "trainer";
 
 		// where
 		$whereCondition = "1=1 ORDER BY salary DESC";
@@ -63,7 +63,7 @@ class TrainingDataService {
 	}
 
 	public static function getTrainerById(WebSoccer $websoccer, DbConnection $db, $trainerId) {
-		$fromTable = "_trainer";
+		$fromTable = "trainer";
 
 		// where
 		$whereCondition = "id = %d";
@@ -80,7 +80,7 @@ class TrainingDataService {
 
 	public static function countRemainingTrainingUnits(WebSoccer $websoccer, DbConnection $db, $teamId) {
 		$columns = "COUNT(*) AS hits";
-		$fromTable = "_training_unit";
+		$fromTable = "training_unit";
 		$whereCondition = "team_id = %d AND date_executed = 0 OR date_executed IS NULL";
 		$parameters = $teamId;
 
@@ -93,7 +93,7 @@ class TrainingDataService {
 
 	public static function getLatestTrainingExecutionTime(WebSoccer $websoccer, DbConnection $db, $teamId) {
 		$columns = "date_executed";
-		$fromTable = "_training_unit";
+		$fromTable = "training_unit";
 		$whereCondition = "team_id = %d AND date_executed > 0 ORDER BY date_executed DESC";
 		$parameters = $teamId;
 
@@ -110,7 +110,7 @@ class TrainingDataService {
 
 	public static function getValidTrainingUnit(WebSoccer $websoccer, DbConnection $db, $teamId) {
 		$columns = "id,trainer_id";
-		$fromTable = "_training_unit";
+		$fromTable = "training_unit";
 		$whereCondition = "team_id = %d AND date_executed = 0 OR date_executed IS NULL ORDER BY id ASC";
 		$parameters = $teamId;
 
@@ -123,7 +123,7 @@ class TrainingDataService {
 
 	public static function getTrainingUnitById(WebSoccer $websoccer, DbConnection $db, $teamId, $unitId) {
 		$columns = "*";
-		$fromTable = "_training_unit";
+		$fromTable = "training_unit";
 		$whereCondition = "id = %d AND team_id = %d";
 		$parameters = array($unitId, $teamId);
 

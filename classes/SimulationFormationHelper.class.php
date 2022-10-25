@@ -61,7 +61,7 @@ class SimulationFormationHelper {
 
 		// get players from usual team
 		if (!$team->isNationalTeam) {
-			$fromTable = '_spieler';
+			$fromTable = 'spieler';
 			$whereCondition = 'verein_id = %d AND verletzt = 0 AND gesperrt = 0 AND status = 1 ORDER BY w_frische DESC';
 			$parameters = $team->id;
 			$result = $db->querySelect($columns, $fromTable, $whereCondition, $parameters);
@@ -81,10 +81,10 @@ class SimulationFormationHelper {
 			}
 
 			$nation = $db->connection->escape_string($team->name);
-			$queryStr = '(SELECT ' . $columnsStr . ' FROM _spieler WHERE nation = \''. $nation . '\' AND position = \'Torwart\' ORDER BY w_staerke DESC, w_frische DESC LIMIT 1)';
-			$queryStr .= ' UNION ALL (SELECT ' . $columnsStr . ' FROM _spieler WHERE nation = \''. $nation . '\' AND position = \'Abwehr\' ORDER BY w_staerke DESC, w_frische DESC LIMIT 4)';
-			$queryStr .= ' UNION ALL (SELECT ' . $columnsStr . ' FROM _spieler WHERE nation = \''. $nation . '\' AND position = \'Mittelfeld\' ORDER BY w_staerke DESC, w_frische DESC LIMIT 4)';
-			$queryStr .= ' UNION ALL (SELECT ' . $columnsStr . ' FROM _spieler WHERE nation = \''. $nation . '\' AND position = \'Sturm\' ORDER BY w_staerke DESC, w_frische DESC LIMIT 2)';
+			$queryStr = '(SELECT ' . $columnsStr . ' FROM spieler WHERE nation = \''. $nation . '\' AND position = \'Torwart\' ORDER BY w_staerke DESC, w_frische DESC LIMIT 1)';
+			$queryStr .= ' UNION ALL (SELECT ' . $columnsStr . ' FROM spieler WHERE nation = \''. $nation . '\' AND position = \'Abwehr\' ORDER BY w_staerke DESC, w_frische DESC LIMIT 4)';
+			$queryStr .= ' UNION ALL (SELECT ' . $columnsStr . ' FROM spieler WHERE nation = \''. $nation . '\' AND position = \'Mittelfeld\' ORDER BY w_staerke DESC, w_frische DESC LIMIT 4)';
+			$queryStr .= ' UNION ALL (SELECT ' . $columnsStr . ' FROM spieler WHERE nation = \''. $nation . '\' AND position = \'Sturm\' ORDER BY w_staerke DESC, w_frische DESC LIMIT 2)';
 			$result = $db->executeQuery($queryStr);
 		}
 

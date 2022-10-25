@@ -39,7 +39,7 @@ class UserInactivityDataService {
 		$columns["transfer_check"] = "transfer_check";
 		$columns["vertragsauslauf"] = "contractextensions";
 
-		$fromTable = "_user_inactivity";
+		$fromTable = "user_inactivity";
 
 		$whereCondition = "user_id = %d";
 		$parameters = $userId;
@@ -76,8 +76,8 @@ class UserInactivityDataService {
 			$updatecolumns["login_check"] = $now;
 
 			// update tactics activity
-			$formationTable = "_aufstellung AS F";
-			$formationTable .= " INNER JOIN _verein AS T ON T.id = F.verein_id";
+			$formationTable = "aufstellung AS F";
+			$formationTable .= " INNER JOIN verein AS T ON T.id = F.verein_id";
 			$result = $db->querySelect("F.datum AS date", $formationTable, "T.user_id = %d", $userId);
 			$formation = $result->fetch_array();
 			$result->free();
@@ -102,7 +102,7 @@ class UserInactivityDataService {
 
 		// update
 		if (count($updatecolumns)) {
-			$fromTable = "_user_inactivity";
+			$fromTable = "user_inactivity";
 			$db->queryUpdate($updatecolumns, $fromTable, "id = %d", $inactivity["id"]);
 		}
 
@@ -112,7 +112,7 @@ class UserInactivityDataService {
 		$inactivity = self::getUserInactivity($websoccer, $db, $userId);
 
 		$updatecolumns["vertragsauslauf"] = 0;
-		$fromTable = "_user_inactivity";
+		$fromTable = "user_inactivity";
 		$db->queryUpdate($updatecolumns, $fromTable, "id = %d", $inactivity["id"]);
 	}
 
@@ -120,7 +120,7 @@ class UserInactivityDataService {
 		$inactivity = self::getUserInactivity($websoccer, $db, $userId);
 
 		$updatecolumns["vertragsauslauf"] = min(100, $inactivity["contractextensions"] + INACTIVITY_PER_CONTRACTEXTENSION);
-		$fromTable = "_user_inactivity";
+		$fromTable = "user_inactivity";
 		$db->queryUpdate($updatecolumns, $fromTable, "id = %d", $inactivity["id"]);
 	}
 

@@ -46,7 +46,7 @@ class DirectTransferCancelController implements IActionController {
 		$userId = $this->_websoccer->getUser()->id;
 
 		// get offer information
-		$result = $this->_db->querySelect("*","_transfer_offer",
+		$result = $this->_db->querySelect("*","transfer_offer",
 				"id = %d AND sender_user_id = %d",
 				array($parameters["id"], $userId));
 		$offer = $result->fetch_array();

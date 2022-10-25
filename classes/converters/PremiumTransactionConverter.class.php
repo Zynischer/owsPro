@@ -60,7 +60,7 @@ class PremiumTransactionConverter implements IConverter {
 			// get current user budget
 			$db = DbConnection::getInstance();
 			$columns = 'premium_balance';
-			$fromTable = '_user';
+			$fromTable = 'user';
 			$whereCondition = 'id = %d';
 			$result = $db->querySelect($columns, $fromTable, $whereCondition, $_POST['user_id'], 1);
 			$user = $result->fetch_array();

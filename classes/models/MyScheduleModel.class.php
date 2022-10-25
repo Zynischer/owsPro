@@ -57,7 +57,7 @@ class MyScheduleModel implements IModel {
 		$whereCondition = '(home_verein = %d OR gast_verein = %d) AND berechnet != \'1\'';
 		$parameters = array($clubId, $clubId);
 
-		$result = $this->_db->querySelect('COUNT(*) AS hits','_spiel', $whereCondition, $parameters);
+		$result = $this->_db->querySelect('COUNT(*) AS hits','spiel', $whereCondition, $parameters);
 		$matchesCnt = $result->fetch_array();
 		$result->free();
 		if ($matchesCnt) {

@@ -49,12 +49,12 @@ class AddNationalPlayerController implements IActionController {
 		if (!$teamId) {
 			throw new Exception(getMessage("nationalteams_user_requires_team"));
 		}
-		$result = $this->_db->querySelect("name","_verein", "id = %d", $teamId);
+		$result = $this->_db->querySelect("name","verein", "id = %d", $teamId);
 		$team = $result->fetch_array();
 		$result->free();
 
 		// get player info
-		$fromTable = "_spieler";
+		$fromTable = "spieler";
 		$result = $this->_db->querySelect("nation", $fromTable, "id = %d", $parameters["id"]);
 		$player = $result->fetch_array();
 		$result->free();

@@ -74,7 +74,7 @@ class PlayersDataService {
 			$columns['gesperrt'] = 'matches_blocked';
 		}
 
-		$fromTable = '_spieler';
+		$fromTable = 'spieler';
 		$whereCondition = 'status = 1 AND verein_id = %d ORDER BY position '. $positionSort . ', position_main ASC, nachname ASC, vorname ASC';
 		$result = $db->querySelect($columns, $fromTable, $whereCondition, $clubId, 50);
 
@@ -150,12 +150,12 @@ class PlayersDataService {
 				$columns['\'0\''] = 'matches_blocked';
 			}
 
-			$fromTable = '_spieler';
+			$fromTable = 'spieler';
 			$whereCondition = 'status = 1 AND verein_id = %d';
 		} else {
 			$columns['gesperrt_nationalteam'] = 'matches_blocked';
-			$fromTable = '_spieler AS P';
-			$fromTable .= ' INNER JOIN _nationalplayer AS NP ON NP.player_id = P.id';
+			$fromTable = 'spieler AS P';
+			$fromTable .= ' INNER JOIN nationalplayer AS NP ON NP.player_id = P.id';
 			$whereCondition = 'status = 1 AND NP.team_id = %d';
 		}
 
@@ -210,8 +210,8 @@ class PlayersDataService {
 		$columns['C.id'] = 'team_id';
 		$columns['C.name'] = 'team_name';
 
-		$fromTable = '_spieler AS P';
-		$fromTable .= ' LEFT JOIN _verein AS C ON C.id = P.verein_id';
+		$fromTable = 'spieler AS P';
+		$fromTable .= ' LEFT JOIN verein AS C ON C.id = P.verein_id';
 
 		$whereCondition = 'P.status = 1 AND P.transfermarkt = 1 AND P.transfer_ende > %d';
 		$parameters[] = getNowAsTimestamp();
@@ -249,7 +249,7 @@ class PlayersDataService {
 
 		$columns = 'COUNT(*) AS hits';
 
-		$fromTable = '_spieler AS P';
+		$fromTable = 'spieler AS P';
 
 		$whereCondition = 'P.status = 1 AND P.transfermarkt = 1 AND P.transfer_ende > %d';
 		$parameters[] = getNowAsTimestamp();
@@ -349,11 +349,11 @@ class PlayersDataService {
 		$columns['C.finanz_budget'] = 'team_budget';
 		$columns['C.user_id'] = 'team_user_id';
 
-		$columns['(SELECT CONCAT(AVG(S.note), \';\', SUM(S.assists)) FROM _spiel_berechnung AS S WHERE S.spieler_id = P.id AND S.minuten_gespielt > 0 AND S.note > 0)'] = 'matches_info';
+		$columns['(SELECT CONCAT(AVG(S.note), \';\', SUM(S.assists)) FROM spiel_berechnung AS S WHERE S.spieler_id = P.id AND S.minuten_gespielt > 0 AND S.note > 0)'] = 'matches_info';
 
-		$fromTable = '_spieler AS P';
-		$fromTable .= ' LEFT JOIN _verein AS C ON C.id = P.verein_id';
-		$fromTable .= ' LEFT JOIN _verein AS L ON L.id = P.lending_owner_id';
+		$fromTable = 'spieler AS P';
+		$fromTable .= ' LEFT JOIN verein AS C ON C.id = P.verein_id';
+		$fromTable .= ' LEFT JOIN verein AS L ON L.id = P.lending_owner_id';
 
 		$whereCondition = 'P.status = 1 AND P.id = %d';
 		$players = $db->queryCachedSelect($columns, $fromTable, $whereCondition, $playerId, 1);
@@ -405,8 +405,8 @@ class PlayersDataService {
 		$columns['C.id'] = 'team_id';
 		$columns['C.name'] = 'team_name';
 
-		$fromTable = '_spieler AS P';
-		$fromTable .= ' LEFT JOIN _verein AS C ON C.id = P.verein_id';
+		$fromTable = 'spieler AS P';
+		$fromTable .= ' LEFT JOIN verein AS C ON C.id = P.verein_id';
 
 		$whereCondition = 'P.status = 1 AND P.sa_tore > 0';
 		if ($leagueId != null) {
@@ -454,8 +454,8 @@ class PlayersDataService {
 		$columns['C.id'] = 'team_id';
 		$columns['C.name'] = 'team_name';
 
-		$fromTable = '_spieler AS P';
-		$fromTable .= ' LEFT JOIN _verein AS C ON C.id = P.verein_id';
+		$fromTable = 'spieler AS P';
+		$fromTable .= ' LEFT JOIN verein AS C ON C.id = P.verein_id';
 
 		$whereCondition = 'P.status = \'1\' AND (P.sa_tore + P.sa_assists) > 0';
 		if ($leagueId != null) {
@@ -607,8 +607,8 @@ class PlayersDataService {
 			$whereCondition .= ' AND P.lending_fee > 0 AND (P.lending_owner_id IS NULL OR P.lending_owner_id = 0)';
 		}
 
-		$fromTable = '_spieler AS P';
-		$fromTable .= ' LEFT JOIN _verein AS C ON C.id = P.verein_id';
+		$fromTable = 'spieler AS P';
+		$fromTable .= ' LEFT JOIN verein AS C ON C.id = P.verein_id';
 
 		return $db->querySelect($columns, $fromTable, $whereCondition, $parameters, $limit);
 	}

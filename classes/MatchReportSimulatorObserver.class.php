@@ -42,7 +42,7 @@ class MatchReportSimulatorObserver implements ISimulatorObserver {
 		$this->_db = $db;
 
 		// get available text messages
-		$fromTable = '_spiel_text';
+		$fromTable = 'spiel_text';
 		$columns = 'id, aktion AS actiontype';
 
 		// only load text messages for substitutions, because this observer does not observes anything else
@@ -78,7 +78,7 @@ class MatchReportSimulatorObserver implements ISimulatorObserver {
 			$players = implode(';', $playerNames);
 		}
 
-		$fromTable = '_matchreport';
+		$fromTable = 'matchreport';
 		$columns['match_id'] = $match->id;
 		$columns['minute'] = $match->minute;
 		$columns['message_id'] = $messageId;
