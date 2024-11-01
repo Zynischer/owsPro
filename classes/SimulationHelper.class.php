@@ -150,7 +150,7 @@ class SimulationHelper {
 	 */
 	public static function checkAndExecuteSubstitutions(SimulationMatch $match, SimulationTeam $team, $observers) {
 		$substitutions = $team->substitutions;
-		if (!count($substitutions)) {
+		if ($substitutions == null || !count($substitutions)) {
 			return;
 		}
 

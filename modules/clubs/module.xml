@@ -54,7 +54,7 @@
                     
                     <column
                         id="entity_player"
-                        field="(SELECT COUNT(*) FROM {tablePrefix}_spieler AS PlayerTab WHERE PlayerTab.verein_id = ClubTab.id)"
+                        field="(SELECT COUNT(*) FROM {tablePrefix}spieler AS PlayerTab WHERE PlayerTab.verein_id = ClubTab.id)"
                         type="number"
                         sort="true" />
                     

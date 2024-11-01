@@ -37,7 +37,7 @@ class RegisterFormModel implements IModel {
 	}
 
 	public function getTemplateParameters() {
-		if (!$getConfig("allow_userregistration")) {
+		if (!getConfig("allow_userregistration")) {
 			throw new Exception(getMessage("registration_disabled"));
 		}
 
