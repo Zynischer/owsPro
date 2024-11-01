@@ -365,6 +365,9 @@ class PlayersDataService {
 			$player['player_nationality_filename'] = self::getFlagFilename($player['player_nationality']);
 
 			$matchesInfo = explode(';', $player['matches_info']);
+			if(!is_numeric($matchesInfo[0])) {
+				$matchesInfo[0] = (int)$matchesInfo[0];
+			}
 			$player['player_avg_grade'] = round($matchesInfo[0], 2);
 			if (isset($matchesInfo[1])) {
 				$player['player_assists'] = $matchesInfo[1];
